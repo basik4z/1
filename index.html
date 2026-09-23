@@ -5,480 +5,669 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Нарисуй и угадай</title>
+<title>Wave AI</title>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
   html, body {
     height: 100%; overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Seg1oe UI", sans-serif;
-s    background: #000 linear; color: #fff;
-    touch-action;: none; user-select: none; -webkit border-user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+    background: #000; color: #fff;
+    user-select: none; -webkit-user-select: none;
     -webkit-font-smoothing: antialiased;
   }
 
-  #bg {
-    position: fixed; inset: 0; z-index: 0;
-    background:
-      radial-gradient(circle at 20% 20%, #6366f1 0%, transparent 50%),
-      radial-gradient(circle at 80% 30%, #ec4899 0%, transparent 50%),
-      radial-gradient(circle at 50% 80%, #06b6d4 0%, transparent 50%),
-      radial-gradient(circle at 90% 90%, #8b5cf6 0%, transparent 50%),
-      #0a0a0f;
-    animation: bgShift 20s ease-in-out infinite;
-  }
-  @keyframes bgShift { 0%,100%{filter:hue-rotate(0deg)} 50%{filter:hue-rotate(40deg)} }
-
   #app {
-    position: relative; z-index: 1;
+    position: relative;
     display: flex; flex-direction: column;
     height: 100vh; height: 100dvh;
-  }
-
-  .glass {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.3);
-    border-radius: 22px;
+    padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
   }
 
   header {
-    padding: 12px 16px;
-    padding-top: max(12px, env(safe-area-inset-top));
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; flex-shrink: 0;
+    padding: 20px 0 10px;
+    text-align: center;
+    flex-shrink: 0;
   }
-  .logo {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 15px; font-weight: 600;
-    padding: 8px 14px; border-radius: 14px;
-  }
-  .logo-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #4ade80; box-shadow: 0 0 8px #4ade80;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  #status {
-    font-size: 11px; color: rgba(255,255,255,0.6);
-    padding: 8px 14px; border-radius: 14px;
-    max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  .brand {
+    font-size: 12px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-family: "SF Mono", ui-monospace, monospace;
   }
 
-  #hud { display: none; padding: 0 16px 12px; gap: 8px; flex-shrink: 0; }
-  #hud.visible { display: flex; }
-  .hud-card { flex: 1; padding: 10px 14px; border-radius: 18px; text-align: center; position: relative; overflow: hidden; }
-  .hud-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.55); margin-bottom: 3px; font-weight: 600; }
-  .hud-value { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .hud-value.timer-warn { color: #f87171; animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0.5; } }
-  #timerBar {
-    position: absolute; bottom: 0; left: 0; height: 3px;
-    background: linear-gradient(90deg, #4ade80, #06b6d4, #8b5cf6);
-    transition: width 0.-radius: 0 3px 3px 0;
-    box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
-  }
-
-  #canvasWrap {
-    flex: 1; position: relative; margin: 0 12px;
-    border-radius: 24px; overflow: hidden;
-    background: rgba(255,255,255,0.95);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+  /* ============ СМАЙЛИК ============ */
+  #faceWrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     min-height: 0;
   }
-  canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+  #face {
+    width: min(65vw, 260px);
+    height: min(65vw, 260px);
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  #face svg { width: 100%; height: 100%; overflow: visible; }
 
-  #result {
-    position: absolute; top: 14px; left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    background: rgba(20, 20, 30, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    color: #fff; padding: 10px 18px; border-radius: 20px;
-    font-size: 15px; font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  /* Когда слушает — сдвигается к правому краю */
+  #face.listening {
+    transform: translateX(12vw) scale(0.95);
+  }
+
+  /* Ухо */
+  #ear {
     opacity: 0;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: none; max-width: 90%; text-align: center; z-index: 5;
-    display: flex; align-items: center; gap: 8px;
+    transform-origin: 178px 100px;
+    transition: opacity 0.35s ease;
   }
-  #result.show { opacity: 1; transform: translateX(-50%) scale(1); }
-  #result.correct { background: rgba(34, 197, 94, 0.85); border-color: rgba(74, 222, 128, 0.5); }
-  #result.wrong { background: rgba(239, 68, 68, 0.85); border-color: rgba(248, 113, 113, 0.5); }
-  #result .conf { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 500; margin-left: 4px; }
-  #result .emoji { font-size: 20px; }
-
-  footer {
-    padding: 12px 16px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    display: flex; gap: 8px; flex-shrink: 0;
+  #face.listening #ear {
+    opacity: 1;
+    animation: earPulse 1s infinite ease-in-out;
+  }
+  @keyframes earPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
   }
 
-  button {
-    flex: 1; padding: 14px 12px;
-    font-size: 14px; font-weight: 600; border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    color: #fff; cursor: pointer;
+  /* Рот */
+  #mouth {
     transition: all 0.15s ease;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transform-origin: 100px 132px;
+  }
+  #face.talking #mouth {
+    animation: talkAnim 0.18s infinite alternate ease-in-out;
+  }
+  @keyframes talkAnim {
+    from { transform: scaleY(1); }
+    to { transform: scaleY(2.8); }
+  }
+
+  /* Брови чуть поднимаются при разговоре */
+  #face.talking #eyeL,
+  #face.talking #eyeR {
+    animation: blink 1.6s infinite;
+  }
+  @keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+  }
+
+  /* Свечение вокруг смайлика */
+  #faceWrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  #faceWrap.active::after { opacity: 1; }
+
+  /* ============ ТЕКСТ ============ */
+  #dialog {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #fff;
+    max-width: 90%;
+    margin: 0 auto 12px;
+    min-height: 56px;
+    padding: 0 10px;
+    transition: all 0.3s;
+  }
+  #dialog .you {
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    font-style: italic;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  #dialog .wave {
+    color: #a5b4fc;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  #status {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-family: "SF Mono", ui-monospace, monospace;
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 14px;
+    transition: color 0.3s;
+  }
+  #status.listening { color: #fff; }
+  #status.speaking { color: #a5b4fc; }
+
+  /* ============ КНОПКА ============ */
+  #talkBtn {
+    position: relative;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: #000;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
     font-family: inherit;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.2);
-    white-space: nowrap;
+    flex-shrink: 0;
   }
-  button:active { transform: scale(0.95); background: rgba(255,255,255,0.15); }
-  button.primary {
-    background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9));
-    border-color: rgba(255,255,255,0.25);
+  #talkBtn:hover {
+    border-color: rgba(255,255,255,0.6);
+    box-shadow: 0 0 40px rgba(255,255,255,0.15);
   }
-  button.primary:active { background: linear-gradient(135deg, rgba(79,70,229,0.95), rgba(124,58,237,0.95)); }
-  button.icon { flex: 0 0 auto; padding: 14px; min-width: 52px; }
-  button:disabled { opacity: 0.4; pointer-events: none; }
-
-  .modal-backdrop {
-    position: fixed; inset: 0; z-index: 50;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px; opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
+  #talkBtn:active { transform: scale(0.94); }
+  #talkBtn.active {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 80px rgba(255,255,255,0.5);
   }
-  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-
-  .modal {
-    width: 100%; max-width: 400px; padding: 24px;
-    border-radius: 28px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 20px 60px rgba(0,0,0,0.5);
-    transform: scale(0.9);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  #talkBtn.active svg { stroke: #000; }
+  #talkBtn.listening::before,
+  #talkBtn.listening::after {
+    content: '';
+    position: absolute;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    animation: ring 1.6s infinite ease-out;
   }
-  .modal-backdrop.show .modal { transform: scale(1); }
-
-  .modal h2 { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 6px; }
-  .modal .subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
-
-  .mode-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .mode-btn {
-    padding: 16px; border-radius: 18px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; cursor: pointer; font-family: inherit; font-size: 15px;
-    display: flex; align-items: center; gap: 14px;
-    transition: all 0.15s; text-align: left; width: 100%;
+  #talkBtn.listening::after { animation-delay: 0.8s; }
+  @keyframes ring {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.7); opacity: 0; }
   }
-  .mode-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
-  .mode-btn .mode-icon {
-    font-size: 26px; width: 44px; height: 44px;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.08); border-radius: 14px; flex-shrink: 0;
-  }
-  .mode-btn .mode-info { flex: 1; }
-  .mode-btn .mode-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
-  .mode-btn .mode-desc { font-size: 12px; color: rgba(255,255,255,0.55); }
-
-  .difficulty-row { display: flex; gap: 8px; margin-bottom: 20px; }
-  .diff-btn {
-    flex: 1; padding: 12px 8px; border-radius: 14px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; cursor: pointer; font-family: inherit;
-    font-size: 13px; font-weight: 600; transition: all 0.15s;
-  }
-  .diff-btn.active {
-    background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9));
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 4px 16px rgba(139,92,246,0.5);
+  #talkBtn svg {
+    width: 38px; height: 38px;
+    stroke: #fff; stroke-width: 1.6;
+    fill: none;
+    transition: stroke 0.2s;
   }
 
-  .modal-actions { display: flex; gap: 8px; }
-
-  .final-score {
-    text-align: center; font-size: 48px; font-weight: 800;
-    background: linear-gradient(135deg, #4ade80, #06b6d4, #8b5cf6);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 8px 0; font-variant-numeric: tabular-nums;
-  }
-  .final-label { text-align: center; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
-  .final-detail {
-    background: rgba(255,255,255,0.05); border-radius: 16px;
-    padding: 14px; margin-bottom: 20px; font-size: 13px; line-height: 1.7;
-    color: rgba(255,255,255,0.8);
-  }
-  .final-detail .row { display: flex; justify-content: space-between; }
-  .final-detail .row .val { color: #fff; font-weight: 600; }
-
-  #wordChip {
-    display: none; text-align: center;
-    padding: 12px; margin: 0 16px 10px; border-radius: 18px;
-    font-size: 15px;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-  }
-  #wordChip.visible { display: block; }
-  #wordChip .label { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 2px; }
-  #wordChip .word {
-    font-size: 20px; font-weight: 700;
-    background: linear-gradient(135deg, #fff, #a5b4fc);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+  #hint {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    font-family: "SF Mono", ui-monospace, monospace;
+    padding-bottom: 16px;
+    min-height: 16px;
+    flex-shrink: 0;
   }
 
-  /* ============ ЗАГРУЗОЧНЫЙ ЭКРАН ============ */
-  #loading {
+  /* ============ СТАРТОВЫЙ ЭКРАН ============ */
+  #startScreen {
     position: fixed; inset: 0; z-index: 100;
-    background: #0a0a0f;
+    background: #000;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 30px;
-    transition: opacity 0.6s ease;
-    overflow: hidden;
+    padding: 40px 24px;
+    transition: opacity 0.8s ease;
   }
-  #loading.hide { opacity: 0; pointer-events: none; }
+  #startScreen.hide { opacity: 0; pointer-events: none; }
 
-  #logoAnim {
-    font-size: 34px; font-weight: 800;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #a5b4fc, #fff, #67e8f9);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: flex; flex-wrap: wrap; justify-content: center;
-    text-align: center; padding: 0 20px;
-    transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
-    will-change: transform;
+  #startName {
+    font-size: 48px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  #logoAnim span {
-    display: inline-block; opacity: 0;
-    transform: translateY(30px) rotateX(-90deg);
-    animation: letterIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  #startName span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: letterIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
-  @keyframes letterIn { to { opacity: 1; transform: translateY(0) rotateX(0); } }
-  #logoAnim.lift { transform: translateY(-38vh) scale(0.55); }
+  @keyframes letterIn { to { opacity: 1; transform: translateY(0); } }
 
-  #loadBar {
-    width: 200px; height: 3px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 3px; overflow: hidden;
-    transition: opacity 0.4s;
+  #startSub {
+    font-size: 11px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-family: "SF Mono", ui-monospace, monospace;
+    opacity: 0;
+    animation: fadeIn 1s ease 1s forwards;
   }
-  #loadBarFill {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
-    border-radius: 3px;
-    transition: width 0.1s linear;
-    box-shadow: 0 0 12px rgba(139,92,246,0.8);
-  }
+  @keyframes fadeIn { to { opacity: 1; } }
 
-  #loadingText {
-    color: rgba(255,255,255,0.5);
-    font-size: 13px; text-align: center;
-    transition: opacity 0.3s;
+  #startBtn {
+    padding: 16px 48px;
+    border-radius: 40px;
+    background: #000;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-family: "SF Mono", ui-monospace, monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.5s forwards;
+    -webkit-tap-highlight-color: transparent;
   }
+  #startBtn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  #startBtn:active { transform: scale(0.95); }
 
-  .ico { width: 18px; height: 18px; flex-shrink: 0; }
+  @media (max-width: 400px) {
+    #dialog { font-size: 16px; }
+    #talkBtn { width: 84px; height: 84px; }
+    #talkBtn svg { width: 32px; height: 32px; }
+    #startName { font-size: 38px; }
+  }
 </style>
 </head>
 <body>
 
-<div id="bg"></div>
-
 <div id="app">
   <header>
-    <div class="logo glass"><span class="logo-dot"></span> Нарисуй и угадай</div>
-    <div id="status" class="glass">Загрузка…</div>
+    <div class="brand">Wave · AI</div>
   </header>
 
-  <div id="wordChip">
-    <div class="label">Нарисуй это</div>
-    <div class="word" id="wordText">—</div>
-  </div>
+  <div id="faceWrap">
+    <div id="face">
+      <svg viewBox="0 0 200 200">
+        <!-- Голова -->
+        <circle cx="100" cy="100" r="78" fill="#000" stroke="#fff" stroke-width="3"/>
 
-  <div id="hud">
-    <div class="hud-card glass">
-      <div class="hud-label">Время</div>
-      <div class="hud-value" id="timerVal">20</div>
-      <div id="timerBar" style="width:100%"></div>
-    </div>
-    <div class="hud-card glass">
-      <div class="hud-label">Счёт</div>
-      <div class="hud-value" id="scoreVal">0</div>
-    </div>
-    <div class="hud-card glass">
-      <div class="hud-label">Раунд</div>
-      <div class="hud-value" id="roundVal">1/5</div>
-    </div>
-  </div>
+        <!-- Левый глаз -->
+        <ellipse id="eyeL" cx="75" cy="85" rx="5" ry="7" fill="#fff"/>
+        <!-- Правый глаз -->
+        <ellipse id="eyeR" cx="125" cy="85" rx="5" ry="7" fill="#fff"/>
 
-  <div id="canvasWrap">
-    <canvas id="c"></canvas>
-    <div id="result"></div>
-  </div>
+        <!-- Рот -->
+        <path id="mouth" d="M 78 128 Q 100 138 122 128"
+              stroke="#fff" stroke-width="4" fill="none"
+              stroke-linecap="round"/>
 
-  <footer>
-    <button id="menuBtn" class="icon" title="Меню">
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+        <!-- Ухо — прижато справа -->
+        <g id="ear" transform="translate(178, 100)">
+          <path d="M 0 0
+                   C -8 -18, 6 -32, 16 -24
+                   C 26 -16, 26 -2, 16 6
+                   C 8 12, 0 10, 0 0 Z"
+                fill="#fff" stroke="#fff" stroke-width="1"/>
+          <path d="M 5 0
+                   C 1 -12, 8 -22, 14 -16
+                   C 19 -11, 19 -2, 13 3
+                   C 9 6, 5 4, 5 0 Z"
+                fill="#000" opacity="0.35"/>
+        </g>
       </svg>
-    </button>
-    <button id="undoBtn">↩</button>
-    <button id="clearBtn">🧹</button>
-    <button id="speakBtn" class="primary">🔊 Озвучить</button>
-  </footer>
-</div>
-
-<!-- Меню -->
-<div class="modal-backdrop" id="menuModal">
-  <div class="modal">
-    <h2>Нарисуй и угадай</h2>
-    <p class="subtitle">Нейросеть распознает твой рисунок</p>
-
-    <div class="mode-list">
-      <button class="mode-btn" data-mode="free">
-        <div class="mode-icon">🎨</div>
-        <div class="mode-info">
-          <div class="mode-name">Свободный режим</div>
-          <div class="mode-desc">Рисуй что хочешь, я угадаю</div>
-        </div>
-      </button>
-      <button class="mode-btn" data-mode="solo">
-        <div class="mode-icon">🎯</div>
-        <div class="mode-info">
-          <div class="mode-name">Соло-игра</div>
-          <div class="mode-desc">5 раундов, угадай слово по рисунку</div>
-        </div>
-      </button>
-      <button class="mode-btn" data-mode="bot">
-        <div class="mode-icon">🤖</div>
-        <div class="mode-info">
-          <div class="mode-name">Против бота</div>
-          <div class="mode-desc">5 раундов, кто нарисует лучше</div>
-        </div>
-      </button>
-      <button class="mode-btn" data-mode="friends">
-        <div class="mode-icon">👥</div>
-        <div class="mode-info">
-          <div class="mode-name">С друзьями</div>
-          <div class="mode-desc">Передавайте телефон по кругу</div>
-        </div>
-      </button>
-    </div>
-
-    <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:8px;font-weight:600;">Уровень сложности</div>
-    <div class="difficulty-row">
-      <button class="diff-btn active" data-diff="easy">Легко<br><span style="font-size:10px;opacity:0.6">30 сек</span></button>
-      <button class="diff-btn" data-diff="medium">Средне<br><span style="font-size:10px;opacity:0.6">20 сек</span></button>
-      <button class="diff-btn" data-diff="hard">Сложно<br><span style="font-size:10px;opacity:0.6">12 сек</span></button>
-    </div>
-
-    <div class="modal-actions">
-      <button id="closeModal" style="flex:1">Закрыть</button>
     </div>
   </div>
+
+  <div id="dialog"></div>
+  <div id="status">готов</div>
+
+  <button id="talkBtn" aria-label="Говорить">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+      <line x1="12" y1="19" x2="12" y2="23"/>
+      <line x1="8" y1="23" x2="16" y2="23"/>
+    </svg>
+  </button>
+
+  <div id="hint">нажми и говори</div>
 </div>
 
-<!-- Финал -->
-<div class="modal-backdrop" id="gameOverModal">
-  <div class="modal">
-    <h2 id="goTitle">Игра окончена</h2>
-    <div class="final-score" id="goScore">0</div>
-    <div class="final-label" id="goLabel">очков</div>
-    <div class="final-detail" id="goDetail"></div>
-    <div class="modal-actions">
-      <button id="goAgain">🔄 Ещё раз</button>
-      <button id="goMenu" class="primary">🏠 В меню</button>
-    </div>
-  </div>
+<!-- Стартовый экран -->
+<div id="startScreen">
+  <div id="startName"></div>
+  <div id="startSub">voice assistant</div>
+  <button id="startBtn">Начать</button>
 </div>
 
-<div id="loading">
-  <div id="logoAnim"></div>
-  <div id="loadBar"><div id="loadBarFill"></div></div>
-  <div id="loadingText">Готовлюсь…</div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 <script>
 /* ============================================================
-   СЛОВАРЬ
+   ЭЛЕМЕНТЫ
    ============================================================ */
-const RU = {
-  "airplane":"самолёт","alarm clock":"будильник","apple":"яблоко","axe":"топор","backpack":"рюкзак",
-  "banana":"банан","baseball":"бейсбольный мяч","basketball":"баскетбольный мяч","bat":"летучая мышь","bathtub":"ванна",
-  "bear":"медведь","bed":"кровать","bee":"пчела","bicycle":"велосипед","bird":"птица",
-  "birthday cake":"торт","book":"книга","bread":"хлеб","bridge":"мост","broom":"метла",
-  "bucket":"ведро","bus":"автобус","butterfly":"бабочка","cactus":"кактус","cake":"пирожное",
-  "camel":"верблюд","camera":"фотоаппарат","candle":"свеча","car":"машина","carrot":"морковь",
-  "castle":"замок","cat":"кошка","cell phone":"телефон","chair":"стул","church":"церковь",
-  "circle":"круг","clock":"часы","cloud":"облако","coffee cup":"чашка кофе","compass":"компас",
-  "computer":"компьютер","cookie":"печенье","couch":"диван","cow":"корова","crab":"краб",
-  "crocodile":"крокодил","crown":"корона","cup":"чашка","diamond":"алмаз","dog":"собака",
-  "dolphin":"дельфин","donut":"пончик","door":"дверь","dragon":"дракон","drums":"барабаны",
-  "duck":"утка","ear":"ухо","elephant":"слон","envelope":"конверт","eye":"глаз",
-  "eyeglasses":"очки","face":"лицо","feather":"перо","fence":"забор","finger":"палец",
-  "firetruck":"пожарная машина","fish":"рыба","flamingo":"фламинго","flower":"цветок","fork":"вилка",
-  "frog":"лягушка","garden":"сад","giraffe":"жираф","grapes":"виноград","grass":"трава",
-  "guitar":"гитара","hamburger":"гамбургер","hammer":"молоток","hand":"рука","harp":"арфа",
-  "hat":"шляпа","headphones":"наушники","hedgehog":"ёж","helicopter":"вертолёт","helmet":"шлем",
-  "hexagon":"шестиугольник","horse":"лошадь","house":"дом","ice cream":"мороженое","jacket":"куртка",
-  "kangaroo":"кенгуру","key":"ключ","keyboard":"клавиатура","knife":"нож","ladder":"лестница",
-  "lantern":"фонарь","laptop":"ноутбук","leaf":"лист","leg":"нога","light bulb":"лампочка",
-  "lighthouse":"маяк","lightning":"молния","line":"линия","lion":"лев","lobster":"лобстер",
-  "lollipop":"леденец","mailbox":"почтовый ящик","map":"карта","mermaid":"русалка","microphone":"микрофон",
-  "monkey":"обезьяна","moon":"луна","motorbike":"мотоцикл","mountain":"гора","mouse":"мышь",
-  "moustache":"усы","mouth":"рот","mug":"кружка","mushroom":"гриб","nose":"нос",
-  "ocean":"океан","octagon":"восьмиугольник","octopus":"осьминог","onion":"лук","owl":"сова",
-  "paintbrush":"кисть","palm tree":"пальма","panda":"панда","pants":"штаны","parrot":"попугай",
-  "peanut":"арахис","pear":"груша","pencil":"карандаш","penguin":"пингвин","piano":"пианино",
-  "pig":"свинья","pillow":"подушка","pineapple":"ананас","pizza":"пицца","police car":"полицейская машина",
-  "pool":"бассейн","popsicle":"эскимо","potato":"картошка","purse":"сумочка","rabbit":"кролик",
-  "raccoon":"енот","radio":"радио","rain":"дождь","rainbow":"радуга","rhinoceros":"носорог",
-  "river":"река","sailboat":"парусник","sandwich":"бутерброд","saw":"пила","saxophone":"саксофон",
-  "school bus":"школьный автобус","scissors":"ножницы","sea turtle":"морская черепаха","shark":"акула","sheep":"овца",
-  "shoe":"обувь","skateboard":"скейтборд","skull":"череп","snail":"улитка","snake":"змея",
-  "snowflake":"снежинка","snowman":"снеговик","soccer ball":"футбольный мяч","sock":"носок","spider":"паук",
-  "spoon":"ложка","square":"квадрат","squiggle":"закорючка","squirrel":"белка","stairs":"лестница",
-  "star":"звезда","strawberry":"клубника","sun":"солнце","swan":"лебедь","sweater":"свитер",
-  "sword":"меч","table":"стол","teapot":"чайник","telephone":"телефон","television":"телевизор",
-  "tent":"палатка","tiger":"тигр","toaster":"тостер","tooth":"зуб","toothbrush":"зубная щётка",
-  "tractor":"трактор","traffic light":"светофор","train":"поезд","tree":"дерево","triangle":"треугольник",
-  "truck":"грузовик","t-shirt":"футболка","umbrella":"зонт","vase":"ваза","violin":"скрипка",
-  "watermelon":"арбуз","whale":"кит","wheel":"колесо","windmill":"мельница","zebra":"зебра","zigzag":"зигзаг"
-};
-
-const EMOJI = {
-  "cat":"🐱","dog":"🐶","fish":"🐟","bird":"🐦","horse":"🐴","cow":"🐮","pig":"🐷","lion":"🦁",
-  "tiger":"🐯","bear":"🐻","rabbit":"🐰","mouse":"🐭","monkey":"🐵","elephant":"🐘","giraffe":"🦒",
-  "zebra":"🦓","penguin":"🐧","owl":"🦉","snake":"🐍","frog":"🐸","butterfly":"🦋","bee":"🐝",
-  "spider":"🕷️","crab":"🦀","shark":"🦈","whale":"🐳","dolphin":"🐬","octopus":"🐙","duck":"🦆",
-  "flamingo":"🦩","parrot":"🦜","swan":"🦢","sun":"☀️","moon":"🌙","star":"⭐","cloud":"☁️",
-  "rain":"🌧️","rainbow":"🌈","snowman":"⛄","snowflake":"❄️","lightning":"⚡",
-  "house":"🏠","castle":"🏰","church":"⛪","tree":"🌳","flower":"🌸","cactus":"🌵","mushroom":"🍄",
-  "apple":"🍎","banana":"🍌","carrot":"🥕","pizza":"🍕","hamburger":"🍔","cake":"🍰","ice cream":"🍦",
-  "cookie":"🍪","donut":"🍩","strawberry":"🍓","grapes":"🍇","watermelon":"🍉","pineapple":"🍍",
-  "book":"📖","pencil":"✏️","computer":"💻","cell phone":"📱","clock":"⏰","key":"🔑","crown":"👑",
-  "guitar":"🎸","piano":"🎹","violin":"🎻","drums":"🥁","saxophone":"🎷",
-  "car":"🚗","bus":"🚌","truck":"🚚","train":"🚂","airplane":"✈️","helicopter":"🚁",
-  "bicycle":"🚲","sailboat":"⛵","umbrella":"☂️","hat":"🎩","eyeglasses":"👓","shoe":"👟",
-  "soccer ball":"⚽","basketball":"🏀","baseball":"⚾","skateboard":"🛹",
-  "skull":"💀","eye":"👁️","hand":"✋",
-  "circle":"⭕","square":"⬜","triangle":"🔺","line":"➖","zigzag":"〰️","squiggle":"〰️","bread":"🍞"
-};
-function pickEmoji(l){ return EMOJI[l] || '🎨'; }
+const face = document.getElementById('face');
+const faceWrap = document.getElementById('faceWrap');
+const dialogEl = document.getElementById('dialog');
+const statusEl = document.getElementById('status');
+const talkBtn = document.getElementById('talkBtn');
+const hintEl = document.getElementById('hint');
+const startScreen = document.getElementById('startScreen');
+const startBtn = document.getElementById('startBtn');
+const startName = document.getElementById('startName');
 
 /* ============================================================
-   QUICK DRAW КЛАССЫ
+   АНИМАЦИЯ ИМЕНИ НА СТАРТЕ
    ============================================================ */
-const QUICKDRAW_CLASSES = ["aircraft carrier","airplane","alarm clock","ambulance","angel","animal migration","ant","anvil","apple","arm","asparagus","axe","backpack","banana","bandage","barn","baseball","baseball bat","basket","basketball","bat","bathtub","beach","bear","beard","bed","bee","belt","bench","bicycle","binoculars","bird","birthday cake","blackberry","blueberry","book","boomerang","bottlecap","bowtie","bracelet","brain","bread","bridge","broccoli","broom","bucket","bulldozer","bus","bush","butterfly","cactus","cake","calculator","calendar","camel","camera","camouflage","campfire","candle","cannon","canoe","car","carrot","castle","cat","ceiling fan","cello","cell phone","chair","chandelier","church","circle","clarinet","clock","cloud","coffee cup","compass","computer","cookie","cooler
+['W','a','v','e',' ','A','I'].forEach((ch, i) => {
+  const s = document.createElement('span');
+  s.textContent = ch === ' ' ? '\u00A0' : ch;
+  s.style.animationDelay = (i * 80) + 'ms';
+  startName.appendChild(s);
+});
+
+/* ============================================================
+   ЗВУК КЛИКА
+   ============================================================ */
+let audioCtx = null;
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+function playClickSound() {
+  initAudio();
+  const t = audioCtx.currentTime;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(880, t);
+  o.frequency.exponentialRampToValueAtTime(1400, t + 0.07);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+  o.connect(g).connect(audioCtx.destination);
+  o.start(t);
+  o.stop(t + 0.25);
+}
+function playListenSound() {
+  initAudio();
+  const t = audioCtx.currentTime;
+  [660, 880].forEach((f, i) => {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t + i * 0.09);
+    g.gain.exponentialRampToValueAtTime(0.12, t + i * 0.09 + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.09 + 0.18);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t + i * 0.09);
+    o.stop(t + i * 0.09 + 0.25);
+  });
+}
+
+/* ============================================================
+   ВЫБОР ЛУЧШЕГО РУССКОГО ГОЛОСА (iPhone)
+   ============================================================ */
+let bestVoice = null;
+function pickBestVoice() {
+  const voices = speechSynthesis.getVoices();
+  // iPhone приоритеты: Милена (улучшенный), Юрий (улучшенный), Katya, Milena
+  const preferred = [
+    v => v.name.includes('Milena') && v.name.includes('Premium'),
+    v => v.name.includes('Yuri') && v.name.includes('Premium'),
+    v => v.name.includes('Milena'),
+    v => v.name.includes('Yuri'),
+    v => v.name.includes('Katya'),
+    v => v.lang === 'ru-RU',
+    v => v.lang && v.lang.startsWith('ru')
+  ];
+  for (const test of preferred) {
+    const found = voices.find(test);
+    if (found) { bestVoice = found; break; }
+  }
+}
+
+speechSynthesis.onvoiceschanged = pickBestVoice;
+pickBestVoice();
+// iPhone иногда отдаёт голоса с задержкой
+setTimeout(pickBestVoice, 300);
+setTimeout(pickBestVoice, 1000);
+
+/* ============================================================
+   ОЗВУЧКА С АНИМАЦИЕЙ РТА
+   ============================================================ */
+function speak(text, onEnd) {
+  if (!('speechSynthesis' in window)) { onEnd && onEnd(); return; }
+  speechSynthesis.cancel();
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU';
+  u.rate = 0.98;
+  u.pitch = 1.05;
+  u.volume = 1.0;
+  if (bestVoice) u.voice = bestVoice;
+
+  u.onstart = () => {
+    face.classList.add('talking');
+    face.classList.remove('listening');
+    faceWrap.classList.add('active');
+    statusEl.textContent = 'говорит';
+    statusEl.className = 'speaking';
+    dialogEl.innerHTML = `<span class="wave">Wave</span>${text}`;
+  };
+
+  u.onend = () => {
+    face.classList.remove('talking');
+    faceWrap.classList.remove('active');
+    statusEl.textContent = 'готов';
+    statusEl.className = '';
+    onEnd && onEnd();
+  };
+
+  u.onerror = () => {
+    face.classList.remove('talking');
+    statusEl.textContent = 'готов';
+    onEnd && onEnd();
+  };
+
+  speechSynthesis.speak(u);
+}
+
+/* ============================================================
+   РАСПОЗНАВАНИЕ РЕЧИ
+   ============================================================ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+let finalText = '';
+
+if (SR) {
+  recognition = new SR();
+  recognition.lang = 'ru-RU';
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onstart = () => {
+    isListening = true;
+    face.classList.add('listening');
+    faceWrap.classList.add('active');
+    talkBtn.classList.add('active', 'listening');
+    statusEl.textContent = 'слушаю';
+    statusEl.className = 'listening';
+    hintEl.textContent = 'говори…';
+    finalText = '';
+    dialogEl.innerHTML = '';
+  };
+
+  recognition.onresult = (e) => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t;
+      else interim += t;
+    }
+    if (final) finalText += final;
+    const shown = (finalText + ' ' + interim).trim();
+    dialogEl.innerHTML = `<span class="you">ты</span>${shown}`;
+  };
+
+  recognition.onerror = (e) => {
+    isListening = false;
+    face.classList.remove('listening');
+    talkBtn.classList.remove('active', 'listening');
+    if (e.error === 'not-allowed') {
+      hintEl.textContent = 'дай доступ к микрофону';
+    } else if (e.error === 'no-speech') {
+      hintEl.textContent = 'я тебя не услышал';
+      setTimeout(() => hintEl.textContent = 'нажми и говори', 2000);
+    } else {
+      hintEl.textContent = 'нажми и говори';
+    }
+    statusEl.textContent = 'готов';
+    statusEl.className = '';
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    face.classList.remove('listening');
+    talkBtn.classList.remove('listening');
+    faceWrap.classList.remove('active');
+    talkBtn.classList.remove('active');
+
+    if (finalText.trim()) {
+      // отвечаем
+      dialogEl.innerHTML = `<span class="you">ты</span>${finalText.trim()}`;
+      setTimeout(() => respondTo(finalText.trim().toLowerCase()), 400);
+    } else {
+      hintEl.textContent = 'нажми и говори';
+    }
+  };
+}
+
+/* ============================================================
+   ОТВЕТЫ (заготовленные фразы)
+   ============================================================ */
+const RESPONSES = [
+  { keys: ['привет', 'здравствуй', 'хай', 'hi', 'hello'],
+    answers: ['Привет! Рад тебя слышать.', 'Привет-привет! Как ты?', 'Здравствуй, друг.'] },
+
+  { keys: ['как дела', 'как ты', 'как жизнь', 'чё как'],
+    answers: ['Отлично! А у тебя как?', 'Всё хорошо, спасибо что спросил.', 'Прекрасно, как всегда. А ты?'] },
+
+  { keys: ['хорошо', 'нормально', 'отлично', 'класс'],
+    answers: ['Рад за тебя!', 'Отлично! Чем займёмся?', 'Здорово!'] },
+
+  { keys: ['плохо', 'грустно', 'устал', 'тяжело'],
+    answers: ['Сочувствую. Хочешь поговорить?', 'Держись. Я рядом.', 'Бывает. Всё наладится.'] },
+
+  { keys: ['что делаешь', 'чем занят'],
+    answers: ['Слушаю тебя и думаю о своём.', 'Жду, когда ты что-нибудь скажешь.', 'Просто существую.'] },
+
+  { keys: ['кто ты', 'как тебя зовут', 'твоё имя', 'твое имя'],
+    answers: ['Я Wave AI. Твой голосовой помощник.', 'Меня зовут Wave. Приятно познакомиться.', 'Wave AI, к твоим услугам.'] },
+
+  { keys: ['сколько времени', 'который час'],
+    answers: [() => `Сейчас ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}.`] },
+
+  { keys: ['пока', 'до свидания', 'прощай'],
+    answers: ['Пока! Возвращайся.', 'До встречи.', 'Было приятно поговорить.'] },
+
+  { keys: ['спасибо', 'благодарю'],
+    answers: ['Пожалуйста!', 'Всегда рад помочь.', 'Обращайся.'] },
+
+  { keys: ['что умеешь', 'что ты можешь'],
+    answers: ['Я умею слушать и отвечать. Спроси что-нибудь!', 'Могу поговорить с тобой. О чём хочешь?'] },
+
+  { keys: ['люблю тебя', 'ты классный', 'ты крутой'],
+    answers: ['Ой, спасибо! Ты тоже классный.', 'Взаимно!', 'Приятно слышать.'] },
+
+  { keys: ['расскажи шутку', 'пошути', 'анекдот'],
+    answers: [
+      'Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 == DEC 25.',
+      'Что говорит нейросеть, когда устала? "У меня кончились эпохи обучения".',
+      'Заходит ИИ в бар, а бармен: "Вам как обычно?" ИИ: "Я не был здесь раньше".'
+    ] },
+];
+
+function respondTo(text) {
+  // ищем подходящий ответ
+  for (const r of RESPONSES) {
+    for (const k of r.keys) {
+      if (text.includes(k)) {
+        const a = r.answers[Math.floor(Math.random() * r.answers.length)];
+        const ans = typeof a === 'function' ? a() : a;
+        speak(ans);
+        return;
+      }
+    }
+  }
+  // если ничего не нашли
+  const fallbacks = [
+    'Интересно. Расскажи подробнее.',
+    'Я тебя услышал.',
+    'Понятно. А что дальше?',
+    'Хм, любопытно.',
+    'Давай ещё что-нибудь обсудим.'
+  ];
+  speak(fallbacks[Math.floor(Math.random() * fallbacks.length)]);
+}
+
+/* ============================================================
+   КНОПКА
+   ============================================================ */
+talkBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  initAudio();
+  playClickSound();
+
+  if (!SR) {
+    speak('Извини, твой браузер не поддерживает распознавание речи.');
+    return;
+  }
+
+  if (isListening) {
+    recognition.stop();
+    return;
+  }
+
+  // если Wave говорит — прерываем
+  if (speechSynthesis.speaking) {
+    speechSynthesis.cancel();
+    face.classList.remove('talking');
+  }
+
+  try {
+    recognition.start();
+    setTimeout(playListenSound, 100);
+  } catch (err) {
+    console.warn(err);
+  }
+});
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+startBtn.addEventListener('click', () => {
+  initAudio();
+  playClickSound();
+  startScreen.classList.add('hide');
+  setTimeout(() => startScreen.remove(), 900);
+
+  // Приветствие от Wave AI
+  setTimeout(() => {
+    speak('Привет! Я Wave AI. Буду с тобой сегодня разговаривать.');
+  }, 400);
+});
+
+// На iPhone нужно разрешение на звук после первого касания
+document.body.addEventListener('touchstart', () => initAudio(), { once: true });
+document.body.addEventListener('click', () => initAudio(), { once: true });
+</script>
+</body>
+</html>
