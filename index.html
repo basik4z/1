@@ -10,16 +10,12 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
   html, body {
     height: 100%; overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-    background: #000;
-    color: #fff;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Seg1oe UI", sans-serif;
+s    background: #000 linear; color: #fff;
+    touch-action;: none; user-select: none; -webkit border-user-select: none;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Анимированный градиентный фон в стиле iOS */
   #bg {
     position: fixed; inset: 0; z-index: 0;
     background:
@@ -28,13 +24,9 @@
       radial-gradient(circle at 50% 80%, #06b6d4 0%, transparent 50%),
       radial-gradient(circle at 90% 90%, #8b5cf6 0%, transparent 50%),
       #0a0a0f;
-    filter: blur(0px);
     animation: bgShift 20s ease-in-out infinite;
   }
-  @keyframes bgShift {
-    0%, 100% { filter: hue-rotate(0deg); }
-    50% { filter: hue-rotate(40deg); }
-  }
+  @keyframes bgShift { 0%,100%{filter:hue-rotate(0deg)} 50%{filter:hue-rotate(40deg)} }
 
   #app {
     position: relative; z-index: 1;
@@ -42,256 +34,153 @@
     height: 100vh; height: 100dvh;
   }
 
-  /* =============== LIQUID GLASS =============== */
   .glass {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255,255,255,0.08);
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-      0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.3);
     border-radius: 22px;
   }
 
-  /* =============== HEADER =============== */
   header {
     padding: 12px 16px;
     padding-top: max(12px, env(safe-area-inset-top));
     display: flex; align-items: center; justify-content: space-between;
-    gap: 10px;
-    flex-shrink: 0;
+    gap: 10px; flex-shrink: 0;
   }
   .logo {
     display: flex; align-items: center; gap: 8px;
     font-size: 15px; font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 14px;
+    padding: 8px 14px; border-radius: 14px;
   }
   .logo-dot {
     width: 8px; height: 8px; border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 8px #4ade80;
+    background: #4ade80; box-shadow: 0 0 8px #4ade80;
     animation: pulse 2s infinite;
   }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
   #status {
-    font-size: 11px;
-    color: rgba(255,255,255,0.6);
-    padding: 8px 14px;
-    border-radius: 14px;
-    max-width: 45%;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: 11px; color: rgba(255,255,255,0.6);
+    padding: 8px 14px; border-radius: 14px;
+    max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
 
-  /* =============== HUD (таймер, счёт, слово) =============== */
-  #hud {
-    display: none;
-    padding: 0 16px 12px;
-    gap: 8px;
-    flex-shrink: 0;
-  }
+  #hud { display: none; padding: 0 16px 12px; gap: 8px; flex-shrink: 0; }
   #hud.visible { display: flex; }
-
-  .hud-card {
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 18px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hud-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 3px;
-    font-weight: 600;
-  }
-  .hud-value {
-    font-size: 18px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
+  .hud-card { flex: 1; padding: 10px 14px; border-radius: 18px; text-align: center; position: relative; overflow: hidden; }
+  .hud-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.55); margin-bottom: 3px; font-weight: 600; }
+  .hud-value { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .hud-value.timer-warn { color: #f87171; animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: 0.5; } }
-
   #timerBar {
     position: absolute; bottom: 0; left: 0; height: 3px;
     background: linear-gradient(90deg, #4ade80, #06b6d4, #8b5cf6);
-    transition: width 0.1s linear;
-    border-radius: 0 3px 3px 0;
+    transition: width 0.-radius: 0 3px 3px 0;
     box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
   }
 
-  /* =============== CANVAS =============== */
   #canvasWrap {
-    flex: 1;
-    position: relative;
-    margin: 0 12px;
-    border-radius: 24px;
-    overflow: hidden;
+    flex: 1; position: relative; margin: 0 12px;
+    border-radius: 24px; overflow: hidden;
     background: rgba(255,255,255,0.95);
     border: 1px solid rgba(255,255,255,0.2);
-    box-shadow:
-      0 20px 60px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(255,255,255,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5);
     min-height: 0;
   }
-  canvas {
-    display: block; width: 100%; height: 100%;
-    touch-action: none; cursor: crosshair;
-  }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
 
-  /* Плавающий результат */
   #result {
-    position: absolute;
-    top: 14px; left: 50%;
+    position: absolute; top: 14px; left: 50%;
     transform: translateX(-50%) scale(0.8);
     background: rgba(20, 20, 30, 0.85);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 20px;
+    color: #fff; padding: 10px 18px; border-radius: 20px;
     font-size: 15px; font-weight: 600;
     border: 1px solid rgba(255,255,255,0.15);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
     opacity: 0;
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: none;
-    max-width: 90%; text-align: center;
-    z-index: 5;
+    pointer-events: none; max-width: 90%; text-align: center; z-index: 5;
     display: flex; align-items: center; gap: 8px;
   }
-  #result.show {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
-  #result.correct {
-    background: rgba(34, 197, 94, 0.85);
-    border-color: rgba(74, 222, 128, 0.5);
-  }
-  #result.wrong {
-    background: rgba(239, 68, 68, 0.85);
-    border-color: rgba(248, 113, 113, 0.5);
-  }
-  #result .conf {
-    font-size: 11px; color: rgba(255,255,255,0.7);
-    font-weight: 500; margin-left: 4px;
-  }
+  #result.show { opacity: 1; transform: translateX(-50%) scale(1); }
+  #result.correct { background: rgba(34, 197, 94, 0.85); border-color: rgba(74, 222, 128, 0.5); }
+  #result.wrong { background: rgba(239, 68, 68, 0.85); border-color: rgba(248, 113, 113, 0.5); }
+  #result .conf { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 500; margin-left: 4px; }
   #result .emoji { font-size: 20px; }
 
-  /* =============== FOOTER =============== */
   footer {
     padding: 12px 16px;
     padding-bottom: max(12px, env(safe-area-inset-bottom));
-    display: flex; gap: 8px;
-    flex-shrink: 0;
+    display: flex; gap: 8px; flex-shrink: 0;
   }
 
   button {
-    flex: 1;
-    padding: 14px 12px;
-    font-size: 14px; font-weight: 600;
-    border-radius: 18px;
+    flex: 1; padding: 14px 12px;
+    font-size: 14px; font-weight: 600; border-radius: 18px;
     border: 1px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
-    color: #fff;
-    cursor: pointer;
+    color: #fff; cursor: pointer;
     transition: all 0.15s ease;
-    display: flex; align-items: center; justify-content: center;
-    gap: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
     font-family: inherit;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.2),
-      0 4px 16px rgba(0,0,0,0.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.2);
     white-space: nowrap;
   }
-  button:active {
-    transform: scale(0.95);
-    background: rgba(255,255,255,0.15);
-  }
+  button:active { transform: scale(0.95); background: rgba(255,255,255,0.15); }
   button.primary {
     background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9));
     border-color: rgba(255,255,255,0.25);
   }
   button.primary:active { background: linear-gradient(135deg, rgba(79,70,229,0.95), rgba(124,58,237,0.95)); }
-  button.icon {
-    flex: 0 0 auto;
-    padding: 14px;
-    min-width: 52px;
-  }
-  button:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
+  button.icon { flex: 0 0 auto; padding: 14px; min-width: 52px; }
+  button:disabled { opacity: 0.4; pointer-events: none; }
 
-  /* =============== MODAL =============== */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 50;
     background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    opacity: 0; pointer-events: none;
+    padding: 20px; opacity: 0; pointer-events: none;
     transition: opacity 0.3s;
   }
   .modal-backdrop.show { opacity: 1; pointer-events: auto; }
 
   .modal {
-    width: 100%; max-width: 400px;
-    padding: 24px;
+    width: 100%; max-width: 400px; padding: 24px;
     border-radius: 28px;
     background: rgba(255,255,255,0.1);
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.2);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.3),
-      0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 20px 60px rgba(0,0,0,0.5);
     transform: scale(0.9);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .modal-backdrop.show .modal { transform: scale(1); }
 
-  .modal h2 {
-    font-size: 22px; font-weight: 700;
-    text-align: center; margin-bottom: 6px;
-  }
-  .modal .subtitle {
-    text-align: center; font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 20px;
-  }
+  .modal h2 { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+  .modal .subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
 
   .mode-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
   .mode-btn {
-    padding: 16px;
-    border-radius: 18px;
+    padding: 16px; border-radius: 18px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; cursor: pointer;
-    font-family: inherit; font-size: 15px;
+    color: #fff; cursor: pointer; font-family: inherit; font-size: 15px;
     display: flex; align-items: center; gap: 14px;
-    transition: all 0.15s;
-    text-align: left;
-    width: 100%;
+    transition: all 0.15s; text-align: left; width: 100%;
   }
   .mode-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
   .mode-btn .mode-icon {
-    font-size: 26px;
-    width: 44px; height: 44px;
+    font-size: 26px; width: 44px; height: 44px;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.08);
-    border-radius: 14px;
-    flex-shrink: 0;
+    background: rgba(255,255,255,0.08); border-radius: 14px; flex-shrink: 0;
   }
   .mode-btn .mode-info { flex: 1; }
   .mode-btn .mode-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
@@ -299,14 +188,11 @@
 
   .difficulty-row { display: flex; gap: 8px; margin-bottom: 20px; }
   .diff-btn {
-    flex: 1;
-    padding: 12px 8px;
-    border-radius: 14px;
+    flex: 1; padding: 12px 8px; border-radius: 14px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; cursor: pointer;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    transition: all 0.15s;
+    color: #fff; cursor: pointer; font-family: inherit;
+    font-size: 13px; font-weight: 600; transition: all 0.15s;
   }
   .diff-btn.active {
     background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9));
@@ -316,37 +202,25 @@
 
   .modal-actions { display: flex; gap: 8px; }
 
-  /* =============== GAME OVER SCREEN =============== */
   .final-score {
-    text-align: center;
-    font-size: 48px; font-weight: 800;
+    text-align: center; font-size: 48px; font-weight: 800;
     background: linear-gradient(135deg, #4ade80, #06b6d4, #8b5cf6);
-    -webkit-background-clip: text;
-    background-clip: text;
+    -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 8px 0;
-    font-variant-numeric: tabular-nums;
+    margin: 8px 0; font-variant-numeric: tabular-nums;
   }
   .final-label { text-align: center; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
   .final-detail {
-    background: rgba(255,255,255,0.05);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    line-height: 1.7;
+    background: rgba(255,255,255,0.05); border-radius: 16px;
+    padding: 14px; margin-bottom: 20px; font-size: 13px; line-height: 1.7;
     color: rgba(255,255,255,0.8);
   }
   .final-detail .row { display: flex; justify-content: space-between; }
   .final-detail .row .val { color: #fff; font-weight: 600; }
 
-  /* =============== WORD CHIP =============== */
   #wordChip {
-    display: none;
-    text-align: center;
-    padding: 12px;
-    margin: 0 16px 10px;
-    border-radius: 18px;
+    display: none; text-align: center;
+    padding: 12px; margin: 0 16px 10px; border-radius: 18px;
     font-size: 15px;
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(30px) saturate(180%);
@@ -355,44 +229,65 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
   }
   #wordChip.visible { display: block; }
-  #wordChip .label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
+  #wordChip .label { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 2px; }
   #wordChip .word {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 20px; font-weight: 700;
     background: linear-gradient(135deg, #fff, #a5b4fc);
-    -webkit-background-clip: text;
-    background-clip: text;
+    -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* =============== LOADING =============== */
+  /* ============ ЗАГРУЗОЧНЫЙ ЭКРАН ============ */
   #loading {
     position: fixed; inset: 0; z-index: 100;
     background: #0a0a0f;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 20px;
-    transition: opacity 0.5s;
+    gap: 30px;
+    transition: opacity 0.6s ease;
+    overflow: hidden;
   }
   #loading.hide { opacity: 0; pointer-events: none; }
-  .spinner {
-    width: 44px; height: 44px;
-    border: 3px solid rgba(255,255,255,0.1);
-    border-top-color: #8b5cf6;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  #loadingText { color: rgba(255,255,255,0.6); font-size: 14px; text-align: center; padding: 0 20px; }
 
-  /* =============== SVG ICONS =============== */
+  #logoAnim {
+    font-size: 34px; font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #a5b4fc, #fff, #67e8f9);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    text-align: center; padding: 0 20px;
+    transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+  }
+  #logoAnim span {
+    display: inline-block; opacity: 0;
+    transform: translateY(30px) rotateX(-90deg);
+    animation: letterIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes letterIn { to { opacity: 1; transform: translateY(0) rotateX(0); } }
+  #logoAnim.lift { transform: translateY(-38vh) scale(0.55); }
+
+  #loadBar {
+    width: 200px; height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px; overflow: hidden;
+    transition: opacity 0.4s;
+  }
+  #loadBarFill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
+    border-radius: 3px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(139,92,246,0.8);
+  }
+
+  #loadingText {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px; text-align: center;
+    transition: opacity 0.3s;
+  }
+
   .ico { width: 18px; height: 18px; flex-shrink: 0; }
 </style>
 </head>
@@ -438,13 +333,13 @@
         <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
       </svg>
     </button>
-    <button id="undoBtn">↩ Отменить</button>
-    <button id="clearBtn">🧹 Очистить</button>
+    <button id="undoBtn">↩</button>
+    <button id="clearBtn">🧹</button>
     <button id="speakBtn" class="primary">🔊 Озвучить</button>
   </footer>
 </div>
 
-<!-- Меню выбора режима -->
+<!-- Меню -->
 <div class="modal-backdrop" id="menuModal">
   <div class="modal">
     <h2>Нарисуй и угадай</h2>
@@ -494,7 +389,7 @@
   </div>
 </div>
 
-<!-- Финальный экран -->
+<!-- Финал -->
 <div class="modal-backdrop" id="gameOverModal">
   <div class="modal">
     <h2 id="goTitle">Игра окончена</h2>
@@ -509,73 +404,81 @@
 </div>
 
 <div id="loading">
-  <div class="spinner"></div>
-  <div id="loadingText">Загружаю нейросеть…<br><span style="font-size:12px;opacity:0.6">(~10 МБ, только первый раз)</span></div>
+  <div id="logoAnim"></div>
+  <div id="loadBar"><div id="loadBarFill"></div></div>
+  <div id="loadingText">Готовлюсь…</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 <script>
 /* ============================================================
-   СЛОВАРЬ: РУССКИЕ НАЗВАНИЯ + ЭМОДЗИ
+   СЛОВАРЬ
    ============================================================ */
 const RU = {
-  "aircraft carrier":"авианосец","airplane":"самолёт","alarm clock":"будильник","ambulance":"скорая",
-  "angel":"ангел","ant":"муравей","anvil":"наковальня","apple":"яблоко","arm":"рука","asparagus":"спаржа",
-  "axe":"топор","backpack":"рюкзак","banana":"банан","bandage":"бинт","barn":"амбар","baseball":"бейсбольный мяч",
-  "baseball bat":"бита","basket":"корзина","basketball":"баскетбольный мяч","bat":"летучая мышь","bathtub":"ванна",
-  "beach":"пляж","bear":"медведь","beard":"борода","bed":"кровать","bee":"пчела","belt":"ремень","bench":"скамейка",
-  "bicycle":"велосипед","binoculars":"бинокль","bird":"птица","birthday cake":"торт","blackberry":"ежевика",
-  "blueberry":"голубика","book":"книга","boomerang":"бумеранг","bottlecap":"крышка","bowtie":"бабочка",
-  "bracelet":"браслет","brain":"мозг","bread":"хлеб","bridge":"мост","broccoli":"брокколи","broom":"метла",
-  "bucket":"ведро","bulldozer":"бульдозер","bus":"автобус","bush":"куст","butterfly":"бабочка","cactus":"кактус",
-  "cake":"пирожное","calculator":"калькулятор","calendar":"календарь","camel":"верблюд","camera":"фотоаппарат",
-  "camouflage":"камуфляж","campfire":"костёр","candle":"свеча","cannon":"пушка","canoe":"каноэ","car":"машина",
-  "carrot":"морковь","castle":"замок","cat":"кошка","ceiling fan":"вентилятор","cello":"виолончель",
-  "cell phone":"телефон","chair":"стул","chandelier":"люстра","church":"церковь","circle":"круг","clarinet":"кларнет",
-  "clock":"часы","cloud":"облако","coffee cup":"чашка кофе","compass":"компас","computer":"компьютер","cookie":"печенье",
-  "cooler":"холодильник","couch":"диван","cow":"корова","crab":"краб","crayon":"мелок","crocodile":"крокодил",
-  "crown":"корона","cruise ship":"лайнер","cup":"чашка","diamond":"алмаз","dishwasher":"посудомойка",
-  "diving board":"трамплин","dog":"собака","dolphin":"дельфин","donut":"пончик","door":"дверь","dragon":"дракон",
-  "dresser":"комод","drill":"дрель","drums":"барабаны","duck":"утка","dumbbell":"гантель","ear":"ухо","elbow":"локоть",
-  "elephant":"слон","envelope":"конверт","eraser":"ластик","eye":"глаз","eyeglasses":"очки","face":"лицо",
-  "fan":"вентилятор","feather":"перо","fence":"забор","finger":"палец","fire hydrant":"гидрант","fireplace":"камин",
-  "firetruck":"пожарная машина","fish":"рыба","flamingo":"фламинго","flower":"цветок","flip flops":"шлёпанцы",
-  "floor lamp":"торшер","foot":"ступня","fork":"вилка","frog":"лягушка","frying pan":"сковорода","garden":"сад",
-  "garden hose":"шланг","giraffe":"жираф","goatee":"бородка","golf club":"гольф-клуб","grapes":"виноград",
-  "grass":"трава","guitar":"гитара","hamburger":"гамбургер","hammer":"молоток","hand":"рука","harp":"арфа","hat":"шляпа",
-  "headphones":"наушники","hedgehog":"ёж","helicopter":"вертолёт","helmet":"шлем","hexagon":"шестиугольник",
-  "hockey puck":"шайба","hockey stick":"клюшка","horse":"лошадь","hourglass":"песочные часы","house":"дом",
-  "house plant":"домашнее растение","hurricane":"ураган","ice cream":"мороженое","jacket":"куртка","jail":"тюрьма",
-  "kangaroo":"кенгуру","key":"ключ","keyboard":"клавиатура","knee":"колено","knife":"нож","ladder":"лестница",
-  "lantern":"фонарь","laptop":"ноутбук","leaf":"лист","leg":"нога","light bulb":"лампочка","lighter":"зажигалка",
-  "lighthouse":"маяк","lightning":"молния","line":"линия","lion":"лев","lipstick":"помада","lobster":"лобстер",
-  "lollipop":"леденец","mailbox":"почтовый ящик","map":"карта","marker":"маркер","matches":"спички","megaphone":"мегафон",
-  "mermaid":"русалка","microphone":"микрофон","microwave":"микроволновка","monkey":"обезьяна","moon":"луна",
-  "mosquito":"комар","motorbike":"мотоцикл","mountain":"гора","mouse":"мышь","moustache":"усы","mouth":"рот",
-  "mug":"кружка","mushroom":"гриб","nail":"гвоздь","necklace":"ожерелье","nose":"нос","ocean":"океан",
-  "octagon":"восьмиугольник","octopus":"осьминог","onion":"лук","oven":"печь","owl":"сова","paintbrush":"кисть",
-  "paint can":"банка краски","palm tree":"пальма","panda":"панда","pants":"штаны","paper clip":"скрепка",
-  "parachute":"парашют","parrot":"попугай","passport":"паспорт","peanut":"арахис","pear":"груша","peas":"горох",
-  "pencil":"карандаш","penguin":"пингвин","piano":"пианино","pickup truck":"пикап","picture frame":"рамка",
-  "pig":"свинья","pillow":"подушка","pineapple":"ананас","pizza":"пицца","pliers":"плоскогубцы",
-  "police car":"полицейская машина","pond":"пруд","pool":"бассейн","popsicle":"эскимо","postcard":"открытка",
-  "potato":"картошка","power outlet":"розетка","purse":"сумочка","rabbit":"кролик","raccoon":"енот","radio":"радио",
-  "rain":"дождь","rainbow":"радуга","rake":"грабли","remote control":"пульт","rhinoceros":"носорог","rifle":"винтовка",
-  "river":"река","roller coaster":"американские горки","rollerskates":"ролики","sailboat":"парусник",
-  "sandwich":"бутерброд","saw":"пила","saxophone":"саксофон","school bus":"школьный автобус","scissors":"ножницы",
-  "scorpion":"скорпион","screwdriver":"отвёртка","sea turtle":"морская черепаха","see saw":"качели","shark":"акула",
-  "sheep":"овца","shoe":"обувь","shorts":"шорты","shovel":"лопата","sink":"раковина","skateboard":"скейтборд",
-  "skull":"череп","skyscraper":"небоскрёб","sleeping bag":"спальный мешок","smiley face":"смайлик","snail":"улитка",
-  "snake":"змея","snorkel":"трубка для дайвинга","snowflake":"снежинка","snowman":"снеговик","soccer ball":"футбольный мяч",
-  "sock":"носок","speedboat":"катер","spider":"паук","spoon":"ложка","spreadsheet":"таблица","square":"квадрат",
-  "squiggle":"закорючка","squirrel":"белка","stairs":"лестница","star":"звезда","steak":"стейк","stereo":"стерео",
-  "stethoscope":"стетоскоп","stitches":"швы","stop sign":"знак стоп","strawberry":"клубника","streetlight":"фонарь",
-  "string bean":"фасоль","submarine":"подводная лодка","suitcase":"чемодан","sun":"солнце","swan":"лебедь",
-  "sweater":"свитер","swing set":"качели","sword":"меч","syringe":"шприц","table":"стол","teapot":"чайник",
-  "teddy-bear":"плюшевый мишка","telephone":"телефон","television":"телевизор","tennis racquet":"ракетка",
-  "tent":"палатка","The Eiffel Tower":"Эйфелева башня","The Great Wall of China":"Великая Китайская стена",
-  "The Mona Lisa":"Мона Лиза","tiger":"тигр","toaster":"тостер","toe":"палец ноги","toilet":"туалет","tooth":"зуб",
-  "toothbrush":"зубная щётка","toothpaste":"зубная паста","tornado":"торнадо","tractor":"трактор",
-  "traffic light":"светофор","train":"поезд","tree":"дерево","triangle":"треугольник","trombone":"тромбон",
-  "truck":"грузовик","trumpet":"труба","t-shirt":"футболка","umbrella":"зонт","underwear":"трусы","van":"фургон",
-  "vase":"ваза","violin":"скрипка","washing machine":"стиральная машина","watermelon":"</html>
+  "airplane":"самолёт","alarm clock":"будильник","apple":"яблоко","axe":"топор","backpack":"рюкзак",
+  "banana":"банан","baseball":"бейсбольный мяч","basketball":"баскетбольный мяч","bat":"летучая мышь","bathtub":"ванна",
+  "bear":"медведь","bed":"кровать","bee":"пчела","bicycle":"велосипед","bird":"птица",
+  "birthday cake":"торт","book":"книга","bread":"хлеб","bridge":"мост","broom":"метла",
+  "bucket":"ведро","bus":"автобус","butterfly":"бабочка","cactus":"кактус","cake":"пирожное",
+  "camel":"верблюд","camera":"фотоаппарат","candle":"свеча","car":"машина","carrot":"морковь",
+  "castle":"замок","cat":"кошка","cell phone":"телефон","chair":"стул","church":"церковь",
+  "circle":"круг","clock":"часы","cloud":"облако","coffee cup":"чашка кофе","compass":"компас",
+  "computer":"компьютер","cookie":"печенье","couch":"диван","cow":"корова","crab":"краб",
+  "crocodile":"крокодил","crown":"корона","cup":"чашка","diamond":"алмаз","dog":"собака",
+  "dolphin":"дельфин","donut":"пончик","door":"дверь","dragon":"дракон","drums":"барабаны",
+  "duck":"утка","ear":"ухо","elephant":"слон","envelope":"конверт","eye":"глаз",
+  "eyeglasses":"очки","face":"лицо","feather":"перо","fence":"забор","finger":"палец",
+  "firetruck":"пожарная машина","fish":"рыба","flamingo":"фламинго","flower":"цветок","fork":"вилка",
+  "frog":"лягушка","garden":"сад","giraffe":"жираф","grapes":"виноград","grass":"трава",
+  "guitar":"гитара","hamburger":"гамбургер","hammer":"молоток","hand":"рука","harp":"арфа",
+  "hat":"шляпа","headphones":"наушники","hedgehog":"ёж","helicopter":"вертолёт","helmet":"шлем",
+  "hexagon":"шестиугольник","horse":"лошадь","house":"дом","ice cream":"мороженое","jacket":"куртка",
+  "kangaroo":"кенгуру","key":"ключ","keyboard":"клавиатура","knife":"нож","ladder":"лестница",
+  "lantern":"фонарь","laptop":"ноутбук","leaf":"лист","leg":"нога","light bulb":"лампочка",
+  "lighthouse":"маяк","lightning":"молния","line":"линия","lion":"лев","lobster":"лобстер",
+  "lollipop":"леденец","mailbox":"почтовый ящик","map":"карта","mermaid":"русалка","microphone":"микрофон",
+  "monkey":"обезьяна","moon":"луна","motorbike":"мотоцикл","mountain":"гора","mouse":"мышь",
+  "moustache":"усы","mouth":"рот","mug":"кружка","mushroom":"гриб","nose":"нос",
+  "ocean":"океан","octagon":"восьмиугольник","octopus":"осьминог","onion":"лук","owl":"сова",
+  "paintbrush":"кисть","palm tree":"пальма","panda":"панда","pants":"штаны","parrot":"попугай",
+  "peanut":"арахис","pear":"груша","pencil":"карандаш","penguin":"пингвин","piano":"пианино",
+  "pig":"свинья","pillow":"подушка","pineapple":"ананас","pizza":"пицца","police car":"полицейская машина",
+  "pool":"бассейн","popsicle":"эскимо","potato":"картошка","purse":"сумочка","rabbit":"кролик",
+  "raccoon":"енот","radio":"радио","rain":"дождь","rainbow":"радуга","rhinoceros":"носорог",
+  "river":"река","sailboat":"парусник","sandwich":"бутерброд","saw":"пила","saxophone":"саксофон",
+  "school bus":"школьный автобус","scissors":"ножницы","sea turtle":"морская черепаха","shark":"акула","sheep":"овца",
+  "shoe":"обувь","skateboard":"скейтборд","skull":"череп","snail":"улитка","snake":"змея",
+  "snowflake":"снежинка","snowman":"снеговик","soccer ball":"футбольный мяч","sock":"носок","spider":"паук",
+  "spoon":"ложка","square":"квадрат","squiggle":"закорючка","squirrel":"белка","stairs":"лестница",
+  "star":"звезда","strawberry":"клубника","sun":"солнце","swan":"лебедь","sweater":"свитер",
+  "sword":"меч","table":"стол","teapot":"чайник","telephone":"телефон","television":"телевизор",
+  "tent":"палатка","tiger":"тигр","toaster":"тостер","tooth":"зуб","toothbrush":"зубная щётка",
+  "tractor":"трактор","traffic light":"светофор","train":"поезд","tree":"дерево","triangle":"треугольник",
+  "truck":"грузовик","t-shirt":"футболка","umbrella":"зонт","vase":"ваза","violin":"скрипка",
+  "watermelon":"арбуз","whale":"кит","wheel":"колесо","windmill":"мельница","zebra":"зебра","zigzag":"зигзаг"
+};
+
+const EMOJI = {
+  "cat":"🐱","dog":"🐶","fish":"🐟","bird":"🐦","horse":"🐴","cow":"🐮","pig":"🐷","lion":"🦁",
+  "tiger":"🐯","bear":"🐻","rabbit":"🐰","mouse":"🐭","monkey":"🐵","elephant":"🐘","giraffe":"🦒",
+  "zebra":"🦓","penguin":"🐧","owl":"🦉","snake":"🐍","frog":"🐸","butterfly":"🦋","bee":"🐝",
+  "spider":"🕷️","crab":"🦀","shark":"🦈","whale":"🐳","dolphin":"🐬","octopus":"🐙","duck":"🦆",
+  "flamingo":"🦩","parrot":"🦜","swan":"🦢","sun":"☀️","moon":"🌙","star":"⭐","cloud":"☁️",
+  "rain":"🌧️","rainbow":"🌈","snowman":"⛄","snowflake":"❄️","lightning":"⚡",
+  "house":"🏠","castle":"🏰","church":"⛪","tree":"🌳","flower":"🌸","cactus":"🌵","mushroom":"🍄",
+  "apple":"🍎","banana":"🍌","carrot":"🥕","pizza":"🍕","hamburger":"🍔","cake":"🍰","ice cream":"🍦",
+  "cookie":"🍪","donut":"🍩","strawberry":"🍓","grapes":"🍇","watermelon":"🍉","pineapple":"🍍",
+  "book":"📖","pencil":"✏️","computer":"💻","cell phone":"📱","clock":"⏰","key":"🔑","crown":"👑",
+  "guitar":"🎸","piano":"🎹","violin":"🎻","drums":"🥁","saxophone":"🎷",
+  "car":"🚗","bus":"🚌","truck":"🚚","train":"🚂","airplane":"✈️","helicopter":"🚁",
+  "bicycle":"🚲","sailboat":"⛵","umbrella":"☂️","hat":"🎩","eyeglasses":"👓","shoe":"👟",
+  "soccer ball":"⚽","basketball":"🏀","baseball":"⚾","skateboard":"🛹",
+  "skull":"💀","eye":"👁️","hand":"✋",
+  "circle":"⭕","square":"⬜","triangle":"🔺","line":"➖","zigzag":"〰️","squiggle":"〰️","bread":"🍞"
+};
+function pickEmoji(l){ return EMOJI[l] || '🎨'; }
+
+/* ============================================================
+   QUICK DRAW КЛАССЫ
+   ============================================================ */
+const QUICKDRAW_CLASSES = ["aircraft carrier","airplane","alarm clock","ambulance","angel","animal migration","ant","anvil","apple","arm","asparagus","axe","backpack","banana","bandage","barn","baseball","baseball bat","basket","basketball","bat","bathtub","beach","bear","beard","bed","bee","belt","bench","bicycle","binoculars","bird","birthday cake","blackberry","blueberry","book","boomerang","bottlecap","bowtie","bracelet","brain","bread","bridge","broccoli","broom","bucket","bulldozer","bus","bush","butterfly","cactus","cake","calculator","calendar","camel","camera","camouflage","campfire","candle","cannon","canoe","car","carrot","castle","cat","ceiling fan","cello","cell phone","chair","chandelier","church","circle","clarinet","clock","cloud","coffee cup","compass","computer","cookie","cooler
