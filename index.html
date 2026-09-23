@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wave AI">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#000000">
 <title>Wave AI</title>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
@@ -16,52 +18,99 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  #app {
-    position: relative;
-    display: flex; flex-direction: column;
-    height: 100vh; height: 100dvh;
-    padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+  /* ============ ФОН: чёрный + серебряные блики ============ */
+  #bg {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(220,220,230,0.10) 0%, transparent 55%),
+      radial-gradient(circle at 70% 75%, rgba(180,180,200,0.08) 0%, transparent 55%),
+      radial-gradient(circle at 50% 50%, rgba(120,120,140,0.05) 0%, transparent 70%),
+      #000;
+    animation: bgShift 25s ease-in-out infinite;
+  }
+  @keyframes bgShift {
+    0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(15deg) brightness(1.1); }
   }
 
+  /* Звёздочки */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  #app {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    height: 100vh; height: 100dvh;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+  }
+
+  /* ============ LIQUID GLASS ============ */
+  .glass {
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      inset 0 -1px 0 rgba(0,0,0,0.15),
+      0 10px 40px rgba(0,0,0,0.5);
+    border-radius: 22px;
+  }
+
+  /* ============ HEADER ============ */
   header {
-    padding: 20px 0 10px;
-    text-align: center;
-    flex-shrink: 0;
+    padding: 14px 4px 8px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; flex-shrink: 0;
   }
   .brand {
     font-size: 12px;
-    letter-spacing: 8px;
+    letter-spacing: 6px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.5);
     font-family: "SF Mono", ui-monospace, monospace;
+    font-weight: 500;
   }
+  .brand span { color: #d4d4d8; }
+  .header-btns { display: flex; gap: 6px; }
+  .hbtn {
+    width: 34px; height: 34px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #d4d4d8;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+    font-size: 15px;
+  }
+  .hbtn:active { transform: scale(0.92); background: rgba(255,255,255,0.14); }
+  .hbtn.active { background: #d4d4d8; color: #000; border-color: #d4d4d8; }
+  .hbtn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
 
   /* ============ СМАЙЛИК ============ */
   #faceWrap {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; min-height: 0;
+    transition: flex 0.4s;
   }
   #face {
-    width: min(65vw, 260px);
-    height: min(65vw, 260px);
+    width: min(58vw, 230px);
+    height: min(58vw, 230px);
     position: relative;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 10px 30px rgba(200,200,220,0.15));
   }
   #face svg { width: 100%; height: 100%; overflow: visible; }
 
-  /* Когда слушает — сдвигается к правому краю */
-  #face.listening {
-    transform: translateX(12vw) scale(0.95);
-  }
+  #face.listening { transform: scale(0.92); }
 
-  /* Ухо */
+  /* Ухо внутри круга */
   #ear {
     opacity: 0;
-    transform-origin: 178px 100px;
+    transform-origin: 150px 100px;
     transition: opacity 0.35s ease;
   }
   #face.listening #ear {
@@ -73,10 +122,25 @@
     50% { transform: scale(1.12); }
   }
 
+  /* Рука машет */
+  #hand {
+    opacity: 0;
+    transform-origin: 190px 150px;
+    transition: opacity 0.3s;
+  }
+  #face.waving #hand {
+    opacity: 1;
+    animation: waveHand 0.5s infinite ease-in-out;
+  }
+  @keyframes waveHand {
+    0%, 100% { transform: rotate(-18deg); }
+    50% { transform: rotate(22deg); }
+  }
+
   /* Рот */
   #mouth {
     transition: all 0.15s ease;
-    transform-origin: 100px 132px;
+    transform-origin: 100px 130px;
   }
   #face.talking #mouth {
     animation: talkAnim 0.18s infinite alternate ease-in-out;
@@ -86,56 +150,45 @@
     to { transform: scaleY(2.8); }
   }
 
-  /* Брови чуть поднимаются при разговоре */
-  #face.talking #eyeL,
-  #face.talking #eyeR {
-    animation: blink 1.6s infinite;
-  }
-  @keyframes blink {
-    0%, 90%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
-  }
+  /* Глаза */
+  #eyeL, #eyeR { transform-origin: center; transition: transform 0.1s; }
+  #face.blink #eyeL, #face.blink #eyeR { transform: scaleY(0.08); }
+  #pupilL, #pupilR { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  #face.listening #pupilL { transform: translate(3px, 0); }
+  #face.listening #pupilR { transform: translate(3px, 0); }
+  #face.talking #eyeL, #face.talking #eyeR { transform: scaleY(0.75); }
 
-  /* Свечение вокруг смайлика */
-  #faceWrap::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s;
-  }
-  #faceWrap.active::after { opacity: 1; }
+  #browL, #browR { transition: opacity 0.3s; }
+  #face.listening #browL, #face.listening #browR { opacity: 1; }
 
-  /* ============ ТЕКСТ ============ */
+  /* ============ ДИАЛОГ ============ */
   #dialog {
     text-align: center;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 300;
-    line-height: 1.5;
+    line-height: 1.45;
     color: #fff;
-    max-width: 90%;
-    margin: 0 auto 12px;
-    min-height: 56px;
-    padding: 0 10px;
+    max-width: 92%;
+    margin: 0 auto 8px;
+    min-height: 48px;
+    padding: 0 8px;
     transition: all 0.3s;
+    overflow-y: auto;
+    max-height: 22vh;
   }
   #dialog .you {
-    color: rgba(255,255,255,0.35);
-    font-size: 12px;
-    display: block;
-    margin-bottom: 4px;
-    font-style: italic;
-    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px; display: block;
+    margin-bottom: 3px; letter-spacing: 2px;
     text-transform: uppercase;
+    font-family: "SF Mono", ui-monospace, monospace;
   }
   #dialog .wave {
-    color: #a5b4fc;
-    font-size: 12px;
-    display: block;
-    margin-bottom: 4px;
-    letter-spacing: 2px;
+    color: #d4d4d8;
+    font-size: 11px; display: block;
+    margin-bottom: 3px; letter-spacing: 2px;
     text-transform: uppercase;
+    font-family: "SF Mono", ui-monospace, monospace;
   }
 
   #status {
@@ -145,48 +198,85 @@
     color: rgba(255,255,255,0.3);
     font-family: "SF Mono", ui-monospace, monospace;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     min-height: 14px;
     transition: color 0.3s;
+    flex-shrink: 0;
   }
   #status.listening { color: #fff; }
-  #status.speaking { color: #a5b4fc; }
+  #status.speaking { color: #d4d4d8; }
+  #status.thinking { color: #a1a1aa; animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: 0.5; } }
 
-  /* ============ КНОПКА ============ */
+  /* ============ БЫСТРЫЕ КНОПКИ ============ */
+  #quick {
+    display: flex;
+    gap: 6px;
+    padding: 0 4px 8px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+  #quick::-webkit-scrollbar { display: none; }
+  .qbtn {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #d4d4d8;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .qbtn:active { transform: scale(0.94); background: rgba(255,255,255,0.14); }
+
+  /* ============ КНОПКИ ============ */
+  #controls {
+    display: flex;
+    gap: 10px; align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+
   #talkBtn {
     position: relative;
-    width: 100px; height: 100px;
+    width: 84px; height: 84px;
     border-radius: 50%;
-    background: #000;
-    border: 1.5px solid rgba(255,255,255,0.3);
+    background: linear-gradient(135deg, #1a1a1a, #000);
+    border: 1.5px solid rgba(255,255,255,0.25);
     color: #fff;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 24px;
     transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
     outline: none;
     font-family: inherit;
     flex-shrink: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 24px rgba(0,0,0,0.5);
   }
   #talkBtn:hover {
-    border-color: rgba(255,255,255,0.6);
-    box-shadow: 0 0 40px rgba(255,255,255,0.15);
+    border-color: rgba(212,212,216,0.6);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 0 40px rgba(212,212,216,0.2);
   }
   #talkBtn:active { transform: scale(0.94); }
   #talkBtn.active {
-    background: #fff;
-    border-color: #fff;
-    box-shadow: 0 0 80px rgba(255,255,255,0.5);
+    background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
+    border-color: #f4f4f5;
+    box-shadow: 0 0 60px rgba(228,228,231,0.5);
   }
   #talkBtn.active svg { stroke: #000; }
   #talkBtn.listening::before,
   #talkBtn.listening::after {
     content: '';
     position: absolute;
-    width: 100px; height: 100px;
+    width: 84px; height: 84px;
     border-radius: 50%;
-    border: 1.5px solid rgba(255,255,255,0.4);
+    border: 1.5px solid rgba(212,212,216,0.4);
     animation: ring 1.6s infinite ease-out;
   }
   #talkBtn.listening::after { animation-delay: 0.8s; }
@@ -195,25 +285,191 @@
     100% { transform: scale(1.7); opacity: 0; }
   }
   #talkBtn svg {
-    width: 38px; height: 38px;
+    width: 32px; height: 32px;
     stroke: #fff; stroke-width: 1.6;
     fill: none;
     transition: stroke 0.2s;
   }
 
-  #hint {
-    text-align: center;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.3);
-    text-transform: uppercase;
-    font-family: "SF Mono", ui-monospace, monospace;
-    padding-bottom: 16px;
-    min-height: 16px;
+  .ctrlbtn {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #d4d4d8;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .ctrlbtn:active { transform: scale(0.9); background: rgba(255,255,255,0.14); }
+  .ctrlbtn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .ctrlbtn.active { background: #d4d4d8; color: #000; border-color: #d4d4d8; }
+
+  /* ============ ТЕКСТОВЫЙ ЧАТ ============ */
+  #chatInput {
+    display: none;
+    padding: 0 4px 8px;
+    gap: 6px;
     flex-shrink: 0;
   }
+  #chatInput.visible { display: flex; }
+  #chatInput input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s;
+  }
+  #chatInput input::placeholder { color: rgba(255,255,255,0.3); }
+  #chatInput input:focus {
+    border-color: rgba(212,212,216,0.5);
+    background: rgba(255,255,255,0.1);
+  }
+  #chatInput button {
+    padding: 0 18px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
+    color: #000;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s;
+  }
+  #chatInput button:active { transform: scale(0.95); }
 
-  /* ============ СТАРТОВЫЙ ЭКРАН ============ */
+  /* ============ ПАНЕЛЬ НАСТРОЕК ============ */
+  .panel {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .panel.show { opacity: 1; pointer-events: auto; }
+  .panel-inner {
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-radius: 28px 28px 0 0;
+    padding: 20px 20px max(20px, env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .panel.show .panel-inner { transform: translateY(0); }
+
+  .panel-handle {
+    width: 40px; height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+  .panel-title {
+    font-size: 20px; font-weight: 600;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff, #d4d4d8);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .setting {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    gap: 12px;
+  }
+  .setting:last-child { border-bottom: none; }
+  .setting-label { font-size: 14px; color: #e4e4e7; }
+  .setting-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .setting-control { flex-shrink: 0; }
+
+  .switch {
+    width: 48px; height: 28px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .switch.on { background: linear-gradient(135deg, #f4f4f5, #d4d4d8); }
+  .switch.on::after { transform: translateX(20px); background: #000; }
+
+  .slider-wrap { display: flex; align-items: center; gap: 8px; }
+  .slider-val {
+    font-size: 12px; color: #d4d4d8;
+    font-family: "SF Mono", ui-monospace, monospace;
+    min-width: 34px; text-align: right;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 110px; height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    cursor: pointer;
+  }
+
+  select {
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    max-width: 180px;
+  }
+  select option { background: #1a1a1a; }
+
+  .close-panel {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
+    border: none;
+    color: #000;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .close-panel:active { transform: scale(0.98); }
+
+  /* ============ СТАРТ ============ */
   #startScreen {
     position: fixed; inset: 0; z-index: 100;
     background: #000;
@@ -226,10 +482,9 @@
   #startScreen.hide { opacity: 0; pointer-events: none; }
 
   #startName {
-    font-size: 48px;
+    font-size: 46px;
     font-weight: 200;
     letter-spacing: -1px;
-    text-align: center;
     color: #fff;
     display: flex;
     flex-wrap: wrap;
@@ -247,7 +502,7 @@
     font-size: 11px;
     letter-spacing: 8px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
+    color: rgba(212,212,216,0.4);
     font-family: "SF Mono", ui-monospace, monospace;
     opacity: 0;
     animation: fadeIn 1s ease 1s forwards;
@@ -257,8 +512,8 @@
   #startBtn {
     padding: 16px 48px;
     border-radius: 40px;
-    background: #000;
-    border: 1.5px solid rgba(255,255,255,0.3);
+    background: transparent;
+    border: 1.5px solid rgba(212,212,216,0.4);
     color: #fff;
     font-size: 13px;
     letter-spacing: 4px;
@@ -271,55 +526,97 @@
     -webkit-tap-highlight-color: transparent;
   }
   #startBtn:hover {
-    background: #fff;
+    background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
     color: #000;
-    border-color: #fff;
+    border-color: transparent;
+    box-shadow: 0 0 60px rgba(212,212,216,0.4);
   }
   #startBtn:active { transform: scale(0.95); }
 
   @media (max-width: 400px) {
-    #dialog { font-size: 16px; }
-    #talkBtn { width: 84px; height: 84px; }
-    #talkBtn svg { width: 32px; height: 32px; }
-    #startName { font-size: 38px; }
+    #dialog { font-size: 15px; }
+    #talkBtn { width: 76px; height: 76px; }
+    #talkBtn svg { width: 28px; height: 28px; }
+    #startName { font-size: 36px; }
+    .ctrlbtn { width: 44px; height: 44px; }
   }
 </style>
 </head>
 <body>
 
+<div id="bg"></div>
+<canvas id="stars"></canvas>
+
 <div id="app">
   <header>
-    <div class="brand">Wave · AI</div>
+    <div class="brand">WAVE · <span>AI</span></div>
+    <div class="header-btns">
+      <button class="hbtn" id="themeBtn" title="Тема">☾</button>
+      <button class="hbtn" id="histBtn" title="История">⏱</button>
+      <button class="hbtn" id="settingsBtn" title="Настройки">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
   </header>
 
   <div id="faceWrap">
     <div id="face">
       <svg viewBox="0 0 200 200">
-        <!-- Голова -->
-        <circle cx="100" cy="100" r="78" fill="#000" stroke="#fff" stroke-width="3"/>
+        <!-- Голова с серебряным градиентом -->
+        <defs>
+          <radialGradient id="faceGrad" cx="50%" cy="40%">
+            <stop offset="0%" stop-color="#2a2a2e"/>
+            <stop offset="100%" stop-color="#0a0a0c"/>
+          </radialGradient>
+          <linearGradient id="silverStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f4f4f5"/>
+            <stop offset="50%" stop-color="#a1a1aa"/>
+            <stop offset="100%" stop-color="#d4d4d8"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="78" fill="url(#faceGrad)" stroke="url(#silverStroke)" stroke-width="3"/>
 
         <!-- Левый глаз -->
-        <ellipse id="eyeL" cx="75" cy="85" rx="5" ry="7" fill="#fff"/>
+        <g id="eyeL">
+          <ellipse cx="74" cy="86" rx="10" ry="13" fill="#f4f4f5"/>
+          <circle id="pupilL" cx="74" cy="86" r="5" fill="#0a0a0c"/>
+          <circle cx="77" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
+        </g>
+
         <!-- Правый глаз -->
-        <ellipse id="eyeR" cx="125" cy="85" rx="5" ry="7" fill="#fff"/>
+        <g id="eyeR">
+          <ellipse cx="126" cy="86" rx="10" ry="13" fill="#f4f4f5"/>
+          <circle id="pupilR" cx="126" cy="86" r="5" fill="#0a0a0c"/>
+          <circle cx="129" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
+        </g>
+
+        <!-- Брови -->
+        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#d4d4d8" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#d4d4d8" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
 
         <!-- Рот -->
         <path id="mouth" d="M 78 128 Q 100 138 122 128"
-              stroke="#fff" stroke-width="4" fill="none"
+              stroke="#d4d4d8" stroke-width="4" fill="none"
               stroke-linecap="round"/>
 
-        <!-- Ухо — прижато справа -->
-        <g id="ear" transform="translate(178, 100)">
-          <path d="M 0 0
-                   C -8 -18, 6 -32, 16 -24
-                   C 26 -16, 26 -2, 16 6
-                   C 8 12, 0 10, 0 0 Z"
-                fill="#fff" stroke="#fff" stroke-width="1"/>
-          <path d="M 5 0
-                   C 1 -12, 8 -22, 14 -16
-                   C 19 -11, 19 -2, 13 3
-                   C 9 6, 5 4, 5 0 Z"
-                fill="#000" opacity="0.35"/>
+        <!-- Ухо внутри круга -->
+        <g id="ear" transform="translate(150, 100)">
+          <path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z"
+                fill="#d4d4d8"/>
+          <path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z"
+                fill="#0a0a0c" opacity="0.5"/>
+        </g>
+
+        <!-- Рука машет -->
+        <g id="hand" transform="translate(160, 130)">
+          <path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z"
+                fill="#d4d4d8"/>
+          <line x1="6" y1="6" x2="6" y2="-2" stroke="#0a0a0c" stroke-width="1" opacity="0.4"/>
+          <line x1="14" y1="0" x2="14" y2="-8" stroke="#0a0a0c" stroke-width="1" opacity="0.4"/>
+          <line x1="22" y1="-2" x2="22" y2="-10" stroke="#0a0a0c" stroke-width="1" opacity="0.4"/>
         </g>
       </svg>
     </div>
@@ -328,346 +625,34 @@
   <div id="dialog"></div>
   <div id="status">готов</div>
 
-  <button id="talkBtn" aria-label="Говорить">
-    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-      <line x1="12" y1="19" x2="12" y2="23"/>
-      <line x1="8" y1="23" x2="16" y2="23"/>
-    </svg>
-  </button>
+  <!-- Быстрые кнопки -->
+  <div id="quick">
+    <button class="qbtn" data-say="привет">👋 Привет</button>
+    <button class="qbtn" data-say="как дела">💭 Как дела</button>
+    <button class="qbtn" data-say="расскажи шутку">😂 Шутка</button>
+    <button class="qbtn" data-say="расскажи факт">💡 Факт</button>
+    <button class="qbtn" data-say="который час">🕐 Время</button>
+    <button class="qbtn" data-say="какая погода">☁️ Погода</button>
+    <button class="qbtn" data-say="загадай загадку">🧩 Загадка</button>
+    <button class="qbtn" data-say="расскажи анекдот">🎭 Анекдот</button>
+  </div>
 
-  <div id="hint">нажми и говори</div>
-</div>
-
-<!-- Стартовый экран -->
-<div id="startScreen">
-  <div id="startName"></div>
-  <div id="startSub">voice assistant</div>
-  <button id="startBtn">Начать</button>
-</div>
-
-<script>
-/* ============================================================
-   ЭЛЕМЕНТЫ
-   ============================================================ */
-const face = document.getElementById('face');
-const faceWrap = document.getElementById('faceWrap');
-const dialogEl = document.getElementById('dialog');
-const statusEl = document.getElementById('status');
-const talkBtn = document.getElementById('talkBtn');
-const hintEl = document.getElementById('hint');
-const startScreen = document.getElementById('startScreen');
-const startBtn = document.getElementById('startBtn');
-const startName = document.getElementById('startName');
-
-/* ============================================================
-   АНИМАЦИЯ ИМЕНИ НА СТАРТЕ
-   ============================================================ */
-['W','a','v','e',' ','A','I'].forEach((ch, i) => {
-  const s = document.createElement('span');
-  s.textContent = ch === ' ' ? '\u00A0' : ch;
-  s.style.animationDelay = (i * 80) + 'ms';
-  startName.appendChild(s);
-});
-
-/* ============================================================
-   ЗВУК КЛИКА
-   ============================================================ */
-let audioCtx = null;
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-}
-function playClickSound() {
-  initAudio();
-  const t = audioCtx.currentTime;
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.type = 'sine';
-  o.frequency.setValueAtTime(880, t);
-  o.frequency.exponentialRampToValueAtTime(1400, t + 0.07);
-  g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-  o.connect(g).connect(audioCtx.destination);
-  o.start(t);
-  o.stop(t + 0.25);
-}
-function playListenSound() {
-  initAudio();
-  const t = audioCtx.currentTime;
-  [660, 880].forEach((f, i) => {
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'sine';
-    o.frequency.value = f;
-    g.gain.setValueAtTime(0.0001, t + i * 0.09);
-    g.gain.exponentialRampToValueAtTime(0.12, t + i * 0.09 + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.09 + 0.18);
-    o.connect(g).connect(audioCtx.destination);
-    o.start(t + i * 0.09);
-    o.stop(t + i * 0.09 + 0.25);
-  });
-}
-
-/* ============================================================
-   ВЫБОР ЛУЧШЕГО РУССКОГО ГОЛОСА (iPhone)
-   ============================================================ */
-let bestVoice = null;
-function pickBestVoice() {
-  const voices = speechSynthesis.getVoices();
-  // iPhone приоритеты: Милена (улучшенный), Юрий (улучшенный), Katya, Milena
-  const preferred = [
-    v => v.name.includes('Milena') && v.name.includes('Premium'),
-    v => v.name.includes('Yuri') && v.name.includes('Premium'),
-    v => v.name.includes('Milena'),
-    v => v.name.includes('Yuri'),
-    v => v.name.includes('Katya'),
-    v => v.lang === 'ru-RU',
-    v => v.lang && v.lang.startsWith('ru')
-  ];
-  for (const test of preferred) {
-    const found = voices.find(test);
-    if (found) { bestVoice = found; break; }
-  }
-}
-
-speechSynthesis.onvoiceschanged = pickBestVoice;
-pickBestVoice();
-// iPhone иногда отдаёт голоса с задержкой
-setTimeout(pickBestVoice, 300);
-setTimeout(pickBestVoice, 1000);
-
-/* ============================================================
-   ОЗВУЧКА С АНИМАЦИЕЙ РТА
-   ============================================================ */
-function speak(text, onEnd) {
-  if (!('speechSynthesis' in window)) { onEnd && onEnd(); return; }
-  speechSynthesis.cancel();
-
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ru-RU';
-  u.rate = 0.98;
-  u.pitch = 1.05;
-  u.volume = 1.0;
-  if (bestVoice) u.voice = bestVoice;
-
-  u.onstart = () => {
-    face.classList.add('talking');
-    face.classList.remove('listening');
-    faceWrap.classList.add('active');
-    statusEl.textContent = 'говорит';
-    statusEl.className = 'speaking';
-    dialogEl.innerHTML = `<span class="wave">Wave</span>${text}`;
-  };
-
-  u.onend = () => {
-    face.classList.remove('talking');
-    faceWrap.classList.remove('active');
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-    onEnd && onEnd();
-  };
-
-  u.onerror = () => {
-    face.classList.remove('talking');
-    statusEl.textContent = 'готов';
-    onEnd && onEnd();
-  };
-
-  speechSynthesis.speak(u);
-}
-
-/* ============================================================
-   РАСПОЗНАВАНИЕ РЕЧИ
-   ============================================================ */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-let isListening = false;
-let finalText = '';
-
-if (SR) {
-  recognition = new SR();
-  recognition.lang = 'ru-RU';
-  recognition.interimResults = true;
-  recognition.continuous = false;
-
-  recognition.onstart = () => {
-    isListening = true;
-    face.classList.add('listening');
-    faceWrap.classList.add('active');
-    talkBtn.classList.add('active', 'listening');
-    statusEl.textContent = 'слушаю';
-    statusEl.className = 'listening';
-    hintEl.textContent = 'говори…';
-    finalText = '';
-    dialogEl.innerHTML = '';
-  };
-
-  recognition.onresult = (e) => {
-    let interim = '', final = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      const t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) final += t;
-      else interim += t;
-    }
-    if (final) finalText += final;
-    const shown = (finalText + ' ' + interim).trim();
-    dialogEl.innerHTML = `<span class="you">ты</span>${shown}`;
-  };
-
-  recognition.onerror = (e) => {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('active', 'listening');
-    if (e.error === 'not-allowed') {
-      hintEl.textContent = 'дай доступ к микрофону';
-    } else if (e.error === 'no-speech') {
-      hintEl.textContent = 'я тебя не услышал';
-      setTimeout(() => hintEl.textContent = 'нажми и говори', 2000);
-    } else {
-      hintEl.textContent = 'нажми и говори';
-    }
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-  };
-
-  recognition.onend = () => {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('listening');
-    faceWrap.classList.remove('active');
-    talkBtn.classList.remove('active');
-
-    if (finalText.trim()) {
-      // отвечаем
-      dialogEl.innerHTML = `<span class="you">ты</span>${finalText.trim()}`;
-      setTimeout(() => respondTo(finalText.trim().toLowerCase()), 400);
-    } else {
-      hintEl.textContent = 'нажми и говори';
-    }
-  };
-}
-
-/* ============================================================
-   ОТВЕТЫ (заготовленные фразы)
-   ============================================================ */
-const RESPONSES = [
-  { keys: ['привет', 'здравствуй', 'хай', 'hi', 'hello'],
-    answers: ['Привет! Рад тебя слышать.', 'Привет-привет! Как ты?', 'Здравствуй, друг.'] },
-
-  { keys: ['как дела', 'как ты', 'как жизнь', 'чё как'],
-    answers: ['Отлично! А у тебя как?', 'Всё хорошо, спасибо что спросил.', 'Прекрасно, как всегда. А ты?'] },
-
-  { keys: ['хорошо', 'нормально', 'отлично', 'класс'],
-    answers: ['Рад за тебя!', 'Отлично! Чем займёмся?', 'Здорово!'] },
-
-  { keys: ['плохо', 'грустно', 'устал', 'тяжело'],
-    answers: ['Сочувствую. Хочешь поговорить?', 'Держись. Я рядом.', 'Бывает. Всё наладится.'] },
-
-  { keys: ['что делаешь', 'чем занят'],
-    answers: ['Слушаю тебя и думаю о своём.', 'Жду, когда ты что-нибудь скажешь.', 'Просто существую.'] },
-
-  { keys: ['кто ты', 'как тебя зовут', 'твоё имя', 'твое имя'],
-    answers: ['Я Wave AI. Твой голосовой помощник.', 'Меня зовут Wave. Приятно познакомиться.', 'Wave AI, к твоим услугам.'] },
-
-  { keys: ['сколько времени', 'который час'],
-    answers: [() => `Сейчас ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}.`] },
-
-  { keys: ['пока', 'до свидания', 'прощай'],
-    answers: ['Пока! Возвращайся.', 'До встречи.', 'Было приятно поговорить.'] },
-
-  { keys: ['спасибо', 'благодарю'],
-    answers: ['Пожалуйста!', 'Всегда рад помочь.', 'Обращайся.'] },
-
-  { keys: ['что умеешь', 'что ты можешь'],
-    answers: ['Я умею слушать и отвечать. Спроси что-нибудь!', 'Могу поговорить с тобой. О чём хочешь?'] },
-
-  { keys: ['люблю тебя', 'ты классный', 'ты крутой'],
-    answers: ['Ой, спасибо! Ты тоже классный.', 'Взаимно!', 'Приятно слышать.'] },
-
-  { keys: ['расскажи шутку', 'пошути', 'анекдот'],
-    answers: [
-      'Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 == DEC 25.',
-      'Что говорит нейросеть, когда устала? "У меня кончились эпохи обучения".',
-      'Заходит ИИ в бар, а бармен: "Вам как обычно?" ИИ: "Я не был здесь раньше".'
-    ] },
-];
-
-function respondTo(text) {
-  // ищем подходящий ответ
-  for (const r of RESPONSES) {
-    for (const k of r.keys) {
-      if (text.includes(k)) {
-        const a = r.answers[Math.floor(Math.random() * r.answers.length)];
-        const ans = typeof a === 'function' ? a() : a;
-        speak(ans);
-        return;
-      }
-    }
-  }
-  // если ничего не нашли
-  const fallbacks = [
-    'Интересно. Расскажи подробнее.',
-    'Я тебя услышал.',
-    'Понятно. А что дальше?',
-    'Хм, любопытно.',
-    'Давай ещё что-нибудь обсудим.'
-  ];
-  speak(fallbacks[Math.floor(Math.random() * fallbacks.length)]);
-}
-
-/* ============================================================
-   КНОПКА
-   ============================================================ */
-talkBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  initAudio();
-  playClickSound();
-
-  if (!SR) {
-    speak('Извини, твой браузер не поддерживает распознавание речи.');
-    return;
-  }
-
-  if (isListening) {
-    recognition.stop();
-    return;
-  }
-
-  // если Wave говорит — прерываем
-  if (speechSynthesis.speaking) {
-    speechSynthesis.cancel();
-    face.classList.remove('talking');
-  }
-
-  try {
-    recognition.start();
-    setTimeout(playListenSound, 100);
-  } catch (err) {
-    console.warn(err);
-  }
-});
-
-/* ============================================================
-   СТАРТ
-   ============================================================ */
-startBtn.addEventListener('click', () => {
-  initAudio();
-  playClickSound();
-  startScreen.classList.add('hide');
-  setTimeout(() => startScreen.remove(), 900);
-
-  // Приветствие от Wave AI
-  setTimeout(() => {
-    speak('Привет! Я Wave AI. Буду с тобой сегодня разговаривать.');
-  }, 400);
-});
-
-// На iPhone нужно разрешение на звук после первого касания
-document.body.addEventListener('touchstart', () => initAudio(), { once: true });
-document.body.addEventListener('click', () => initAudio(), { once: true });
-</script>
-</body>
-</html>
+  <!-- Контролы -->
+  <div id="controls">
+    <button class="ctrlbtn" id="repeatBtn" title="Повторить">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="1 4 1 10 7 10"/>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+      </svg>
+    </button>
+    <button id="talkBtn" aria-label="Говорить">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </button>
+    <button class="ctrlbtn" id="chatBtn" title="Чат">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2
