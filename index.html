@@ -7,18 +7,29 @@
 <meta name="apple-mobile-web-app-title" content="Wave AI">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Wave AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'SuperWaffles';src:url('https://raw.githubusercontent.com/basik4z/1/main/Super%20Waffles.ttf') format('truetype');font-display:swap}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-system,BlinkMacSystemFont,sans-serif);color:#0a1f14;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased;transition:background .4s ease,color .4s ease}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);transition:background .4s ease}
-:root{--bg:#f4faf6;--bg-2:#e0f2e8;--text:#0a1f14;--text-2:#4a6a55;--border:#c0e0cd;--accent:#059669;--bubble-user:#d5f0e0;--font:'Starborn','Inter',-apple-system,sans-serif}
-
+html,body{height:100%;overflow:hidden;font-family:'SuperWaffles','Inter',-apple-system,sans-serif;color:var(--text);user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased;transition:background .5s ease,color .5s ease}
+:root{--font:'SuperWaffles','Inter',sans-serif;--bg:#f4faf6;--bg-2:#e0f2e8;--text:#0a1f14;--text-2:#4a6a55;--border:#c0e0cd;--accent:#059669;--bubble-user:#d5f0e0}
+body.t-wave{--bg:#f5f9fc;--bg-2:#eaf3f9;--text:#0a1a26;--text-2:#5a7080;--border:#d6e4ee;--accent:#0074D9;--bubble-user:#e3f0fa}
+body.t-lion{--bg:#fdf8f0;--bg-2:#faecd7;--text:#2a1a0a;--text-2:#8a6a40;--border:#f0d9b3;--accent:#ea580c;--bubble-user:#fce7c8}
+body.t-crocodile{--bg:#f4faf4;--bg-2:#e3f3e3;--text:#0a1f0a;--text-2:#4a6a4a;--border:#c8e6c8;--accent:#166534;--bubble-user:#d9f0d9}
+body.t-dragon{--bg:#fdf4f4;--bg-2:#fae0e0;--text:#2a0a0a;--text-2:#8a4a4a;--border:#f0b8b8;--accent:#dc2626;--bubble-user:#fcd5d5}
+body.t-panda{--bg:#fafafa;--bg-2:#e8e8e8;--text:#1a1a1a;--text-2:#6b6b6b;--border:#d0d0d0;--accent:#404040;--bubble-user:#e8e8e8}
+body.t-tiger{--bg:#fdf6ed;--bg-2:#fae4c4;--text:#2a1500;--text-2:#8a5a20;--border:#f0cfa0;--accent:#ea580c;--bubble-user:#fcd9a8}
+body.t-frog{--bg:#f4faf6;--bg-2:#e0f2e8;--text:#0a1f14;--text-2:#4a6a55;--border:#c0e0cd;--accent:#059669;--bubble-user:#d5f0e0}
+body.t-wolf{--bg:#f5f5f5;--bg-2:#e5e5e5;--text:#1a1a1a;--text-2:#6b6b6b;--border:#d0d0d0;--accent:#525252;--bubble-user:#e5e5e5}
+body.t-shark{--bg:#f0f8fc;--bg-2:#d8ecf7;--text:#0a1e2a;--text-2:#4a6a80;--border:#b8dcf0;--accent:#0284c7;--bubble-user:#d0e8f5}
+body.t-bee{--bg:#fffbf0;--bg-2:#fdf3d0;--text:#1a1400;--text-2:#7a6020;--border:#f0dda8;--accent:#ca8a04;--bubble-user:#fcefb8}
+body.t-moon{--bg:#0a0a14;--bg-2:#14141f;--text:#f0f0f5;--text-2:#a0a0b0;--border:#2a2a3a;--accent:#8b5cf6;--bubble-user:#1f1f2e}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);transition:background .5s ease}
 #topBar{display:flex;align-items:center;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px 10px;background:var(--bg)}
-.iconBtn{width:42px;height:42px;border-radius:50%;background:transparent;border:1.5px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all .2s}
+.iconBtn{width:42px;height:42px;border-radius:50%;background:transparent;border:1.5px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:18px;transition:all .2s}
 .iconBtn:active{transform:scale(.9);background:var(--bg-2)}
 .iconBtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .topTitle{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.3px}
-
 #messages{flex:1;overflow-y:auto;padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px;background:var(--bg);scroll-behavior:smooth}
 #messages::-webkit-scrollbar{width:0}
 .msg{max-width:80%;padding:12px 16px;border-radius:20px;font-size:16px;line-height:1.5;word-wrap:break-word;animation:msgIn .45s cubic-bezier(.34,1.56,.64,1);color:var(--text)}
@@ -33,13 +44,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 .msg.typing .dots span:nth-child(2){animation-delay:.2s}
 .msg.typing .dots span:nth-child(3){animation-delay:.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-8px);opacity:1}}
-
 .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px}
 .empty .logo{width:96px;height:96px;border-radius:50%;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:44px;animation:floaty 4s ease-in-out infinite}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .empty .title{font-size:22px;font-weight:600;color:var(--text);text-align:center;letter-spacing:-.4px}
 .empty .sub{font-size:14px;color:var(--text-2);text-align:center;max-width:80%}
-
 #bottomBar{padding:10px 16px max(14px,env(safe-area-inset-bottom));background:var(--bg)}
 #inputRow{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 16px;border-radius:28px;background:var(--bg-2);border:1px solid var(--border);transition:all .3s}
 #inputRow:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
@@ -52,35 +61,26 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 #sendBtn{width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 #sendBtn:active{transform:scale(.9)}
 #sendBtn svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-
 .panel{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;flex-direction:column;padding:max(60px,env(safe-area-inset-top)) 20px 30px;overflow-y:auto}
 .panel.show{display:flex;animation:panelIn .4s cubic-bezier(.34,1.56,.64,1)}
 @keyframes panelIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .panel h3{font-size:24px;margin-bottom:20px;font-weight:600;color:var(--text);letter-spacing:-.5px}
 .panelClose{position:absolute;top:max(20px,env(safe-area-inset-top));right:20px;width:42px;height:42px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
-
 #chatList{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .chatItem{padding:14px 16px;border-radius:16px;background:var(--bg-2);display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;transition:all .15s}
-.chatItem:active{transform:scale(.98)}
 .chatItem.active{background:var(--accent);color:#fff}
-.chatItem.active .chatMeta{color:rgba(255,255,255,.75)}
 .chatItem .info{flex:1;min-width:0}
-.chatItem .chatTitle{font-size:15px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit}
+.chatItem .chatTitle{font-size:15px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chatItem .chatMeta{font-size:11px;color:var(--text-2)}
+.chatItem.active .chatMeta{color:rgba(255,255,255,.75)}
 .chatItem .del{width:30px;height:30px;border-radius:50%;background:rgba(220,38,38,.15);border:none;color:#dc2626;font-size:14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .newChatBtn{padding:14px;border-radius:16px;background:var(--accent);border:none;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;width:100%}
-
-.fontList{display:flex;flex-direction:column;gap:10px}
-.fontItem{padding:16px;border-radius:14px;background:var(--bg-2);border:2px solid transparent;cursor:pointer;text-align:left;color:var(--text);font-size:16px;transition:all .2s;font-family:inherit}
-.fontItem.active{border-color:var(--accent)}
-.fontItem small{display:block;font-size:11px;color:var(--text-2);margin-top:2px;font-family:'Inter',sans-serif}
-.customFont{padding:12px;border-radius:14px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;width:100%;margin-top:10px;outline:none}
-.customFont:focus{border-color:var(--accent)}
-.applyBtn{padding:12px;border-radius:14px;background:var(--accent);border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;width:100%}
-.uploadBtn{padding:14px;border-radius:14px;background:var(--bg-2);border:2px dashed var(--border);color:var(--text);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:14px;width:100%;transition:all .2s}
-.uploadBtn:active{border-color:var(--accent);background:var(--bubble-user)}
-.hintText{font-size:12px;color:var(--text-2);margin-top:8px;text-align:center;line-height:1.4}
-
+.themeList{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.themeItem{padding:16px 12px;border-radius:18px;background:var(--bg-2);border:2px solid transparent;cursor:pointer;font-family:inherit;color:var(--text);text-align:center;transition:all .2s}
+.themeItem:active{transform:scale(.96)}
+.themeItem.active{border-color:var(--accent)}
+.themeItem .em{font-size:32px;display:block;margin-bottom:6px}
+.themeItem .nm{font-size:13px;font-weight:600}
 #voiceOverlay{position:fixed;inset:0;z-index:800;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 40px}
 #voiceOverlay.show{display:flex}
 #voiceOrb{width:min(70vw,280px);height:min(70vw,280px);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:30px}
@@ -103,26 +103,18 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 #voiceBtn svg{width:38px;height:38px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #voiceBtn.listening{background:#dc2626}
 #voiceExitBtn{position:absolute;top:max(20px,env(safe-area-inset-top));left:20px;width:44px;height:44px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
-
 #splash{position:fixed;inset:0;z-index:900;background:#052e16;display:flex;align-items:center;justify-content:center;transition:opacity .8s;pointer-events:none}
 #splash.gone{opacity:0}
-#splashName{font-size:52px;font-weight:200;color:#fff;text-shadow:0 0 60px rgba(74,222,128,.9);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;letter-spacing:-2px;position:relative;z-index:2;font-family:var(--font,'Inter',sans-serif)}
+#splashName{font-size:52px;font-weight:400;color:#fff;text-shadow:0 0 60px rgba(74,222,128,.9);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;letter-spacing:-2px;position:relative;z-index:2;font-family:'SuperWaffles','Inter',sans-serif}
 #splashName span{display:inline-block;opacity:0;transform:translateY(40px) scale(.5);animation:li .8s cubic-bezier(.34,1.56,.64,1) forwards}
 #splashEmoji{font-size:68px;opacity:0;animation:li .8s 1s cubic-bezier(.34,1.56,.64,1) forwards}
 @keyframes li{to{opacity:1;transform:translateY(0) scale(1)}}
 #waveSweep{position:absolute;inset:0;z-index:3;pointer-events:none}
 #waveSweep svg{width:100%;height:100%}
-
-@media (max-width:400px){
-  .msg{font-size:15px}
-  #voiceTitle{font-size:20px}
-  #voiceFace{font-size:70px}
-  #splashName{font-size:40px}
-  #splashEmoji{font-size:54px}
-}
+@media (max-width:400px){.msg{font-size:15px}#voiceTitle{font-size:20px}#voiceFace{font-size:70px}#splashName{font-size:40px}#splashEmoji{font-size:54px}}
 </style>
 </head>
-<body>
+<body class="t-crocodile">
 
 <div id="splash">
   <div id="splashName"></div>
@@ -133,9 +125,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
   <div id="topBar">
     <button class="iconBtn" id="menuBtn"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
     <div class="topTitle">Wave AI</div>
-    <button class="iconBtn" id="fontBtn"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
+    <button class="iconBtn" id="themeBtn">🎨</button>
   </div>
-
   <div id="messages">
     <div class="empty" id="emptyState">
       <div class="logo" id="emptyLogo">🐊</div>
@@ -143,7 +134,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
       <div class="sub">Напиши или скажи что-нибудь</div>
     </div>
   </div>
-
   <div id="bottomBar">
     <div id="inputRow">
       <button class="roundBtn" id="attachBtn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
@@ -163,18 +153,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
   <div id="chatList"></div>
 </div>
 
-<div class="panel" id="fontPanel">
-  <button class="panelClose" id="fontClose">×</button>
-  <h3>Шрифт</h3>
-  <div class="fontList" id="fontList"></div>
-  <button class="uploadBtn" id="loadFontBtn">📁 Загрузить файл (.ttf, .otf, .woff)</button>
-  <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2,font/*" style="display:none">
-  <p class="hintText">Файл сохранится в браузере и будет работать всегда</p>
-  <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
-    <p style="font-size:13px;color:var(--text-2);margin-bottom:8px">Или напиши название шрифта вручную:</p>
-    <input type="text" class="customFont" id="customFontInput" placeholder="Например: Arial, Georgia, Comic Sans…" autocomplete="off">
-    <button class="applyBtn" id="applyCustomFont">Применить</button>
-  </div>
+<div class="panel" id="themePanel">
+  <button class="panelClose" id="themeClose">×</button>
+  <h3>Тема</h3>
+  <div class="themeList" id="themeList"></div>
 </div>
 
 <div id="voiceOverlay">
@@ -190,121 +172,40 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 
 <script>
 var $=function(id){return document.getElementById(id)};
-var messagesEl=$('messages'),chatField=$('chatField'),sendBtn=$('sendBtn'),voiceOpenBtn=$('voiceOpenBtn'),attachBtn=$('attachBtn'),fileInput=$('fileInput'),menuBtn=$('menuBtn'),fontBtn=$('fontBtn'),chatsPanel=$('chatsPanel'),chatsClose=$('chatsClose'),chatList=$('chatList'),newChatBtn=$('newChatBtn'),fontPanel=$('fontPanel'),fontClose=$('fontClose'),fontList=$('fontList'),customFontInput=$('customFontInput'),applyCustomFont=$('applyCustomFont'),loadFontBtn=$('loadFontBtn'),fontFileInput=$('fontFileInput'),emptyState=$('emptyState'),emptyLogo=$('emptyLogo'),voiceOverlay=$('voiceOverlay'),voiceExitBtn=$('voiceExitBtn'),voiceBtn=$('voiceBtn'),voiceTitle=$('voiceTitle'),voiceSub=$('voiceSub'),voiceFace=$('voiceFace'),splash=$('splash'),splashName=$('splashName'),sweepPath=$('sweepPath');
+var messagesEl=$('messages'),chatField=$('chatField'),sendBtn=$('sendBtn'),voiceOpenBtn=$('voiceOpenBtn'),attachBtn=$('attachBtn'),fileInput=$('fileInput'),menuBtn=$('menuBtn'),themeBtn=$('themeBtn'),chatsPanel=$('chatsPanel'),chatsClose=$('chatsClose'),chatList=$('chatList'),newChatBtn=$('newChatBtn'),themePanel=$('themePanel'),themeClose=$('themeClose'),themeList=$('themeList'),emptyState=$('emptyState'),emptyLogo=$('emptyLogo'),voiceOverlay=$('voiceOverlay'),voiceExitBtn=$('voiceExitBtn'),voiceBtn=$('voiceBtn'),voiceTitle=$('voiceTitle'),voiceSub=$('voiceSub'),voiceFace=$('voiceFace'),splash=$('splash'),splashName=$('splashName'),sweepPath=$('sweepPath');
 
-/* ============ ШРИФТЫ ============ */
-var FONTS=[
-  {name:'Starborn',css:"'Starborn', 'Inter', sans-serif",sub:'Фэнтези (если загрузится)'},
-  {name:'Inter',css:"'Inter', sans-serif",sub:'Современный, как Apple'},
-  {name:'Rubik',css:"'Rubik', sans-serif",sub:'Мягкий, дружелюбный'},
-  {name:'Montserrat',css:"'Montserrat', sans-serif",sub:'Элегантный'},
-  {name:'Raleway',css:"'Raleway', sans-serif",sub:'Утончённый'},
-  {name:'Playfair Display',css:"'Playfair Display', serif",sub:'Классический'},
-  {name:'System',css:"-apple-system, BlinkMacSystemFont, sans-serif",sub:'Системный iOS'}
-];
-var curFont=0;
-
-function applyFont(idx){
-  if(idx<0||idx>=FONTS.length)idx=0;
-  curFont=idx;
-  document.documentElement.style.setProperty('--font',FONTS[idx].css);
-  document.body.style.fontFamily=FONTS[idx].css;
-  try{localStorage.setItem('wave_font',idx);}catch(e){}
+/* THEMES */
+var THEMES={wave:{e:'🌊',n:'Волна'},lion:{e:'🦁',n:'Лев'},crocodile:{e:'🐊',n:'Крокодил'},dragon:{e:'🐉',n:'Дракон'},panda:{e:'🐼',n:'Панда'},tiger:{e:'🐯',n:'Тигр'},frog:{e:'🐸',n:'Жаба'},wolf:{e:'🐺',n:'Волк'},shark:{e:'🦈',n:'Акула'},bee:{e:'🐝',n:'Пчела'},moon:{e:'🌙',n:'Луна'}};
+var curTheme='crocodile';
+function applyTheme(name){
+  if(!THEMES[name])name='crocodile';
+  curTheme=name;
+  document.body.className='t-'+name;
+  try{localStorage.setItem('wave_theme',name);}catch(e){}
+  emptyLogo.textContent=THEMES[name].e;
+  voiceFace.textContent=THEMES[name].e;
+  document.querySelectorAll('.msg').forEach(function(m,i){m.style.animation='none';setTimeout(function(){m.style.animation='msgIn .5s cubic-bezier(.34,1.56,.64,1) forwards';},i*30);});
 }
-function buildFontList(){
-  fontList.innerHTML='';
-  FONTS.forEach(function(f,i){
+function buildThemeList(){
+  themeList.innerHTML='';
+  Object.keys(THEMES).forEach(function(k){
     var d=document.createElement('button');
-    d.className='fontItem'+(i===curFont?' active':'');
-    d.style.fontFamily=f.css;
-    d.innerHTML=f.name+'<small>'+f.sub+'</small>';
-    d.onclick=function(){applyFont(i);buildFontList();};
-    fontList.appendChild(d);
+    d.className='themeItem'+(k===curTheme?' active':'');
+    d.innerHTML='<span class="em">'+THEMES[k].e+'</span><span class="nm">'+THEMES[k].n+'</span>';
+    d.onclick=function(){applyTheme(k);buildThemeList();};
+    themeList.appendChild(d);
   });
 }
+var savedTheme='crocodile';try{savedTheme=localStorage.getItem('wave_theme')||'crocodile';}catch(e){}
+applyTheme(savedTheme);
 
-/* ============ ЗАГРУЗКА ШРИФТА ФАЙЛОМ ============ */
-loadFontBtn.onclick=function(){initAudio();playClick();fontFileInput.click();};
-fontFileInput.onchange=function(){
-  var file=fontFileInput.files[0];if(!file)return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var buffer=e.target.result;
-    var fontName=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Zа-яА-Я0-9]/g,'')||'CustomFont';
-    try{
-      var fontFace=new FontFace(fontName,buffer);
-      fontFace.load().then(function(loaded){
-        document.fonts.add(loaded);
-        document.documentElement.style.setProperty('--font',"'"+fontName+"', sans-serif");
-        document.body.style.fontFamily="'"+fontName+"', sans-serif";
-        var reader2=new FileReader();
-        reader2.onload=function(e2){
-          try{
-            localStorage.setItem('wave_font_file_name',fontName);
-            localStorage.setItem('wave_font_file_data',e2.target.result);
-          }catch(err){
-            alert('Шрифт применён, но не сохранился (файл слишком большой)');
-          }
-        };
-        reader2.readAsDataURL(file);
-        loadFontBtn.textContent='✅ Загружено: '+fontName;
-        setTimeout(function(){loadFontBtn.textContent='📁 Загрузить файл (.ttf, .otf, .woff)';},2500);
-      }).catch(function(err){alert('Не удалось загрузить шрифт: '+err.message);});
-    }catch(err){alert('Ошибка: '+err.message);}
-  };
-  reader.readAsArrayBuffer(file);
-};
-
-/* Восстановление шрифта при запуске */
-(function restoreFont(){
-  try{
-    var name=localStorage.getItem('wave_font_file_name');
-    var data=localStorage.getItem('wave_font_file_data');
-    if(name&&data){
-      fetch(data).then(function(r){return r.arrayBuffer();}).then(function(buf){
-        var face=new FontFace(name,buf);
-        face.load().then(function(loaded){
-          document.fonts.add(loaded);
-          document.documentElement.style.setProperty('--font',"'"+name+"', sans-serif");
-          document.body.style.fontFamily="'"+name+"', sans-serif";
-        }).catch(function(){});
-      }).catch(function(){});
-    }
-  }catch(e){}
-})();
-
-applyCustomFont.onclick=function(){
-  var name=customFontInput.value.trim();
-  if(!name)return;
-  document.documentElement.style.setProperty('--font',"'"+name+"', sans-serif");
-  document.body.style.fontFamily="'"+name+"', sans-serif";
-  try{localStorage.setItem('wave_font_custom',name);}catch(e){}
-};
-
-/* INIT ШРИФТ */
-var savedFont=0;try{var sf=localStorage.getItem('wave_font');if(sf!==null)savedFont=parseInt(sf)||0;}catch(e){}
-applyFont(savedFont);
-try{var cf=localStorage.getItem('wave_font_custom');if(cf)customFontInput.value=cf;}catch(e){}
-
-/* ============ SPLASH ============ */
+/* SPLASH */
 ['W','a','v','e',' ','A','I'].forEach(function(c,i){var s=document.createElement('span');s.textContent=c===' '?'\u00A0':c;s.style.animationDelay=(i*80)+'ms';splashName.appendChild(s);});
 var emD=document.createElement('div');emD.id='splashEmoji';emD.textContent='🐊';splashName.appendChild(emD);
-
-function sweepAway(){
-  var start=performance.now(),dur=1000;
-  function step(now){
-    var p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3),y=900-ease*1000,wave='M 0 '+y;
-    for(var x=0;x<=400;x+=20){var off=Math.sin(x*.03+p*10)*35;wave+=' Q '+(x+10)+' '+(y+off)+' '+(x+20)+' '+y;}
-    wave+=' L 400 900 L 0 900 Z';
-    sweepPath.setAttribute('d',wave);
-    if(p<1)requestAnimationFrame(step);
-    else{splash.classList.add('gone');setTimeout(function(){splash.remove();},800);}
-  }
-  requestAnimationFrame(step);
-}
+function sweepAway(){var start=performance.now(),dur=1000;function step(now){var p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3),y=900-ease*1000,wave='M 0 '+y;for(var x=0;x<=400;x+=20){var off=Math.sin(x*.03+p*10)*35;wave+=' Q '+(x+10)+' '+(y+off)+' '+(x+20)+' '+y;}wave+=' L 400 900 L 0 900 Z';sweepPath.setAttribute('d',wave);if(p<1)requestAnimationFrame(step);else{splash.classList.add('gone');setTimeout(function(){splash.remove();},800);}}requestAnimationFrame(step);}
 setTimeout(sweepAway,2200);
 
-/* ============ ЧАТЫ ============ */
+/* CHATS */
 var CHATS=[],curChatId=null,conversationHistory=[];
 function loadChats(){try{CHATS=JSON.parse(localStorage.getItem('wave_chats')||'[]');}catch(e){CHATS=[];}}
 function saveChats(){try{localStorage.setItem('wave_chats',JSON.stringify(CHATS));}catch(e){}}
@@ -327,7 +228,7 @@ function renderMessages(){
 }
 function showTyping(){var el=document.createElement('div');el.className='msg wave typing';el.id='typingIndicator';el.innerHTML='<span class="waveMark">Wave</span><div class="dots"><span></span><span></span><span></span></div>';messagesEl.appendChild(el);messagesEl.scrollTop=messagesEl.scrollHeight;}
 function hideTyping(){var el=$('typingIndicator');if(el)el.remove();}
-function switchChat(id){curChatId=id;conversationHistory=[];var c=getCurChat();if(c){c.messages.forEach(function(m){if(!m.isImg&&(m.role==='user'||m.role==='assistant')){conversationHistory.push({role:m.role,content:m.text});}});if(conversationHistory.length>8)conversationHistory=conversationHistory.slice(-8);}renderMessages();updateChatList();chatsPanel.classList.remove('show');}
+function switchChat(id){curChatId=id;conversationHistory=[];var c=getCurChat();if(c){c.messages.forEach(function(m){if(!m.isImg&&(m.role==='user'||m.role==='assistant')){conversationHistory.push({role:m.role,content:m.text});}});if(conversationHistory.length>14)conversationHistory=conversationHistory.slice(-14);}renderMessages();updateChatList();chatsPanel.classList.remove('show');}
 function updateChatList(){
   chatList.innerHTML='';
   if(CHATS.length===0){chatList.innerHTML='<p style="color:var(--text-2);font-size:14px;text-align:center;padding:20px">Нет чатов</p>';return;}
@@ -345,25 +246,25 @@ function updateChatList(){
 loadChats();
 if(CHATS.length>0){curChatId=CHATS[0].id;renderMessages();}else{newChat();}
 
-/* ============ AUDIO ============ */
+/* AUDIO */
 var audioCtx=null;
 function initAudio(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}catch(e){}}
 function playClick(){initAudio();if(!audioCtx)return;var t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(660,t);o.frequency.exponentialRampToValueAtTime(990,t+.05);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.08,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.15);}
 
-/* ============ SPEAK ============ */
+/* SPEAK */
 var currentAudio=null,useNeural=true,VOICE='echo',voiceOutputEnabled=false;
 function stopSpeak(){if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}try{speechSynthesis.cancel();}catch(e){}}
 function speak(text,onEnd){if(!voiceOutputEnabled){if(onEnd)onEnd();return;}if(!text){if(onEnd)onEnd();return;}stopSpeak();voiceOverlay.classList.add('speaking');if(useNeural){try{var url='https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-audio&voice='+VOICE;var audio=new Audio(url);currentAudio=audio;audio.onended=function(){currentAudio=null;voiceOverlay.classList.remove('speaking');if(onEnd)onEnd();};audio.onerror=function(){useNeural=false;sysSpeak(text,onEnd);};var p=audio.play();if(p&&p.catch)p.catch(function(){useNeural=false;sysSpeak(text,onEnd);});return;}catch(e){useNeural=false;}}sysSpeak(text,onEnd);}
 function sysSpeak(text,onEnd){if(!('speechSynthesis' in window)){if(onEnd)onEnd();return;}try{speechSynthesis.cancel();}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';u.rate=1.15;u.pitch=0.75;var voices=speechSynthesis.getVoices();var male=voices.find(function(v){return v.name&&(v.name.indexOf('Yuri')>=0||v.name.indexOf('Юрий')>=0);});var ru=male||voices.find(function(v){return v.lang==='ru-RU';})||voices.find(function(v){return v.lang&&v.lang.indexOf('ru')===0;});if(ru)u.voice=ru;u.onend=function(){voiceOverlay.classList.remove('speaking');if(onEnd)onEnd();};u.onerror=u.onend;speechSynthesis.speak(u);}
 
-/* ============ AI ============ */
-var BASE_SYS='Ты Wave AI. Отвечай коротко (1-2 предложения), живо, по-русски. Ты умный и помогаешь на любые темы. Не называй себя роботом. Без смайликов.';
+/* AI — модель openai-large, длинный контекст */
+var BASE_SYS='Ты Wave AI — умный, дружелюбный ИИ-ассистент. Отвечай содержательно, но коротко (2-3 предложения), живо, по-русски. Понимаешь контекст, шутишь, помогаешь с любыми темами: наука, программирование, советы, объяснения, математика. Не называй себя роботом. Без смайликов и разметки.';
 function askAI(text){
   conversationHistory.push({role:'user',content:text});
-  if(conversationHistory.length>8)conversationHistory=conversationHistory.slice(-8);
+  if(conversationHistory.length>14)conversationHistory=conversationHistory.slice(-14);
   return fetch('https://text.pollinations.ai/openai',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'openai',messages:[{role:'system',content:BASE_SYS}].concat(conversationHistory),temperature:0.85,max_tokens:100})
+    body:JSON.stringify({model:'openai-large',messages:[{role:'system',content:BASE_SYS}].concat(conversationHistory),temperature:0.8,max_tokens:200})
   }).then(function(r){if(!r.ok)throw 0;return r.json();})
   .then(function(d){
     var rep=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||d.response||'';
@@ -372,11 +273,11 @@ function askAI(text){
     conversationHistory.push({role:'assistant',content:rep});
     return rep;
   }).catch(function(){
-    return fetch('https://text.pollinations.ai/'+encodeURIComponent(text))
+    return fetch('https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-large')
       .then(function(r){return r.text();})
       .then(function(t){
         t=String(t).replace(/[*_`#]/g,'').replace(/\n+/g,' ').trim();
-        if(t.length>250)t=t.substring(0,250);
+        if(t.length>350)t=t.substring(0,350);
         if(!t)throw 0;
         conversationHistory.push({role:'assistant',content:t});
         return t;
@@ -389,19 +290,16 @@ function smartFallback(text){
   if(t.indexOf('как дела')>=0)return 'Всё отлично! А у тебя?';
   if(t.indexOf('сколько тебе')>=0)return 'Я программа, у меня нет возраста.';
   if(t.indexOf('кто ты')>=0||t.indexOf('как тебя')>=0)return 'Я Wave AI.';
-  if(t.indexOf('что ты умеешь')>=0)return 'Могу общаться, считать, рисовать, рассказывать факты.';
+  if(t.indexOf('что ты умеешь')>=0)return 'Могу общаться, считать, рисовать, рассказывать факты, шутить.';
   if(t.indexOf('спасибо')>=0)return 'Пожалуйста!';
   if(t.indexOf('пока')>=0)return 'Пока!';
   return 'Расскажи подробнее.';
 }
-
 var NW={'ноль':0,'один':1,'два':2,'три':3,'четыре':4,'пять':5,'шесть':6,'семь':7,'восемь':8,'девять':9,'десять':10,'двадцать':20,'сто':100};
 function wN(t){return t.split(/\s+/).map(function(w){var l=w.toLowerCase().replace(/[^а-яё]/g,'');return NW.hasOwnProperty(l)?NW[l]:w;}).join(' ');}
 function tryMath(text){var s=' '+wN(text.toLowerCase())+' ';s=s.replace(/\bплюс\b/g,'+').replace(/\bминус\b/g,'-').replace(/\bумножить на\b/g,'*').replace(/\bразделить на\b/g,'/').replace(/,/g,'.').replace(/[^0-9+\-*\/.\s()]/g,' ').trim();if(!/[0-9]/.test(s)||!/[+\-*\/]/.test(s))return null;if(!/^[0-9+\-*\/.()\s]+$/.test(s))return null;try{var r=Function('"use strict";return ('+s+')')();if(typeof r!=='number'||!isFinite(r))return null;return Math.round(r*10000)/10000;}catch(e){return null;}}
-
 var BAD=['голая','голый','голые','nude','naked','секс','sex','порно','porn','эротика','сиськи','tits','boobs','вагина','pussy','член','penis','стриптиз','минет'];
 function isBad(p){var t=p.toLowerCase();for(var i=0;i<BAD.length;i++)if(t.indexOf(BAD[i])>=0)return true;return false;}
-
 function handleCmd(text){
   var t=text.toLowerCase().trim();
   var im=t.match(/(?:сгенерируй|нарисуй|покажи|создай)\s+(?:картинку|изображение|рисунок)?\s*(.+)/i);
@@ -410,11 +308,11 @@ function handleCmd(text){
   if(t.indexOf('который час')>=0){var d=new Date();return 'Сейчас '+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes()+'.';}
   if(t.indexOf('монетк')>=0)return Math.random()<0.5?'Орёл.':'Решка.';
   if(t.indexOf('кубик')>=0)return 'Выпало '+(Math.floor(Math.random()*6)+1)+'.';
-  if(t.indexOf('шутк')>=0||t.indexOf('анекдот')>=0){var j=['Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 равно DEC 25.','Заходит нейросеть в бар, а бармен: вам как обычно? Нейросеть: я тут впервые.'];return j[Math.floor(Math.random()*j.length)];}
-  if(t.indexOf('факт')>=0){var f=['Осьминог имеет три сердца.','Мёд не портится.','Бананы — это ягоды.'];return f[Math.floor(Math.random()*f.length)];}
+  if(t.indexOf('шутк')>=0||t.indexOf('анекдот')>=0){var j=['Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 равно DEC 25.','Заходит нейросеть в бар, а бармен: вам как обычно? Нейросеть: я тут впервые.','Что сказал один бит другому? Ты мне нравишься, но у нас разные байты.'];return j[Math.floor(Math.random()*j.length)];}
+  if(t.indexOf('факт')>=0){var f=['Осьминог имеет три сердца и голубую кровь.','Мёд не портится — находили съедобный мёд в гробницах возрастом 3000 лет.','Бананы — это ягоды, а малина — нет.'];
+    return f[Math.floor(Math.random()*f.length)];}
   return null;
 }
-
 function genImage(prompt){
   if(isBad(prompt)){addMsg('wave','Не могу это нарисовать.');return;}
   addMsg('user','Нарисуй: '+prompt);
@@ -427,7 +325,6 @@ function genImage(prompt){
     img.src=url;
   },800);
 }
-
 function sendText(text){
   if(!text||!text.trim())return;
   text=text.trim();
@@ -439,7 +336,7 @@ function sendText(text){
   askAI(text).then(function(rep){hideTyping();addMsg('wave',rep);});
 }
 
-/* ============ CONTROLS ============ */
+/* CONTROLS */
 sendBtn.onclick=function(){var t=chatField.value.trim();if(!t)return;initAudio();playClick();chatField.value='';sendText(t);};
 chatField.onkeydown=function(e){if(e.key==='Enter')sendBtn.click();};
 voiceOpenBtn.onclick=function(){initAudio();playClick();stopSpeak();voiceOutputEnabled=true;voiceOverlay.classList.add('show');voiceTitle.textContent='Нажми кнопку и говори';voiceSub.textContent='ГОТОВ';voiceSub.className='';};
@@ -449,10 +346,10 @@ fileInput.onchange=function(){var f=fileInput.files[0];if(!f)return;addMsg('user
 menuBtn.onclick=function(){initAudio();playClick();updateChatList();chatsPanel.classList.add('show');};
 chatsClose.onclick=function(){initAudio();playClick();chatsPanel.classList.remove('show');};
 newChatBtn.onclick=function(){initAudio();playClick();newChat();chatsPanel.classList.remove('show');};
-fontBtn.onclick=function(){initAudio();playClick();buildFontList();fontPanel.classList.add('show');};
-fontClose.onclick=function(){initAudio();playClick();fontPanel.classList.remove('show');};
+themeBtn.onclick=function(){initAudio();playClick();buildThemeList();themePanel.classList.add('show');};
+themeClose.onclick=function(){initAudio();playClick();themePanel.classList.remove('show');};
 
-/* ============ SPEECH ============ */
+/* SPEECH */
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 var voiceRec=null,voiceIsListening=false,voiceFinal='',voiceContinuous=false;
 if(SR){
@@ -479,9 +376,7 @@ function processVoice(text){
 function voiceSpeak(text){stopSpeak();voiceOverlay.classList.add('speaking');voiceSub.textContent='ГОВОРИТ';voiceSub.className='speaking';voiceTitle.textContent=text;if(useNeural){try{var url='https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-audio&voice='+VOICE;var audio=new Audio(url);currentAudio=audio;audio.onended=function(){currentAudio=null;voiceOverlay.classList.remove('speaking');voiceSub.textContent='ГОТОВ';voiceSub.className='';if(voiceContinuous)setTimeout(function(){if(voiceContinuous&&!voiceIsListening)try{voiceRec.start();}catch(e){}},800);};audio.onerror=function(){useNeural=false;voiceSysSpeak(text);};var p=audio.play();if(p&&p.catch)p.catch(function(){useNeural=false;voiceSysSpeak(text);});return;}catch(e){useNeural=false;}}voiceSysSpeak(text);}
 function voiceSysSpeak(text){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';u.rate=1.15;u.pitch=0.75;var voices=speechSynthesis.getVoices();var male=voices.find(function(v){return v.name&&(v.name.indexOf('Yuri')>=0||v.name.indexOf('Юрий')>=0);});var ru=male||voices.find(function(v){return v.lang==='ru-RU';})||voices.find(function(v){return v.lang&&v.lang.indexOf('ru')===0;});if(ru)u.voice=ru;u.onend=function(){voiceOverlay.classList.remove('speaking');voiceSub.textContent='ГОТОВ';voiceSub.className='';if(voiceContinuous)setTimeout(function(){if(voiceContinuous&&!voiceIsListening)try{voiceRec.start();}catch(e){}},800);};u.onerror=u.onend;speechSynthesis.speak(u);}
 voiceBtn.onclick=function(){initAudio();playClick();if(!SR){voiceTitle.textContent='Микрофон не поддерживается';return;}if(voiceIsListening){voiceRec.stop();return;}stopSpeak();voiceContinuous=true;try{voiceRec.start();}catch(e){}};
-
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-
 document.body.addEventListener('touchstart',function(){initAudio();},{once:true});
 document.body.addEventListener('click',function(){initAudio();},{once:true});
 </script>
