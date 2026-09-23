@@ -7,30 +7,19 @@
 <meta name="apple-mobile-web-app-title" content="Wave AI">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Wave AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Starborn&family=Inter:wght@300;400;500;600;700&family=Rubik:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-system,BlinkMacSystemFont,sans-serif);color:#0a1f14;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased;transition:background .4s ease,color .4s ease,font-family .3s}
+html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-system,BlinkMacSystemFont,sans-serif);color:#0a1f14;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased;transition:background .4s ease,color .4s ease}
 #app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);transition:background .4s ease}
+:root{--bg:#f4faf6;--bg-2:#e0f2e8;--text:#0a1f14;--text-2:#4a6a55;--border:#c0e0cd;--accent:#059669;--bubble-user:#d5f0e0;--font:'Starborn','Inter',-apple-system,sans-serif}
 
-:root{
-  --bg:#f4faf6;
-  --bg-2:#e0f2e8;
-  --text:#0a1f14;
-  --text-2:#4a6a55;
-  --border:#c0e0cd;
-  --accent:#059669;
-  --bubble-user:#d5f0e0;
-  --font:'Starborn','Inter',sans-serif;
-}
-
-#topBar{display:flex;align-items:center;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px 10px;background:var(--bg);transition:background .4s}
+#topBar{display:flex;align-items:center;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px 10px;background:var(--bg)}
 .iconBtn{width:42px;height:42px;border-radius:50%;background:transparent;border:1.5px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all .2s}
 .iconBtn:active{transform:scale(.9);background:var(--bg-2)}
 .iconBtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .topTitle{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.3px}
 
-#messages{flex:1;overflow-y:auto;padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px;background:var(--bg);transition:background .4s;scroll-behavior:smooth}
+#messages{flex:1;overflow-y:auto;padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px;background:var(--bg);scroll-behavior:smooth}
 #messages::-webkit-scrollbar{width:0}
 .msg{max-width:80%;padding:12px 16px;border-radius:20px;font-size:16px;line-height:1.5;word-wrap:break-word;animation:msgIn .45s cubic-bezier(.34,1.56,.64,1);color:var(--text)}
 @keyframes msgIn{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -51,7 +40,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 .empty .title{font-size:22px;font-weight:600;color:var(--text);text-align:center;letter-spacing:-.4px}
 .empty .sub{font-size:14px;color:var(--text-2);text-align:center;max-width:80%}
 
-#bottomBar{padding:10px 16px max(14px,env(safe-area-inset-bottom));background:var(--bg);transition:background .4s}
+#bottomBar{padding:10px 16px max(14px,env(safe-area-inset-bottom));background:var(--bg)}
 #inputRow{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 16px;border-radius:28px;background:var(--bg-2);border:1px solid var(--border);transition:all .3s}
 #inputRow:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
 #chatField{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:16px;font-family:inherit;padding:8px 0}
@@ -81,13 +70,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 .chatItem .del{width:30px;height:30px;border-radius:50%;background:rgba(220,38,38,.15);border:none;color:#dc2626;font-size:14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .newChatBtn{padding:14px;border-radius:16px;background:var(--accent);border:none;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;width:100%}
 
-.fontList{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.fontList{display:flex;flex-direction:column;gap:10px}
 .fontItem{padding:16px;border-radius:14px;background:var(--bg-2);border:2px solid transparent;cursor:pointer;text-align:left;color:var(--text);font-size:16px;transition:all .2s;font-family:inherit}
 .fontItem.active{border-color:var(--accent)}
 .fontItem small{display:block;font-size:11px;color:var(--text-2);margin-top:2px;font-family:'Inter',sans-serif}
 .customFont{padding:12px;border-radius:14px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;width:100%;margin-top:10px;outline:none}
 .customFont:focus{border-color:var(--accent)}
 .applyBtn{padding:12px;border-radius:14px;background:var(--accent);border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;width:100%}
+.uploadBtn{padding:14px;border-radius:14px;background:var(--bg-2);border:2px dashed var(--border);color:var(--text);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:14px;width:100%;transition:all .2s}
+.uploadBtn:active{border-color:var(--accent);background:var(--bubble-user)}
+.hintText{font-size:12px;color:var(--text-2);margin-top:8px;text-align:center;line-height:1.4}
 
 #voiceOverlay{position:fixed;inset:0;z-index:800;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 40px}
 #voiceOverlay.show{display:flex}
@@ -175,8 +167,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
   <button class="panelClose" id="fontClose">×</button>
   <h3>Шрифт</h3>
   <div class="fontList" id="fontList"></div>
-  <input type="text" class="customFont" id="customFontInput" placeholder="Или напиши название своего шрифта…" autocomplete="off">
-  <button class="applyBtn" id="applyCustomFont">Применить свой шрифт</button>
+  <button class="uploadBtn" id="loadFontBtn">📁 Загрузить файл (.ttf, .otf, .woff)</button>
+  <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2,font/*" style="display:none">
+  <p class="hintText">Файл сохранится в браузере и будет работать всегда</p>
+  <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:8px">Или напиши название шрифта вручную:</p>
+    <input type="text" class="customFont" id="customFontInput" placeholder="Например: Arial, Georgia, Comic Sans…" autocomplete="off">
+    <button class="applyBtn" id="applyCustomFont">Применить</button>
+  </div>
 </div>
 
 <div id="voiceOverlay">
@@ -192,16 +190,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font,'Inter',-apple-syst
 
 <script>
 var $=function(id){return document.getElementById(id)};
-var messagesEl=$('messages'),chatField=$('chatField'),sendBtn=$('sendBtn'),voiceOpenBtn=$('voiceOpenBtn'),attachBtn=$('attachBtn'),fileInput=$('fileInput'),menuBtn=$('menuBtn'),fontBtn=$('fontBtn'),chatsPanel=$('chatsPanel'),chatsClose=$('chatsClose'),chatList=$('chatList'),newChatBtn=$('newChatBtn'),fontPanel=$('fontPanel'),fontClose=$('fontClose'),fontList=$('fontList'),customFontInput=$('customFontInput'),applyCustomFont=$('applyCustomFont'),emptyState=$('emptyState'),emptyLogo=$('emptyLogo'),voiceOverlay=$('voiceOverlay'),voiceExitBtn=$('voiceExitBtn'),voiceBtn=$('voiceBtn'),voiceTitle=$('voiceTitle'),voiceSub=$('voiceSub'),voiceFace=$('voiceFace'),splash=$('splash'),splashName=$('splashName'),sweepPath=$('sweepPath');
+var messagesEl=$('messages'),chatField=$('chatField'),sendBtn=$('sendBtn'),voiceOpenBtn=$('voiceOpenBtn'),attachBtn=$('attachBtn'),fileInput=$('fileInput'),menuBtn=$('menuBtn'),fontBtn=$('fontBtn'),chatsPanel=$('chatsPanel'),chatsClose=$('chatsClose'),chatList=$('chatList'),newChatBtn=$('newChatBtn'),fontPanel=$('fontPanel'),fontClose=$('fontClose'),fontList=$('fontList'),customFontInput=$('customFontInput'),applyCustomFont=$('applyCustomFont'),loadFontBtn=$('loadFontBtn'),fontFileInput=$('fontFileInput'),emptyState=$('emptyState'),emptyLogo=$('emptyLogo'),voiceOverlay=$('voiceOverlay'),voiceExitBtn=$('voiceExitBtn'),voiceBtn=$('voiceBtn'),voiceTitle=$('voiceTitle'),voiceSub=$('voiceSub'),voiceFace=$('voiceFace'),splash=$('splash'),splashName=$('splashName'),sweepPath=$('sweepPath');
 
-/* ШРИФТЫ */
+/* ============ ШРИФТЫ ============ */
 var FONTS=[
   {name:'Starborn',css:"'Starborn', 'Inter', sans-serif",sub:'Фэнтези (если загрузится)'},
   {name:'Inter',css:"'Inter', sans-serif",sub:'Современный, как Apple'},
   {name:'Rubik',css:"'Rubik', sans-serif",sub:'Мягкий, дружелюбный'},
   {name:'Montserrat',css:"'Montserrat', sans-serif",sub:'Элегантный'},
   {name:'Raleway',css:"'Raleway', sans-serif",sub:'Утончённый'},
-  {name:'Playfair Display',css:"'Playfair Display', serif",sub:'Классический, с засечками'},
+  {name:'Playfair Display',css:"'Playfair Display', serif",sub:'Классический'},
   {name:'System',css:"-apple-system, BlinkMacSystemFont, sans-serif",sub:'Системный iOS'}
 ];
 var curFont=0;
@@ -212,12 +210,6 @@ function applyFont(idx){
   document.documentElement.style.setProperty('--font',FONTS[idx].css);
   document.body.style.fontFamily=FONTS[idx].css;
   try{localStorage.setItem('wave_font',idx);}catch(e){}
-}
-function applyCustomFontName(name){
-  if(!name.trim())return;
-  document.documentElement.style.setProperty('--font',"'"+name+"', sans-serif");
-  document.body.style.fontFamily="'"+name+"', sans-serif";
-  try{localStorage.setItem('wave_font_custom',name);}catch(e){}
 }
 function buildFontList(){
   fontList.innerHTML='';
@@ -231,13 +223,70 @@ function buildFontList(){
   });
 }
 
-/* INIT */
+/* ============ ЗАГРУЗКА ШРИФТА ФАЙЛОМ ============ */
+loadFontBtn.onclick=function(){initAudio();playClick();fontFileInput.click();};
+fontFileInput.onchange=function(){
+  var file=fontFileInput.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var buffer=e.target.result;
+    var fontName=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Zа-яА-Я0-9]/g,'')||'CustomFont';
+    try{
+      var fontFace=new FontFace(fontName,buffer);
+      fontFace.load().then(function(loaded){
+        document.fonts.add(loaded);
+        document.documentElement.style.setProperty('--font',"'"+fontName+"', sans-serif");
+        document.body.style.fontFamily="'"+fontName+"', sans-serif";
+        var reader2=new FileReader();
+        reader2.onload=function(e2){
+          try{
+            localStorage.setItem('wave_font_file_name',fontName);
+            localStorage.setItem('wave_font_file_data',e2.target.result);
+          }catch(err){
+            alert('Шрифт применён, но не сохранился (файл слишком большой)');
+          }
+        };
+        reader2.readAsDataURL(file);
+        loadFontBtn.textContent='✅ Загружено: '+fontName;
+        setTimeout(function(){loadFontBtn.textContent='📁 Загрузить файл (.ttf, .otf, .woff)';},2500);
+      }).catch(function(err){alert('Не удалось загрузить шрифт: '+err.message);});
+    }catch(err){alert('Ошибка: '+err.message);}
+  };
+  reader.readAsArrayBuffer(file);
+};
+
+/* Восстановление шрифта при запуске */
+(function restoreFont(){
+  try{
+    var name=localStorage.getItem('wave_font_file_name');
+    var data=localStorage.getItem('wave_font_file_data');
+    if(name&&data){
+      fetch(data).then(function(r){return r.arrayBuffer();}).then(function(buf){
+        var face=new FontFace(name,buf);
+        face.load().then(function(loaded){
+          document.fonts.add(loaded);
+          document.documentElement.style.setProperty('--font',"'"+name+"', sans-serif");
+          document.body.style.fontFamily="'"+name+"', sans-serif";
+        }).catch(function(){});
+      }).catch(function(){});
+    }
+  }catch(e){}
+})();
+
+applyCustomFont.onclick=function(){
+  var name=customFontInput.value.trim();
+  if(!name)return;
+  document.documentElement.style.setProperty('--font',"'"+name+"', sans-serif");
+  document.body.style.fontFamily="'"+name+"', sans-serif";
+  try{localStorage.setItem('wave_font_custom',name);}catch(e){}
+};
+
+/* INIT ШРИФТ */
 var savedFont=0;try{var sf=localStorage.getItem('wave_font');if(sf!==null)savedFont=parseInt(sf)||0;}catch(e){}
 applyFont(savedFont);
-try{var cf=localStorage.getItem('wave_font_custom');if(cf){customFontInput.value=cf;}}catch(e){}
-applyCustomFont.onclick=function(){applyCustomFontName(customFontInput.value);speak2('Шрифт применён.');};
+try{var cf=localStorage.getItem('wave_font_custom');if(cf)customFontInput.value=cf;}catch(e){}
 
-/* SPLASH */
+/* ============ SPLASH ============ */
 ['W','a','v','e',' ','A','I'].forEach(function(c,i){var s=document.createElement('span');s.textContent=c===' '?'\u00A0':c;s.style.animationDelay=(i*80)+'ms';splashName.appendChild(s);});
 var emD=document.createElement('div');emD.id='splashEmoji';emD.textContent='🐊';splashName.appendChild(emD);
 
@@ -255,7 +304,7 @@ function sweepAway(){
 }
 setTimeout(sweepAway,2200);
 
-/* ЧАТЫ */
+/* ============ ЧАТЫ ============ */
 var CHATS=[],curChatId=null,conversationHistory=[];
 function loadChats(){try{CHATS=JSON.parse(localStorage.getItem('wave_chats')||'[]');}catch(e){CHATS=[];}}
 function saveChats(){try{localStorage.setItem('wave_chats',JSON.stringify(CHATS));}catch(e){}}
@@ -269,22 +318,14 @@ function renderMessages(){
   c.messages.forEach(function(m){
     var el=document.createElement('div');
     el.className='msg '+m.role+(m.isImg?' img':'');
-    if(m.role==='wave'){
-      el.innerHTML='<span class="waveMark">Wave</span>'+escapeHtml(m.text);
-    }else{el.textContent=m.text;}
+    if(m.role==='wave'){el.innerHTML='<span class="waveMark">Wave</span>'+escapeHtml(m.text);}
+    else{el.textContent=m.text;}
     if(m.isImg){el.innerHTML='<img src="'+m.text+'" alt="">';}
     messagesEl.appendChild(el);
   });
   messagesEl.scrollTop=messagesEl.scrollHeight;
 }
-function showTyping(){
-  var el=document.createElement('div');
-  el.className='msg wave typing';
-  el.id='typingIndicator';
-  el.innerHTML='<span class="waveMark">Wave</span><div class="dots"><span></span><span></span><span></span></div>';
-  messagesEl.appendChild(el);
-  messagesEl.scrollTop=messagesEl.scrollHeight;
-}
+function showTyping(){var el=document.createElement('div');el.className='msg wave typing';el.id='typingIndicator';el.innerHTML='<span class="waveMark">Wave</span><div class="dots"><span></span><span></span><span></span></div>';messagesEl.appendChild(el);messagesEl.scrollTop=messagesEl.scrollHeight;}
 function hideTyping(){var el=$('typingIndicator');if(el)el.remove();}
 function switchChat(id){curChatId=id;conversationHistory=[];var c=getCurChat();if(c){c.messages.forEach(function(m){if(!m.isImg&&(m.role==='user'||m.role==='assistant')){conversationHistory.push({role:m.role,content:m.text});}});if(conversationHistory.length>8)conversationHistory=conversationHistory.slice(-8);}renderMessages();updateChatList();chatsPanel.classList.remove('show');}
 function updateChatList(){
@@ -304,29 +345,25 @@ function updateChatList(){
 loadChats();
 if(CHATS.length>0){curChatId=CHATS[0].id;renderMessages();}else{newChat();}
 
-/* AUDIO */
+/* ============ AUDIO ============ */
 var audioCtx=null;
 function initAudio(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}catch(e){}}
 function playClick(){initAudio();if(!audioCtx)return;var t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(660,t);o.frequency.exponentialRampToValueAtTime(990,t+.05);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.08,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.15);}
 
-/* SPEAK */
-var currentAudio=null,useNeural=true,VOICE='echo';
-var voiceOutputEnabled=false;
+/* ============ SPEAK ============ */
+var currentAudio=null,useNeural=true,VOICE='echo',voiceOutputEnabled=false;
 function stopSpeak(){if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}try{speechSynthesis.cancel();}catch(e){}}
 function speak(text,onEnd){if(!voiceOutputEnabled){if(onEnd)onEnd();return;}if(!text){if(onEnd)onEnd();return;}stopSpeak();voiceOverlay.classList.add('speaking');if(useNeural){try{var url='https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-audio&voice='+VOICE;var audio=new Audio(url);currentAudio=audio;audio.onended=function(){currentAudio=null;voiceOverlay.classList.remove('speaking');if(onEnd)onEnd();};audio.onerror=function(){useNeural=false;sysSpeak(text,onEnd);};var p=audio.play();if(p&&p.catch)p.catch(function(){useNeural=false;sysSpeak(text,onEnd);});return;}catch(e){useNeural=false;}}sysSpeak(text,onEnd);}
-function speak2(text){/* без озвучки — для мелких уведомлений */}
 function sysSpeak(text,onEnd){if(!('speechSynthesis' in window)){if(onEnd)onEnd();return;}try{speechSynthesis.cancel();}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';u.rate=1.15;u.pitch=0.75;var voices=speechSynthesis.getVoices();var male=voices.find(function(v){return v.name&&(v.name.indexOf('Yuri')>=0||v.name.indexOf('Юрий')>=0);});var ru=male||voices.find(function(v){return v.lang==='ru-RU';})||voices.find(function(v){return v.lang&&v.lang.indexOf('ru')===0;});if(ru)u.voice=ru;u.onend=function(){voiceOverlay.classList.remove('speaking');if(onEnd)onEnd();};u.onerror=u.onend;speechSynthesis.speak(u);}
 
-/* AI */
+/* ============ AI ============ */
 var BASE_SYS='Ты Wave AI. Отвечай коротко (1-2 предложения), живо, по-русски. Ты умный и помогаешь на любые темы. Не называй себя роботом. Без смайликов.';
 function askAI(text){
   conversationHistory.push({role:'user',content:text});
   if(conversationHistory.length>8)conversationHistory=conversationHistory.slice(-8);
-  var sys=BASE_SYS;
   return fetch('https://text.pollinations.ai/openai',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys}].concat(conversationHistory),temperature:0.85,max_tokens:100})
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'openai',messages:[{role:'system',content:BASE_SYS}].concat(conversationHistory),temperature:0.85,max_tokens:100})
   }).then(function(r){if(!r.ok)throw 0;return r.json();})
   .then(function(d){
     var rep=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||d.response||'';
@@ -335,7 +372,6 @@ function askAI(text){
     conversationHistory.push({role:'assistant',content:rep});
     return rep;
   }).catch(function(){
-    /* Запасной API */
     return fetch('https://text.pollinations.ai/'+encodeURIComponent(text))
       .then(function(r){return r.text();})
       .then(function(t){
@@ -353,19 +389,23 @@ function smartFallback(text){
   if(t.indexOf('как дела')>=0)return 'Всё отлично! А у тебя?';
   if(t.indexOf('сколько тебе')>=0)return 'Я программа, у меня нет возраста.';
   if(t.indexOf('кто ты')>=0||t.indexOf('как тебя')>=0)return 'Я Wave AI.';
-  if(t.indexOf('что ты умеешь')>=0)return 'Могу общаться, считать, рисовать картинки, рассказывать факты.';
+  if(t.indexOf('что ты умеешь')>=0)return 'Могу общаться, считать, рисовать, рассказывать факты.';
   if(t.indexOf('спасибо')>=0)return 'Пожалуйста!';
   if(t.indexOf('пока')>=0)return 'Пока!';
   return 'Расскажи подробнее.';
 }
+
 var NW={'ноль':0,'один':1,'два':2,'три':3,'четыре':4,'пять':5,'шесть':6,'семь':7,'восемь':8,'девять':9,'десять':10,'двадцать':20,'сто':100};
 function wN(t){return t.split(/\s+/).map(function(w){var l=w.toLowerCase().replace(/[^а-яё]/g,'');return NW.hasOwnProperty(l)?NW[l]:w;}).join(' ');}
 function tryMath(text){var s=' '+wN(text.toLowerCase())+' ';s=s.replace(/\bплюс\b/g,'+').replace(/\bминус\b/g,'-').replace(/\bумножить на\b/g,'*').replace(/\bразделить на\b/g,'/').replace(/,/g,'.').replace(/[^0-9+\-*\/.\s()]/g,' ').trim();if(!/[0-9]/.test(s)||!/[+\-*\/]/.test(s))return null;if(!/^[0-9+\-*\/.()\s]+$/.test(s))return null;try{var r=Function('"use strict";return ('+s+')')();if(typeof r!=='number'||!isFinite(r))return null;return Math.round(r*10000)/10000;}catch(e){return null;}}
+
 var BAD=['голая','голый','голые','nude','naked','секс','sex','порно','porn','эротика','сиськи','tits','boobs','вагина','pussy','член','penis','стриптиз','минет'];
 function isBad(p){var t=p.toLowerCase();for(var i=0;i<BAD.length;i++)if(t.indexOf(BAD[i])>=0)return true;return false;}
+
 function handleCmd(text){
   var t=text.toLowerCase().trim();
-  var im=t.match(/(?:сгенерируй|нарисуй|покажи|создай)\s+(?:картинку|изображение|рисунок)?\s*(.+)/i);if(im){var p=im[1].trim();if(p&&p.length>2){genImage(p);return '__IMG__';}}
+  var im=t.match(/(?:сгенерируй|нарисуй|покажи|создай)\s+(?:картинку|изображение|рисунок)?\s*(.+)/i);
+  if(im){var p=im[1].trim();if(p&&p.length>2){genImage(p);return '__IMG__';}}
   var m=tryMath(t);if(m!==null)return 'Получается '+m+'.';
   if(t.indexOf('который час')>=0){var d=new Date();return 'Сейчас '+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes()+'.';}
   if(t.indexOf('монетк')>=0)return Math.random()<0.5?'Орёл.':'Решка.';
@@ -374,6 +414,7 @@ function handleCmd(text){
   if(t.indexOf('факт')>=0){var f=['Осьминог имеет три сердца.','Мёд не портится.','Бананы — это ягоды.'];return f[Math.floor(Math.random()*f.length)];}
   return null;
 }
+
 function genImage(prompt){
   if(isBad(prompt)){addMsg('wave','Не могу это нарисовать.');return;}
   addMsg('user','Нарисуй: '+prompt);
@@ -386,6 +427,7 @@ function genImage(prompt){
     img.src=url;
   },800);
 }
+
 function sendText(text){
   if(!text||!text.trim())return;
   text=text.trim();
@@ -397,7 +439,7 @@ function sendText(text){
   askAI(text).then(function(rep){hideTyping();addMsg('wave',rep);});
 }
 
-/* CONTROLS */
+/* ============ CONTROLS ============ */
 sendBtn.onclick=function(){var t=chatField.value.trim();if(!t)return;initAudio();playClick();chatField.value='';sendText(t);};
 chatField.onkeydown=function(e){if(e.key==='Enter')sendBtn.click();};
 voiceOpenBtn.onclick=function(){initAudio();playClick();stopSpeak();voiceOutputEnabled=true;voiceOverlay.classList.add('show');voiceTitle.textContent='Нажми кнопку и говори';voiceSub.textContent='ГОТОВ';voiceSub.className='';};
@@ -410,7 +452,7 @@ newChatBtn.onclick=function(){initAudio();playClick();newChat();chatsPanel.class
 fontBtn.onclick=function(){initAudio();playClick();buildFontList();fontPanel.classList.add('show');};
 fontClose.onclick=function(){initAudio();playClick();fontPanel.classList.remove('show');};
 
-/* SPEECH RECOGNITION */
+/* ============ SPEECH ============ */
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 var voiceRec=null,voiceIsListening=false,voiceFinal='',voiceContinuous=false;
 if(SR){
