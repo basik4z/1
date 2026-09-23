@@ -6,119 +6,20 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Wave AI">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#001f3f">
 <title>Wave AI</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"SF Pro",sans-serif;background:#000;color:#fff;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased}
-
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
-
-header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:8px}
-.brand{font-size:12px;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:"SF Mono",monospace}
-.hbtns{display:flex;gap:6px}
-.hbtn{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;transition:all 0.15s}
-.hbtn:active{transform:scale(0.92);background:rgba(255,255,255,0.14)}
-.hbtn.active{background:#fff;color:#000;border-color:#fff}
-
-#faceWrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative;transition:flex 0.4s}
-#face{width:min(58vw,230px);height:min(58vw,230px);position:relative;transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1)}
-#face svg{width:100%;height:100%;overflow:visible}
-#face.listening{transform:scale(0.92)}
-
-#ear{opacity:0;transform-origin:150px 100px;transition:opacity 0.35s}
-#face.listening #ear{opacity:1;animation:earPulse 1s infinite ease-in-out}
-@keyframes earPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-
-#hand{opacity:0;transform-origin:190px 150px;transition:opacity 0.3s}
-#face.waving #hand{opacity:1;animation:waveHand 0.5s 4 ease-in-out}
-@keyframes waveHand{
-  0%,100%{transform:rotate(-18deg)}
-  50%{transform:rotate(22deg)}
-}
-
-#mouth{transition:all 0.15s;transform-origin:100px 130px}
-#face.talking #mouth{animation:talkAnim 0.18s infinite alternate}
-@keyframes talkAnim{from{transform:scaleY(1)}to{transform:scaleY(2.8)}}
-
-#eyeL,#eyeR{transform-origin:center;transition:transform 0.1s}
-#face.blink #eyeL,#face.blink #eyeR{transform:scaleY(0.08)}
-#pupilL,#pupilR{transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
-#face.listening #pupilL,#face.listening #pupilR{transform:translate(3px,0)}
-#face.talking #eyeL,#face.talking #eyeR{transform:scaleY(0.75)}
-#browL,#browR{transition:opacity 0.3s}
-#face.listening #browL,#face.listening #browR{opacity:1}
-
-#dialog{text-align:center;font-size:17px;font-weight:300;line-height:1.45;color:#fff;max-width:92%;margin:0 auto 8px;min-height:48px;padding:0 8px;overflow-y:auto;max-height:22vh;transition:all 0.3s}
-#dialog .you{color:rgba(255,255,255,0.4);font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
-#dialog .wave{color:#a5b4fc;font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
-
-#imgBox{margin:0 auto 8px;max-width:80%;display:none}
-#imgBox.show{display:block}
-#imgBox img{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 8px 32px rgba(0,0,0,0.5)}
-
-#status{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:"SF Mono",monospace;text-align:center;margin-bottom:10px;min-height:14px;flex-shrink:0;transition:color 0.3s}
-#status.listening{color:#fff}
-#status.speaking{color:#a5b4fc}
-#status.thinking{color:#fbbf24}
-
-#quick{display:flex;gap:6px;padding:0 0 8px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
-#quick::-webkit-scrollbar{display:none}
-.qbtn{flex-shrink:0;padding:8px 14px;border-radius:16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap}
-.qbtn:active{transform:scale(0.94);background:rgba(255,255,255,0.14)}
-
-#controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
-#talkBtn{position:relative;width:84px;height:84px;border-radius:50%;background:#000;border:1.5px solid rgba(255,255,255,0.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;flex-shrink:0}
-#talkBtn:active{transform:scale(0.94)}
-#talkBtn.active{background:#fff;border-color:#fff;box-shadow:0 0 60px rgba(255,255,255,0.5)}
-#talkBtn.active svg{stroke:#000}
-#talkBtn.listening::before,#talkBtn.listening::after{content:'';position:absolute;width:84px;height:84px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.4);animation:ring 1.6s infinite ease-out}
-#talkBtn.listening::after{animation-delay:0.8s}
-@keyframes ring{0%{transform:scale(1);opacity:0.7}100%{transform:scale(1.7);opacity:0}}
-#talkBtn svg{width:32px;height:32px;stroke:#fff;stroke-width:1.6;fill:none}
-
-.ctrlbtn{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:inherit;font-size:18px}
-.ctrlbtn:active{transform:scale(0.9);background:rgba(255,255,255,0.14)}
-.ctrlbtn.active{background:#fff;color:#000;border-color:#fff}
-
-#chatInput{display:flex;padding:0 0 8px;gap:6px;flex-shrink:0}
-#chatInput input{flex:1;padding:12px 16px;border-radius:22px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:15px;font-family:inherit;outline:none}
-#chatInput input::placeholder{color:rgba(255,255,255,0.3)}
-#chatInput input:focus{border-color:rgba(255,255,255,0.5)}
-#chatInput button{padding:0 18px;border-radius:22px;background:#fff;color:#000;border:none;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
-
-.panel{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.85);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);display:none;flex-direction:column;padding:60px 24px 30px;overflow-y:auto}
-.panel.show{display:flex}
-.panel h3{font-size:22px;margin-bottom:16px}
-.panel p{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.75);margin-bottom:12px}
-.panel code{background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:6px;font-family:"SF Mono",monospace;font-size:12px}
-.panelClose{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;font-family:inherit}
-
-#historyList{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.hist-item{padding:14px;border-radius:16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);cursor:pointer;transition:all 0.15s}
-.hist-item:active{background:rgba(255,255,255,0.12)}
-.hist-item .date{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;font-family:"SF Mono",monospace}
-.hist-item .preview{font-size:13px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-#startScreen{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:40px 24px;transition:opacity 0.8s}
-#startScreen.hide{opacity:0;pointer-events:none}
-#startName{font-size:46px;font-weight:200;letter-spacing:-1px;display:flex;flex-wrap:wrap;justify-content:center}
-#startName span{display:inline-block;opacity:0;transform:translateY(20px);animation:letterIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
-@keyframes letterIn{to{opacity:1;transform:translateY(0)}}
-#startSub{font-size:11px;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.4);font-family:"SF Mono",monospace;opacity:0;animation:fadeIn 1s ease 1s forwards}
-@keyframes fadeIn{to{opacity:1}}
-#startBtn{padding:16px 48px;border-radius:40px;background:transparent;border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:13px;letter-spacing:4px;text-transform:uppercase;font-family:"SF Mono",monospace;cursor:pointer;transition:all 0.3s;opacity:0;animation:fadeIn 1s ease 1.5s forwards}
-#startBtn:active{transform:scale(0.95);background:#fff;color:#000}
-
-@media (max-width:400px){
-#dialog{font-size:15px}
-#talkBtn{width:76px;height:76px}
-#talkBtn svg{width:28px;height:28px}
-#startName{font-size:36px}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div id="bg"></div>
+
+<div id="splash">
+  <div id="splashName"></div>
+  <svg id="waveSweep" viewBox="0 0 400 800" preserveAspectRatio="none">
+    <path id="sweepPath" d="M 0 900 Q 100 900 200 900 T 400 900 L 400 900 L 0 900 Z" fill="#001f3f"/>
+  </svg>
+</div>
 
 <div id="app">
   <header>
@@ -132,26 +33,31 @@ header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items
   <div id="faceWrap">
     <div id="face">
       <svg viewBox="0 0 200 200">
-        <circle cx="100" cy="100" r="78" fill="#000" stroke="#fff" stroke-width="3"/>
+        <circle cx="100" cy="100" r="78" fill="#003366" stroke="#39CCCC" stroke-width="3"/>
         <g id="eyeL">
           <ellipse cx="74" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilL" cx="74" cy="86" r="5" fill="#000"/>
+          <circle id="pupilL" cx="74" cy="86" r="5" fill="#001f3f"/>
           <circle cx="77" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
         </g>
         <g id="eyeR">
           <ellipse cx="126" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilR" cx="126" cy="86" r="5" fill="#000"/>
+          <circle id="pupilR" cx="126" cy="86" r="5" fill="#001f3f"/>
           <circle cx="129" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
         </g>
-        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#39CCCC" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#39CCCC" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#39CCCC" stroke-width="4" fill="none" stroke-linecap="round"/>
         <g id="ear" transform="translate(150, 100)">
-          <path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#fff"/>
-          <path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#000" opacity="0.35"/>
+          <path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#39CCCC"/>
+          <path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#001f3f" opacity="0.5"/>
         </g>
         <g id="hand" transform="translate(160, 130)">
-          <path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#fff"/>
+          <path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#39CCCC"/>
+        </g>
+        <g id="sprayCan" transform="translate(165, 50)">
+          <rect x="0" y="0" width="16" height="34" rx="4" fill="#fff" stroke="#39CCCC" stroke-width="1.5"/>
+          <rect x="2" y="34" width="12" height="8" rx="1" fill="#0074D9"/>
+          <rect x="5" y="-5" width="6" height="5" fill="#39CCCC"/>
         </g>
       </svg>
     </div>
@@ -167,7 +73,7 @@ header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items
     <button class="qbtn" data-say="расскажи шутку">😂 Шутка</button>
     <button class="qbtn" data-say="расскажи факт">💡 Факт</button>
     <button class="qbtn" data-say="который час">🕐 Время</button>
-    <button class="qbtn" data-say="2 плюс 2">🧮 2+2</button>
+    <button class="qbtn" data-say="два плюс два">🧮 2+2</button>
   </div>
 
   <div id="controls">
@@ -192,620 +98,23 @@ header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items
 <div class="panel" id="helpPanel">
   <button class="panelClose" id="helpClose">×</button>
   <h3>Что я умею</h3>
-  <p>💬 <b>Общаться</b> — говори или пиши, отвечу.</p>
-  <p>🧮 <b>Считать</b> — «2 плюс 2», «10 минус 3», «5 умножить на 6».</p>
-  <p>🕐 <b>Время и дата</b> — «который час», «какое число».</p>
+  <p>💬 <b>Общаться</b> — умно, как живой человек.</p>
+  <p>🧮 <b>Считать</b> — «два плюс два», «десять минус три».</p>
+  <p>🎨 <b>Рисовать</b> — «сгенерируй радужного кота».</p>
+  <p>😊 <b>Выражения лица</b> — «злое лицо», «грустное», «удивлённое», «улыбнись», «обычное».</p>
+  <p>🕐 <b>Время</b> — «который час».</p>
   <p>😂 <b>Развлечь</b> — «шутку», «факт».</p>
-  <p>🎲 <b>Случайное</b> — «монетку», «кубик», «число от 1 до 100».</p>
-  <p>📝 <b>Запомнить вкусы</b> — «мне нравится рэп», «я люблю пиццу».</p>
-  <p>📱 <b>Устройство</b> — «что за устройство».</p>
+  <p>❤️ <b>Запомнить вкусы</b> — «мне нравится рэп».</p>
 </div>
 
 <div class="panel" id="histPanel">
   <button class="panelClose" id="histClose">×</button>
   <h3>История чатов</h3>
-  <p style="font-size:12px;color:rgba(255,255,255,0.5)">Сохраняется в этом устройстве автоматически.</p>
+  <p style="font-size:12px;color:rgba(255,255,255,0.5)">Сохраняется на этом устройстве.</p>
   <button class="ctrlbtn" id="clearHist" style="width:auto;padding:10px 20px;border-radius:12px;font-size:13px;margin-bottom:16px">Очистить всю историю</button>
   <div id="historyList"></div>
 </div>
 
-<div id="startScreen">
-  <div id="startName"></div>
-  <div id="startSub">voice assistant</div>
-  <button id="startBtn">Начать</button>
-</div>
-
-<script>
-/* ============================================================
-   ЭЛЕМЕНТЫ
-   ============================================================ */
-var face = document.getElementById('face');
-var dialogEl = document.getElementById('dialog');
-var statusEl = document.getElementById('status');
-var talkBtn = document.getElementById('talkBtn');
-var repeatBtn = document.getElementById('repeatBtn');
-var moodBtn = document.getElementById('moodBtn');
-var chatField = document.getElementById('chatField');
-var chatSend = document.getElementById('chatSend');
-var helpBtn = document.getElementById('helpBtn');
-var helpPanel = document.getElementById('helpPanel');
-var helpClose = document.getElementById('helpClose');
-var histBtn = document.getElementById('histBtn');
-var histPanel = document.getElementById('histPanel');
-var histClose = document.getElementById('histClose');
-var clearHist = document.getElementById('clearHist');
-var historyList = document.getElementById('historyList');
-var imgBox = document.getElementById('imgBox');
-var resultImg = document.getElementById('resultImg');
-var startScreen = document.getElementById('startScreen');
-var startBtn = document.getElementById('startBtn');
-var startName = document.getElementById('startName');
-
-/* ============================================================
-   АНИМАЦИЯ ИМЕНИ
-   ============================================================ */
-['W','a','v','e',' ','A','I'].forEach(function(ch, i){
-  var s = document.createElement('span');
-  s.textContent = ch === ' ' ? '\u00A0' : ch;
-  s.style.animationDelay = (i * 80) + 'ms';
-  startName.appendChild(s);
-});
-
-/* ============================================================
-   ОПРЕДЕЛЕНИЕ УСТРОЙСТВА
-   ============================================================ */
-function detectDevice() {
-  var ua = navigator.userAgent;
-  var os = 'Неизвестно';
-  if (/iPhone/.test(ua)) os = 'iPhone';
-  else if (/iPad/.test(ua)) os = 'iPad';
-  else if (/Android/.test(ua)) os = 'Android';
-  else if (/Mac/.test(ua)) os = 'Mac';
-  else if (/Windows/.test(ua)) os = 'Windows';
-  else if (/Linux/.test(ua)) os = 'Linux';
-
-  var browser = 'Неизвестно';
-  if (/CriOS/.test(ua)) browser = 'Chrome iOS';
-  else if (/FxiOS/.test(ua)) browser = 'Firefox iOS';
-  else if (/EdgiOS/.test(ua)) browser = 'Edge iOS';
-  else if (/Chrome/.test(ua)) browser = 'Chrome';
-  else if (/Safari/.test(ua)) browser = 'Safari';
-  else if (/Firefox/.test(ua)) browser = 'Firefox';
-
-  var screenSize = screen.width + 'x' + screen.height;
-  var lang = navigator.language || 'ru';
-  var tz = '';
-  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e) {}
-
-  var fingerprint = [os, browser, screenSize, lang, tz].join('|');
-  var deviceId = 0;
-  for (var i = 0; i < fingerprint.length; i++) {
-    deviceId = ((deviceId << 5) - deviceId) + fingerprint.charCodeAt(i);
-    deviceId |= 0;
-  }
-  deviceId = Math.abs(deviceId).toString(36);
-
-  return {
-    os: os,
-    browser: browser,
-    screen: screenSize,
-    lang: lang,
-    tz: tz,
-    id: deviceId
-  };
-}
-
-var DEVICE = detectDevice();
-var DEVICE_KEY = 'wave_device_' + DEVICE.id;
-var DEVICE_DATA = {};
-try {
-  DEVICE_DATA = JSON.parse(localStorage.getItem(DEVICE_KEY) || '{}');
-} catch(e) { DEVICE_DATA = {}; }
-
-function saveDevice() {
-  try { localStorage.setItem(DEVICE_KEY, JSON.stringify(DEVICE_DATA)); } catch(e) {}
-}
-
-if (!DEVICE_DATA.firstSeen) {
-  DEVICE_DATA.firstSeen = Date.now();
-  DEVICE_DATA.visits = 1;
-  saveDevice();
-} else {
-  DEVICE_DATA.visits = (DEVICE_DATA.visits || 0) + 1;
-  saveDevice();
-}
-
-/* ============================================================
-   ИСТОРИЯ ЧАТОВ
-   ============================================================ */
-var HISTORY = [];
-try {
-  HISTORY = JSON.parse(localStorage.getItem(DEVICE_KEY + '_history') || '[]');
-} catch(e) { HISTORY = []; }
-
-function saveHistory() {
-  if (HISTORY.length > 100) HISTORY = HISTORY.slice(-100);
-  try { localStorage.setItem(DEVICE_KEY + '_history', JSON.stringify(HISTORY)); } catch(e) {}
-}
-
-function addToHistory(role, text) {
-  HISTORY.push({ role: role, text: text, time: Date.now() });
-  saveHistory();
-}
-
-/* ============================================================
-   ВКУСЫ
-   ============================================================ */
-var TASTES = [];
-try {
-  TASTES = JSON.parse(localStorage.getItem(DEVICE_KEY + '_tastes') || '[]');
-} catch(e) { TASTES = []; }
-
-function saveTastes() {
-  try { localStorage.setItem(DEVICE_KEY + '_tastes', JSON.stringify(TASTES)); } catch(e) {}
-}
-
-function detectTaste(text) {
-  var t = text.toLowerCase();
-  var match = t.match(/(?:мне нравится|я люблю|обожаю|предпочитаю|мой любимый|моя любимая)[\s,:-]+(.+)/i);
-  if (match) {
-    var taste = match[1].trim().replace(/[.!?]+$/, '');
-    if (taste && TASTES.indexOf(taste) < 0) {
-      TASTES.push(taste);
-      saveTastes();
-      return 'Запомнил: тебе нравится ' + taste + '.';
-    }
-  }
-  return null;
-}
-
-function getTastesContext() {
-  if (TASTES.length === 0) return '';
-  return 'Важно: пользователю нравится: ' + TASTES.join(', ') + '.';
-}
-
-/* ============================================================
-   ЗВУКИ
-   ============================================================ */
-var audioCtx = null;
-function initAudio() {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-  } catch(e) {}
-}
-function playClick() {
-  initAudio(); if (!audioCtx) return;
-  var t = audioCtx.currentTime;
-  var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type = 'sine';
-  o.frequency.setValueAtTime(880, t);
-  o.frequency.exponentialRampToValueAtTime(1200, t + 0.05);
-  g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(0.1, t + 0.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
-  o.connect(g).connect(audioCtx.destination);
-  o.start(t); o.stop(t + 0.15);
-}
-
-/* ============================================================
-   ГОЛОС
-   ============================================================ */
-var currentAudio = null;
-var lastSpokenText = '';
-var useNeural = true;
-var VOICE_NAME = 'echo';
-
-function stopSpeak() {
-  if (currentAudio) { try { currentAudio.pause(); } catch(e){} currentAudio = null; }
-  try { speechSynthesis.cancel(); } catch(e){}
-}
-
-function speak(text, onEnd) {
-  if (!text) { if (onEnd) onEnd(); return; }
-  lastSpokenText = text;
-  stopSpeak();
-
-  face.classList.add('talking');
-  face.classList.remove('listening');
-  statusEl.textContent = 'говорит';
-  statusEl.className = 'speaking';
-  dialogEl.innerHTML = '<span class="wave">Wave</span>' + text;
-
-  if (useNeural) {
-    try {
-      var url = 'https://text.pollinations.ai/' + encodeURIComponent(text) +
-                '?model=openai-audio&voice=' + VOICE_NAME;
-      var audio = new Audio(url);
-      currentAudio = audio;
-      audio.onended = function() {
-        face.classList.remove('talking');
-        statusEl.textContent = 'готов';
-        statusEl.className = '';
-        currentAudio = null;
-        if (onEnd) onEnd();
-      };
-      audio.onerror = function() {
-        useNeural = false;
-        systemSpeak(text, onEnd);
-      };
-      var p = audio.play();
-      if (p && p.catch) p.catch(function(){ useNeural = false; systemSpeak(text, onEnd); });
-      return;
-    } catch(e) {
-      useNeural = false;
-      systemSpeak(text, onEnd);
-      return;
-    }
-  }
-  systemSpeak(text, onEnd);
-}
-
-function systemSpeak(text, onEnd) {
-  if (!('speechSynthesis' in window)) { if (onEnd) onEnd(); return; }
-  try { speechSynthesis.cancel(); } catch(e){}
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ru-RU';
-  u.rate = 1.0;
-  u.pitch = 0.85;
-  var voices = speechSynthesis.getVoices();
-  var male = voices.find(function(v){ return v.name && (v.name.indexOf('Yuri') >= 0 || v.name.indexOf('Юрий') >= 0); });
-  var ru = male || voices.find(function(v){ return v.lang === 'ru-RU'; }) || voices.find(function(v){ return v.lang && v.lang.indexOf('ru') === 0; });
-  if (ru) u.voice = ru;
-  u.onend = function() {
-    face.classList.remove('talking');
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-    if (onEnd) onEnd();
-  };
-  u.onerror = u.onend;
-  speechSynthesis.speak(u);
-}
-
-/* ============================================================
-   ИИ
-   ============================================================ */
-var conversationHistory = [];
-var BASE_SYSTEM = 'Ты Wave AI, дружелюбный голосовой ассистент мужского пола. Отвечай коротко по-русски, 1-2 предложения, живо, естественно. Без смайликов и разметки.';
-
-function askAI(userText) {
-  conversationHistory.push({ role: 'user', content: userText });
-  if (conversationHistory.length > 20) conversationHistory.splice(0, conversationHistory.length - 20);
-
-  var sys = BASE_SYSTEM;
-  var tasteContext = getTastesContext();
-  if (tasteContext) sys += ' ' + tasteContext;
-
-  return fetch('https://text.pollinations.ai/openai', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'openai',
-      messages: [{ role: 'system', content: sys }].concat(conversationHistory),
-      temperature: 0.9,
-      max_tokens: 120
-    })
-  })
-  .then(function(res){
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
-  })
-  .then(function(data){
-    var reply = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || data.response || '';
-    reply = String(reply).replace(/[*_`#]/g,'').replace(/\n+/g,' ').trim();
-    if (!reply) reply = 'Хм, не знаю что сказать.';
-    conversationHistory.push({ role: 'assistant', content: reply });
-    return reply;
-  })
-  .catch(function(err){
-    console.warn('AI error:', err);
-    return fallbackAnswer(userText);
-  });
-}
-
-/* ============================================================
-   КОМАНДЫ
-   ============================================================ */
-function handleCommand(text) {
-  var t = text.toLowerCase().trim();
-
-  var math = tryMath(t);
-  if (math !== null) return 'Получается ' + math + '.';
-
-  if (t.indexOf('который час') >= 0 || t.indexOf('сколько времени') >= 0) {
-    var d = new Date();
-    return 'Сейчас ' + d.getHours() + ' часов ' + d.getMinutes() + ' минут.';
-  }
-  if (t.indexOf('какое число') >= 0 || t.indexOf('какая дата') >= 0) {
-    var d2 = new Date();
-    var months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-    return 'Сегодня ' + d2.getDate() + ' ' + months[d2.getMonth()] + ' ' + d2.getFullYear() + ' года.';
-  }
-  if (t.indexOf('монетк') >= 0) return Math.random() < 0.5 ? 'Выпал орёл.' : 'Выпала решка.';
-  if (t.indexOf('кубик') >= 0) return 'Выпало ' + (Math.floor(Math.random()*6)+1) + '.';
-
-  var rndM = t.match(/(?:случайное|рандом|число)\s*(?:от\s*)?(\d+)\s*(?:до|-)\s*(\d+)/);
-  if (rndM) {
-    var a = +rndM[1], b = +rndM[2];
-    return 'Случайное число: ' + (Math.floor(Math.random()*(b-a+1))+a) + '.';
-  }
-
-  var tasteResult = detectTaste(text);
-  if (tasteResult) return tasteResult;
-  if (t.indexOf('что мне нравится') >= 0 || t.indexOf('мои вкусы') >= 0) {
-    if (TASTES.length === 0) return 'Ты пока не рассказывал о своих вкусах.';
-    return 'Тебе нравится: ' + TASTES.join(', ') + '.';
-  }
-
-  if (t.indexOf('шутк') >= 0 || t.indexOf('анекдот') >= 0) {
-    var jokes = [
-      'Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 равно DEC 25.',
-      'Заходит нейросеть в бар, а бармен: вам как обычно? Нейросеть: я тут впервые.',
-      'Что сказал один бит другому? Ты мне нравишься, но у нас разные байты.',
-      'Программист ставит на ночь два стакана: один с водой, второй пустой.',
-      'Почему у программистов путаница в личной жизни? Потому что ищут баг, а находят фичу.'
-    ];
-    return jokes[Math.floor(Math.random()*jokes.length)];
-  }
-  if (t.indexOf('факт') >= 0) {
-    var facts = [
-      'Осьминог имеет три сердца и голубую кровь.',
-      'Мёд не портится — археологи находили съедобный мёд в гробницах возрастом 3000 лет.',
-      'Бананы — это ягоды, а малина — нет.',
-      'У улитки около 25 тысяч зубов.',
-      'Человеческий мозг тратит 20 процентов всей энергии тела.',
-      'Свет от Солнца доходит до Земли за 8 минут 20 секунд.'
-    ];
-    return facts[Math.floor(Math.random()*facts.length)];
-  }
-
-  if (t.indexOf('что за устройство') >= 0 || t.indexOf('какое у меня устройство') >= 0) {
-    return 'Ты используешь ' + DEVICE.os + ' в браузере ' + DEVICE.browser + '. Экран ' + DEVICE.screen + '. Визитов: ' + DEVICE_DATA.visits + '.';
-  }
-  return null;
-}
-
-function tryMath(text) {
-  var s = ' ' + text.toLowerCase() + ' ';
-  s = s.replace(/\s*сколько\s*(будет)?\s*/g,' ');
-  s = s.replace(/\s*посчитай\s*/g,' ');
-  s = s.replace(/\bплюс\b/g,'+');
-  s = s.replace(/\bприбавить\b/g,'+');
-  s = s.replace(/\bминус\b/g,'-');
-  s = s.replace(/\bотнять\b/g,'-');
-  s = s.replace(/\bвычесть\b/g,'-');
-  s = s.replace(/\bумножить на\b/g,'*');
-  s = s.replace(/\bумножить\b/g,'*');
-  s = s.replace(/\bразделить на\b/g,'/');
-  s = s.replace(/\bразделить\b/g,'/');
-  s = s.replace(/,/g,'.');
-  s = s.replace(/[^0-9+\-*\/.\s()]/g,' ');
-  s = s.trim();
-  if (!/[0-9]/.test(s) || !/[+\-*\/]/.test(s)) return null;
-  if (!/^[0-9+\-*\/.()\s]+$/.test(s)) return null;
-  try {
-    var r = Function('"use strict";return (' + s + ')')();
-    if (typeof r !== 'number' || !isFinite(r)) return null;
-    return Math.round(r * 10000) / 10000;
-  } catch(e) { return null; }
-}
-
-function fallbackAnswer(text) {
-  var t = text.toLowerCase();
-  if (t.indexOf('привет') >= 0) return 'Привет! Как ты?';
-  if (t.indexOf('как дела') >= 0) return 'Отлично! А у тебя как?';
-  if (t.indexOf('как ты') >= 0) return 'Хорошо, спасибо. А ты как?';
-  if (t.indexOf('кто ты') >= 0) return 'Я Wave AI, твой голосовой ассистент.';
-  if (t.indexOf('как тебя зовут') >= 0) return 'Меня зовут Wave.';
-  if (t.indexOf('пока') >= 0 || t.indexOf('до свидания') >= 0) return 'Пока! Возвращайся.';
-  if (t.indexOf('спасибо') >= 0) return 'Пожалуйста!';
-  return 'Интересно. Расскажи подробнее.';
-}
-
-/* ============================================================
-   ОБРАБОТКА
-   ============================================================ */
-function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
-
-function processUserText(text) {
-  if (!text || !text.trim()) return;
-  text = text.trim();
-  dialogEl.innerHTML = '<span class="you">ты</span>' + text;
-  addToHistory('user', text);
-  imgBox.classList.remove('show');
-
-  var cmd = handleCommand(text);
-  if (cmd) {
-    sleep(250).then(function() {
-      addToHistory('wave', cmd);
-      speak(cmd);
-    });
-    return;
-  }
-
-  statusEl.textContent = 'думает';
-  statusEl.className = 'thinking';
-  askAI(text).then(function(reply) {
-    addToHistory('wave', reply);
-    speak(reply);
-  });
-}
-
-/* ============================================================
-   РАСПОЗНАВАНИЕ РЕЧИ
-   ============================================================ */
-var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-var recognition = null;
-var isListening = false;
-var finalText = '';
-
-if (SR) {
-  recognition = new SR();
-  recognition.lang = 'ru-RU';
-  recognition.interimResults = true;
-  recognition.continuous = false;
-
-  recognition.onstart = function() {
-    isListening = true;
-    face.classList.add('listening');
-    talkBtn.classList.add('active','listening');
-    statusEl.textContent = 'слушаю';
-    statusEl.className = 'listening';
-    finalText = '';
-    dialogEl.innerHTML = '';
-  };
-
-  recognition.onresult = function(e) {
-    var interim = '', final = '';
-    for (var i = e.resultIndex; i < e.results.length; i++) {
-      var t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) final += t; else interim += t;
-    }
-    if (final) finalText += final;
-    dialogEl.innerHTML = '<span class="you">ты</span>' + (finalText + ' ' + interim).trim();
-  };
-
-  recognition.onerror = function(e) {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('active','listening');
-    if (e.error === 'not-allowed') {
-      dialogEl.textContent = 'Дай доступ к микрофону';
-    }
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-  };
-
-  recognition.onend = function() {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('active','listening');
-    var t = finalText.trim();
-    if (t) {
-      processUserText(t);
-    } else {
-      statusEl.textContent = 'готов';
-      statusEl.className = '';
-      speak('Не расслышал. Повтори ещё раз.');
-    }
-  };
-}
-
-/* ============================================================
-   КНОПКИ
-   ============================================================ */
-talkBtn.onclick = function() {
-  initAudio();
-  playClick();
-  if (!SR) { speak('Браузер не поддерживает микрофон.'); return; }
-  if (isListening) { recognition.stop(); return; }
-  stopSpeak();
-  face.classList.remove('talking','waving');
-  try { recognition.start(); } catch(e) {}
-};
-
-repeatBtn.onclick = function() {
-  initAudio(); playClick();
-  if (lastSpokenText) speak(lastSpokenText);
-  else speak('Пока нечего повторять.');
-};
-
-chatSend.onclick = function() {
-  var t = chatField.value.trim();
-  if (!t) return;
-  initAudio(); playClick();
-  chatField.value = '';
-  stopSpeak();
-  processUserText(t);
-};
-chatField.onkeydown = function(e) { if (e.key === 'Enter') chatSend.click(); };
-
-document.querySelectorAll('.qbtn').forEach(function(btn) {
-  btn.onclick = function() {
-    initAudio(); playClick();
-    stopSpeak();
-    processUserText(btn.dataset.say);
-  };
-});
-
-helpBtn.onclick = function() { initAudio(); playClick(); helpPanel.classList.add('show'); };
-helpClose.onclick = function() { initAudio(); playClick(); helpPanel.classList.remove('show'); };
-
-histBtn.onclick = function() {
-  initAudio(); playClick();
-  renderHistory();
-  histPanel.classList.add('show');
-};
-histClose.onclick = function() { initAudio(); playClick(); histPanel.classList.remove('show'); };
-
-clearHist.onclick = function() {
-  initAudio(); playClick();
-  if (confirm('Очистить всю историю?')) {
-    HISTORY = [];
-    saveHistory();
-    renderHistory();
-  }
-};
-
-function renderHistory() {
-  historyList.innerHTML = '';
-  if (HISTORY.length === 0) {
-    historyList.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-size:13px">История пуста.</p>';
-    return;
-  }
-  var items = HISTORY.slice(-30).reverse();
-  items.forEach(function(item) {
-    var el = document.createElement('div');
-    el.className = 'hist-item';
-    var d = new Date(item.time);
-    var timeStr = d.getDate() + '.' + (d.getMonth()+1) + ' ' + d.getHours() + ':' + (d.getMinutes()<10?'0':'') + d.getMinutes();
-    var who = item.role === 'user' ? '👤 Ты: ' : '🌊 Wave: ';
-    el.innerHTML = '<div class="date">' + timeStr + '</div><div class="preview">' + who + escapeHtml(item.text) + '</div>';
-    historyList.appendChild(el);
-  });
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, function(c) {
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-  });
-}
-
-/* ============================================================
-   МОРГАНИЕ
-   ============================================================ */
-function blink() {
-  face.classList.add('blink');
-  setTimeout(function(){ face.classList.remove('blink'); }, 120);
-  setTimeout(blink, 2500 + Math.random() * 3500);
-}
-setTimeout(blink, 1500);
-
-/* ============================================================
-   СТАРТ
-   ============================================================ */
-startBtn.onclick = function() {
-  initAudio();
-  playClick();
-  startScreen.classList.add('hide');
-  setTimeout(function(){ startScreen.remove(); }, 900);
-
-  setTimeout(function() {
-    face.classList.add('waving');
-    setTimeout(function() { face.classList.remove('waving'); }, 2500);
-
-    var greeting;
-    if (DEVICE_DATA.visits > 1) {
-      greeting = 'С возвращением! Ты уже заходил сюда ' + DEVICE_DATA.visits + ' раз.';
-    } else {
-      greeting = 'Привет! Я Wave AI. Буду с тобой сегодня разговаривать.';
-    }
-    speak(greeting);
-  }, 400);
-};
-
-document.body.addEventListener('touchstart', function(){ initAudio(); }, { once: true });
-document.body.addEventListener('click', function(){ initAudio(); }, { once: true });
-</script>
+<script src="app.js"></script>
 </body>
 </html>
