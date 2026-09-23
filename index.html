@@ -8,65 +8,177 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#001f3f">
 <title>Wave AI</title>
-<link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"SF Pro",sans-serif;color:#fff;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:0;background-size:400% 400%;animation:gS 15s ease infinite;transition:background .8s}
+@keyframes gS{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#bg.wave{background:linear-gradient(135deg,#001f3f,#0074D9,#39CCCC);background-size:400% 400%}
+#bg.lion{background:linear-gradient(135deg,#7c2d12,#ea580c,#fbbf24);background-size:400% 400%}
+#bg.crocodile{background:linear-gradient(135deg,#052e16,#166534,#4ade80);background-size:400% 400%}
+#bg.dragon{background:linear-gradient(135deg,#450a0a,#dc2626,#f87171);background-size:400% 400%}
+#bg.panda{background:linear-gradient(135deg,#1f1f1f,#525252,#fbcfe8);background-size:400% 400%}
+#bg.tiger{background:linear-gradient(135deg,#1c1917,#ea580c,#fbbf24);background-size:400% 400%}
+#bg.frog{background:linear-gradient(135deg,#022c22,#059669,#6ee7b7);background-size:400% 400%}
+#bg.wolf{background:linear-gradient(135deg,#0a0a0a,#404040,#a3a3a3);background-size:400% 400%}
+#bg.shark{background:linear-gradient(135deg,#082f49,#0284c7,#67e8f9);background-size:400% 400%}
+#bg.bee{background:linear-gradient(135deg,#000,#ca8a04,#fde047);background-size:400% 400%}
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.fxb{position:absolute;bottom:-20px;border-radius:50%;background:rgba(255,255,255,.3);animation:bu linear infinite}
+@keyframes bu{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
+.fxr{position:absolute;top:-100px;width:80px;height:300px;background:linear-gradient(180deg,rgba(255,255,200,.3),transparent);transform-origin:top center;animation:rp 4s ease-in-out infinite}
+@keyframes rp{0%,100%{opacity:.3;transform:rotate(-5deg)}50%{opacity:.7;transform:rotate(5deg)}}
+.fxw{position:absolute;bottom:0;left:0;width:200%;height:60px;background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.4) 0,transparent 70%);border-radius:50% 50% 0 0;animation:wm 6s linear infinite}
+@keyframes wm{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.fxd{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,220,50,.6);animation:fa linear infinite}
+@keyframes fa{0%,100%{transform:translate(0,0)}25%{transform:translate(50px,-30px)}50%{transform:translate(-30px,-60px)}75%{transform:translate(40px,-20px)}}
+.fxs{position:absolute;bottom:-60px;width:80px;height:80px;background:radial-gradient(circle,rgba(180,180,180,.4),transparent 70%);border-radius:50%;animation:sm linear infinite}
+@keyframes sm{0%{transform:translateY(0) scale(.5);opacity:0}20%{opacity:.6}100%{transform:translateY(-100vh) scale(2);opacity:0}}
+#splash{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .6s;background:rgba(0,0,0,.9)}
+#splash.gone{opacity:0}
+#splashName{font-size:52px;font-weight:200;color:#fff;text-shadow:0 0 40px rgba(255,255,255,.6);z-index:2;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;position:relative}
+#splashName span{display:inline-block;opacity:0;transform:translateY(30px);animation:li .6s cubic-bezier(.34,1.56,.64,1) forwards}
+#splashEmoji{font-size:60px;opacity:0;animation:li .6s .8s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes li{to{opacity:1;transform:translateY(0)}}
+#waveSweep{position:absolute;inset:0;z-index:3;pointer-events:none}
+#waveSweep svg{width:100%;height:100%}
+#app{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;height:100dvh;opacity:0;transition:opacity .5s;padding-top:max(20px,env(safe-area-inset-top));padding-bottom:max(20px,env(safe-area-inset-bottom));padding-left:16px;padding-right:16px}
+#app.show{opacity:1}
+header{padding:8px 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:8px}
+.brand{font-size:12px;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.7);font-family:"SF Mono",monospace}
+.hbtns{display:flex;gap:6px}
+.hbtn{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;transition:all .15s}
+.hbtn:active{transform:scale(.92);background:rgba(255,255,255,.3)}
+#faceWrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
+#face{width:min(58vw,230px);height:min(58vw,230px);position:relative;transition:transform .5s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 0 30px rgba(255,255,255,.3))}
+#face svg{width:100%;height:100%;overflow:visible}
+#face.listening{transform:scale(.92)}
+#face.spraying{animation:spA .6s infinite}
+@keyframes spA{0%,100%{transform:rotate(-3deg) scale(.95)}50%{transform:rotate(3deg) scale(1.05)}}
+#sprayCan{opacity:0;transition:opacity .3s}
+#face.spraying #sprayCan{opacity:1;animation:spW .4s infinite}
+@keyframes spW{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+#ear{opacity:0;transform-origin:150px 100px;transition:opacity .35s}
+#face.listening #ear{opacity:1;animation:eP 1s infinite ease-in-out}
+@keyframes eP{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+#hand{opacity:0;transform-origin:190px 150px;transition:opacity .3s}
+#face.waving #hand{opacity:1;animation:wH .5s 4 ease-in-out}
+@keyframes wH{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(22deg)}}
+#mouth{transition:all .15s;transform-origin:100px 130px}
+#face.talking #mouth{animation:tA .18s infinite alternate}
+@keyframes tA{from{transform:scaleY(1)}to{transform:scaleY(2.8)}}
+#face.sad #mouth{transform:translateY(-6px) scaleY(.6) scaleX(.7)}
+#face.angry #mouth{transform:translateY(4px) scaleY(1.3) scaleX(.8)}
+#face.surprised #mouth{transform:scaleY(2.5) scaleX(.6)}
+#face.happy #mouth{transform:translateY(2px) scaleY(1.3) scaleX(1.2)}
+#eyeL,#eyeR{transform-origin:center;transition:transform .1s}
+#face.blink #eyeL,#face.blink #eyeR{transform:scaleY(.08)}
+#face.sad #eyeL,#face.sad #eyeR{transform:scaleY(.7)}
+#face.angry #browL,#face.angry #browR{opacity:1}
+#face.angry #browL{transform:translateY(6px) rotate(20deg)}
+#face.angry #browR{transform:translateY(6px) rotate(-20deg)}
+#face.surprised #browL,#face.surprised #browR{opacity:1}
+#face.surprised #browL{transform:translateY(-8px)}
+#face.surprised #browR{transform:translateY(-8px)}
+#pupilL,#pupilR{transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+#face.listening #pupilL,#face.listening #pupilR{transform:translate(3px,0)}
+#face.talking #eyeL,#face.talking #eyeR{transform:scaleY(.75)}
+#browL,#browR{transition:all .3s}
+#face.listening #browL,#face.listening #browR{opacity:1}
+#dialog{text-align:center;font-size:17px;font-weight:300;line-height:1.45;color:#fff;max-width:92%;margin:0 auto 8px;min-height:44px;padding:0 8px;overflow-y:auto;max-height:20vh;transition:all .3s;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+#dialog .you{color:rgba(255,255,255,.6);font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
+#dialog .wave{color:#39CCCC;font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
+#imgBox{margin:0 auto 8px;max-width:75%;display:none;animation:iI .6s cubic-bezier(.34,1.56,.64,1)}
+#imgBox.show{display:block}
+@keyframes iI{from{opacity:0;transform:scale(.5) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+#imgBox img{width:100%;border-radius:20px;border:2px solid rgba(255,255,255,.4);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+#attached{max-width:60%;margin:0 auto 8px;display:none;position:relative}
+#attached.show{display:block}
+#attached img{width:100%;border-radius:14px;border:2px solid rgba(255,255,255,.5);box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#attached .rm{position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#dc2626;color:#fff;border:2px solid #fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+#status{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.5);font-family:"SF Mono",monospace;text-align:center;margin-bottom:10px;min-height:14px;flex-shrink:0;transition:color .3s}
+#status.listening{color:#fff}
+#status.speaking{color:#39CCCC}
+#status.thinking{color:#FFDC00}
+#quick{display:flex;gap:6px;padding:0 0 8px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+#quick::-webkit-scrollbar{display:none}
+.qbtn{flex-shrink:0;padding:8px 14px;border-radius:16px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.qbtn:active{transform:scale(.94);background:rgba(255,255,255,.3)}
+#controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
+#talkBtn{position:relative;width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,.5);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+#talkBtn:active{transform:scale(.94)}
+#talkBtn.active{background:#fff;border-color:#fff;box-shadow:0 0 60px rgba(255,255,255,.8)}
+#talkBtn.active svg{stroke:#0074D9}
+#talkBtn.listening::before,#talkBtn.listening::after{content:'';position:absolute;width:84px;height:84px;border-radius:50%;border:2px solid rgba(255,255,255,.6);animation:rng 1.6s infinite ease-out}
+#talkBtn.listening::after{animation-delay:.8s}
+@keyframes rng{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+#talkBtn svg{width:32px;height:32px;stroke:#fff;stroke-width:1.8;fill:none}
+.ctrlbtn{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;font-size:18px}
+.ctrlbtn:active{transform:scale(.9);background:rgba(255,255,255,.3)}
+.ctrlbtn.active{background:#fff;color:#0074D9;border-color:#fff}
+#chatInput{display:flex;padding:0 0 8px;gap:6px;flex-shrink:0;align-items:center}
+#chatInput input[type=text]{flex:1;padding:12px 16px;border-radius:22px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:15px;font-family:inherit;outline:none}
+#chatInput input[type=text]::placeholder{color:rgba(255,255,255,.5)}
+#chatInput input[type=text]:focus{border-color:#fff;background:rgba(255,255,255,.25)}
+#chatInput button{padding:0 18px;height:44px;border-radius:22px;background:#fff;color:#0074D9;border:none;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+#attachBtn{padding:0;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#attachBtn:active{transform:scale(.9);background:rgba(255,255,255,.3)}
+#fileInput{display:none}
+.panel{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;flex-direction:column;padding:60px 24px 30px;overflow-y:auto}
+.panel.show{display:flex}
+.panel h3{font-size:22px;margin-bottom:16px;color:#39CCCC}
+.panel p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.85);margin-bottom:12px}
+.panelClose{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:20px;cursor:pointer;font-family:inherit}
+.theme-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.theme-item{padding:16px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);cursor:pointer;text-align:center;font-family:inherit;color:#fff;transition:all .15s}
+.theme-item:active{transform:scale(.95);background:rgba(255,255,255,.2)}
+.theme-item.active{border-color:#39CCCC;background:rgba(57,204,204,.3)}
+.theme-item .em{font-size:32px;display:block;margin-bottom:6px}
+.theme-item .nm{font-size:13px}
+#historyList{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.hist-item{padding:14px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.hist-item .date{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-family:"SF Mono",monospace}
+.hist-item .preview{font-size:13px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:400px){#dialog{font-size:15px}#talkBtn{width:76px;height:76px}#talkBtn svg{width:28px;height:28px}#splashName{font-size:38px}}
+</style>
 </head>
 <body>
-
-<div id="bg"></div>
-
+<div id="bg" class="wave"></div>
+<div id="fx"></div>
 <div id="splash">
   <div id="splashName"></div>
   <svg id="waveSweep" viewBox="0 0 400 800" preserveAspectRatio="none">
     <path id="sweepPath" d="M 0 900 Q 100 900 200 900 T 400 900 L 400 900 L 0 900 Z" fill="#001f3f"/>
   </svg>
 </div>
-
 <div id="app">
   <header>
     <div class="brand">WAVE · AI</div>
     <div class="hbtns">
-      <button class="hbtn" id="histBtn" title="История">⏱</button>
-      <button class="hbtn" id="helpBtn" title="Помощь">?</button>
+      <button class="hbtn" id="themeBtn">🎨</button>
+      <button class="hbtn" id="histBtn">⏱</button>
+      <button class="hbtn" id="helpBtn">?</button>
     </div>
   </header>
-
   <div id="faceWrap">
     <div id="face">
       <svg viewBox="0 0 200 200">
-        <circle cx="100" cy="100" r="78" fill="#003366" stroke="#39CCCC" stroke-width="3"/>
-        <g id="eyeL">
-          <ellipse cx="74" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilL" cx="74" cy="86" r="5" fill="#001f3f"/>
-          <circle cx="77" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
-        </g>
-        <g id="eyeR">
-          <ellipse cx="126" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilR" cx="126" cy="86" r="5" fill="#001f3f"/>
-          <circle cx="129" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
-        </g>
-        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#39CCCC" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#39CCCC" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#39CCCC" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <g id="ear" transform="translate(150, 100)">
-          <path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#39CCCC"/>
-          <path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#001f3f" opacity="0.5"/>
-        </g>
-        <g id="hand" transform="translate(160, 130)">
-          <path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#39CCCC"/>
-        </g>
-        <g id="sprayCan" transform="translate(165, 50)">
-          <rect x="0" y="0" width="16" height="34" rx="4" fill="#fff" stroke="#39CCCC" stroke-width="1.5"/>
-          <rect x="2" y="34" width="12" height="8" rx="1" fill="#0074D9"/>
-          <rect x="5" y="-5" width="6" height="5" fill="#39CCCC"/>
-        </g>
+        <circle cx="100" cy="100" r="78" fill="rgba(0,0,0,0.4)" stroke="#fff" stroke-width="3"/>
+        <g id="eyeL"><ellipse cx="74" cy="86" rx="10" ry="13" fill="#fff"/><circle id="pupilL" cx="74" cy="86" r="5" fill="#000"/><circle cx="77" cy="83" r="1.8" fill="#fff" opacity=".9"/></g>
+        <g id="eyeR"><ellipse cx="126" cy="86" rx="10" ry="13" fill="#fff"/><circle id="pupilR" cx="126" cy="86" r="5" fill="#000"/><circle cx="129" cy="83" r="1.8" fill="#fff" opacity=".9"/></g>
+        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <g id="ear" transform="translate(150, 100)"><path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#fff"/><path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#000" opacity=".5"/></g>
+        <g id="hand" transform="translate(160, 130)"><path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#fff"/></g>
+        <g id="sprayCan" transform="translate(165, 50)"><rect x="0" y="0" width="16" height="34" rx="4" fill="#fff" stroke="#39CCCC" stroke-width="1.5"/><rect x="2" y="34" width="12" height="8" rx="1" fill="#0074D9"/><rect x="5" y="-5" width="6" height="5" fill="#39CCCC"/></g>
       </svg>
     </div>
   </div>
-
+  <div id="attached"><img id="attachedImg" alt=""><button class="rm" id="removeAttach">×</button></div>
   <div id="imgBox"><img id="resultImg" alt=""></div>
   <div id="dialog"></div>
   <div id="status">готов</div>
-
   <div id="quick">
     <button class="qbtn" data-say="привет">👋 Привет</button>
     <button class="qbtn" data-say="как дела">💭 Как дела</button>
@@ -75,46 +187,134 @@
     <button class="qbtn" data-say="который час">🕐 Время</button>
     <button class="qbtn" data-say="два плюс два">🧮 2+2</button>
   </div>
-
   <div id="controls">
-    <button class="ctrlbtn" id="repeatBtn" title="Повторить">↻</button>
-    <button id="talkBtn">
-      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    </button>
-    <button class="ctrlbtn" id="moodBtn" title="Настроение">😊</button>
+    <button class="ctrlbtn" id="repeatBtn">↻</button>
+    <button id="talkBtn"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+    <button class="ctrlbtn" id="moodBtn">😊</button>
   </div>
-
   <div id="chatInput">
-    <input id="chatField" type="text" placeholder="Напиши сообщение…" autocomplete="off">
+    <button id="attachBtn">📎</button>
+    <input type="file" id="fileInput" accept="image/*">
+    <input id="chatField" type="text" placeholder="Сообщение…" autocomplete="off">
     <button id="chatSend">→</button>
   </div>
 </div>
-
+<div class="panel" id="themePanel">
+  <button class="panelClose" id="themeClose">×</button>
+  <h3>Выбери тему</h3>
+  <div class="theme-list" id="themeList"></div>
+</div>
 <div class="panel" id="helpPanel">
   <button class="panelClose" id="helpClose">×</button>
   <h3>Что я умею</h3>
-  <p>💬 <b>Общаться</b> — умно, как живой человек.</p>
-  <p>🧮 <b>Считать</b> — «два плюс два», «десять минус три».</p>
-  <p>🎨 <b>Рисовать</b> — «сгенерируй радужного кота».</p>
-  <p>😊 <b>Выражения лица</b> — «злое лицо», «грустное», «удивлённое», «улыбнись», «обычное».</p>
-  <p>🕐 <b>Время</b> — «который час».</p>
-  <p>😂 <b>Развлечь</b> — «шутку», «факт».</p>
-  <p>❤️ <b>Запомнить вкусы</b> — «мне нравится рэп».</p>
+  <p>💬 Общаться умно</p>
+  <p>🧮 Считать: «два плюс два»</p>
+  <p>🎨 Рисовать: «сгенерируй кота»</p>
+  <p>😊 Лицо: «злое», «грустное», «удивлённое», «улыбнись»</p>
+  <p>🎨 Темы: кнопка 🎨</p>
+  <p>📎 Прикрепить фото</p>
 </div>
-
 <div class="panel" id="histPanel">
   <button class="panelClose" id="histClose">×</button>
-  <h3>История чатов</h3>
-  <p style="font-size:12px;color:rgba(255,255,255,0.5)">Сохраняется на этом устройстве.</p>
-  <button class="ctrlbtn" id="clearHist" style="width:auto;padding:10px 20px;border-radius:12px;font-size:13px;margin-bottom:16px">Очистить всю историю</button>
+  <h3>История</h3>
+  <button class="ctrlbtn" id="clearHist" style="width:auto;padding:10px 20px;border-radius:12px;font-size:13px;margin-bottom:16px">Очистить</button>
   <div id="historyList"></div>
 </div>
-
-<script src="app.js"></script>
+<script>
+var $=function(id){return document.getElementById(id)};
+var face=$('face'),dialogEl=$('dialog'),statusEl=$('status'),talkBtn=$('talkBtn'),repeatBtn=$('repeatBtn'),moodBtn=$('moodBtn'),chatField=$('chatField'),chatSend=$('chatSend'),attachBtn=$('attachBtn'),fileInput=$('fileInput'),attached=$('attached'),attachedImg=$('attachedImg'),removeAttach=$('removeAttach'),helpBtn=$('helpBtn'),helpPanel=$('helpPanel'),helpClose=$('helpClose'),histBtn=$('histBtn'),histPanel=$('histPanel'),histClose=$('histClose'),clearHist=$('clearHist'),historyList=$('historyList'),themeBtn=$('themeBtn'),themePanel=$('themePanel'),themeClose=$('themeClose'),themeList=$('themeList'),imgBox=$('imgBox'),resultImg=$('resultImg'),splash=$('splash'),splashName=$('splashName'),sweepPath=$('sweepPath'),app=$('app'),bgEl=$('bg'),fxEl=$('fx');
+var THEMES={wave:{e:'🌊',n:'Волна'},lion:{e:'🦁',n:'Лев'},crocodile:{e:'🐊',n:'Крокодил'},dragon:{e:'🐉',n:'Дракон'},panda:{e:'🐼',n:'Панда'},tiger:{e:'🐯',n:'Тигр'},frog:{e:'🐸',n:'Жаба'},wolf:{e:'🐺',n:'Волк'},shark:{e:'🦈',n:'Акула'},bee:{e:'🐝',n:'Пчела'}};
+var curTheme='wave';
+function applyTheme(name){if(!THEMES[name])name='wave';curTheme=name;bgEl.className=name;fxEl.innerHTML='';if(name==='wave'){for(var i=0;i<3;i++){var w=document.createElement('div');w.className='fxw';w.style.animationDelay=(i*2)+'s';fxEl.appendChild(w);}}else if(name==='lion'||name==='tiger'){for(var i=0;i<5;i++){var r=document.createElement('div');r.className='fxr';r.style.left=(10+i*20)+'%';r.style.animationDelay=(i*.5)+'s';fxEl.appendChild(r);}}else if(name==='crocodile'||name==='shark'||name==='frog'){for(var i=0;i<15;i++){var b=document.createElement('div');b.className='fxb';var sz=8+Math.random()*15;b.style.width=sz+'px';b.style.height=sz+'px';b.style.left=Math.random()*100+'%';b.style.animationDuration=(4+Math.random()*4)+'s';b.style.animationDelay=(Math.random()*6)+'s';fxEl.appendChild(b);}}else if(name==='bee'){for(var i=0;i<8;i++){var d=document.createElement('div');d.className='fxd';d.style.left=Math.random()*100+'%';d.style.top=(20+Math.random()*60)+'%';d.style.animationDuration=(3+Math.random()*3)+'s';d.style.animationDelay=(Math.random()*3)+'s';fxEl.appendChild(d);}}else if(name==='dragon'||name==='wolf'){for(var i=0;i<10;i++){var s=document.createElement('div');s.className='fxs';s.style.left=Math.random()*100+'%';s.style.animationDuration=(5+Math.random()*4)+'s';s.style.animationDelay=(Math.random()*5)+'s';fxEl.appendChild(s);}}try{localStorage.setItem('wave_theme',name);}catch(e){}var em=$('splashEmoji');if(em)em.textContent=THEMES[curTheme].e;}
+function buildThemeList(){themeList.innerHTML='';Object.keys(THEMES).forEach(function(k){var d=document.createElement('button');d.className='theme-item'+(k===curTheme?' active':'');d.innerHTML='<span class="em">'+THEMES[k].e+'</span><span class="nm">'+THEMES[k].n+'</span>';d.onclick=function(){applyTheme(k);buildThemeList();speak('Тема '+THEMES[k].n+' включена.');};themeList.appendChild(d);});}
+['W','a','v','e',' ','A','I'].forEach(function(c,i){var s=document.createElement('span');s.textContent=c===' '?'\u00A0':c;s.style.animationDelay=(i*80)+'ms';splashName.appendChild(s);});
+var emDiv=document.createElement('div');emDiv.id='splashEmoji';emDiv.textContent='🌊';splashName.appendChild(emDiv);
+var savedTheme='wave';try{savedTheme=localStorage.getItem('wave_theme')||'wave';}catch(e){}
+applyTheme(savedTheme);
+function sweepAway(){var start=performance.now(),dur=900;function step(now){var p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3),y=900-ease*1000,wave='M 0 '+y;for(var x=0;x<=400;x+=20){var off=Math.sin(x*.03+p*10)*30;wave+=' Q '+(x+10)+' '+(y+off)+' '+(x+20)+' '+y;}wave+=' L 400 900 L 0 900 Z';sweepPath.setAttribute('d',wave);if(p<1)requestAnimationFrame(step);else{splash.classList.add('gone');app.classList.add('show');setTimeout(function(){splash.remove();},600);setTimeout(startGreeting,300);}}requestAnimationFrame(step);}
+setTimeout(sweepAway,2500);
+var DEVICE=(function(){var ua=navigator.userAgent,os='?',br='?';if(/iPhone/.test(ua))os='iPhone';else if(/iPad/.test(ua))os='iPad';else if(/Android/.test(ua))os='Android';else if(/Mac/.test(ua))os='Mac';else if(/Windows/.test(ua))os='Windows';if(/CriOS/.test(ua))br='Chrome iOS';else if(/FxiOS/.test(ua))br='Firefox iOS';else if(/Chrome/.test(ua))br='Chrome';else if(/Safari/.test(ua))br='Safari';var sc=screen.width+'x'+screen.height,fp=[os,br,sc,navigator.language].join('|'),id=0;for(var i=0;i<fp.length;i++){id=((id<<5)-id)+fp.charCodeAt(i);id|=0;}return{os:os,browser:br,screen:sc,id:Math.abs(id).toString(36)};})();
+var DEVICE_KEY='wave_device_'+DEVICE.id,DEVICE_DATA={};
+try{DEVICE_DATA=JSON.parse(localStorage.getItem(DEVICE_KEY)||'{}');}catch(e){DEVICE_DATA={};}
+if(!DEVICE_DATA.firstSeen){DEVICE_DATA.firstSeen=Date.now();DEVICE_DATA.visits=1;}else{DEVICE_DATA.visits=(DEVICE_DATA.visits||0)+1;}
+try{localStorage.setItem(DEVICE_KEY,JSON.stringify(DEVICE_DATA));}catch(e){}
+var HISTORY=[];try{HISTORY=JSON.parse(localStorage.getItem(DEVICE_KEY+'_history')||'[]');}catch(e){HISTORY=[];}
+function saveHistory(){if(HISTORY.length>100)HISTORY=HISTORY.slice(-100);try{localStorage.setItem(DEVICE_KEY+'_history',JSON.stringify(HISTORY));}catch(e){}}
+function addToHistory(r,t){HISTORY.push({role:r,text:t,time:Date.now()});saveHistory();}
+var TASTES=[];try{TASTES=JSON.parse(localStorage.getItem(DEVICE_KEY+'_tastes')||'[]');}catch(e){TASTES=[];}
+function saveTastes(){try{localStorage.setItem(DEVICE_KEY+'_tastes',JSON.stringify(TASTES));}catch(e){}}
+function detectTaste(text){var t=text.toLowerCase(),m=t.match(/(?:мне нравится|я люблю|обожаю|предпочитаю)[\s,:-]+(.+)/i);if(m){var ta=m[1].trim().replace(/[.!?]+$/,'');if(ta&&TASTES.indexOf(ta)<0){TASTES.push(ta);saveTastes();return 'Запомнил: тебе нравится '+ta+'.';}}return null;}
+function getTastesContext(){return TASTES.length===0?'':'Пользователю нравится: '+TASTES.join(', ')+'.';}
+var BAD_WORDS=['голая','голый','голые','нагая','нагой','ню','nude','naked','секс','sex','порно','porn','эротика','erotic','сиськи','грудь','tits','boobs','попа','жопа','ass','вагина','pussy','член','penis','дилдо','dildo','онлифанс','onlyfans','стриптиз','striptease','минет','blowjob','интим','intimate'];
+function isBadPrompt(p){var t=p.toLowerCase();for(var i=0;i<BAD_WORDS.length;i++){if(t.indexOf(BAD_WORDS[i])>=0)return true;}return false;}
+var audioCtx=null;function initAudio(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}catch(e){}}
+function playClick(){initAudio();if(!audioCtx)return;var t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(660,t);o.frequency.exponentialRampToValueAtTime(990,t+.05);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.15);}
+var currentAudio=null,lastSpokenText='',useNeural=true,VOICE_NAME='echo';
+function stopSpeak(){if(currentAudio){try{currentAudio.pause();}catch(e){}currentAudio=null;}try{speechSynthesis.cancel();}catch(e){}}
+function speak(text,onEnd){if(!text){if(onEnd)onEnd();return;}lastSpokenText=text;stopSpeak();face.classList.add('talking');face.classList.remove('listening');statusEl.textContent='говорит';statusEl.className='speaking';dialogEl.innerHTML='<span class="wave">Wave</span>'+text;if(useNeural){try{var url='https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-audio&voice='+VOICE_NAME;var audio=new Audio(url);currentAudio=audio;audio.onended=function(){face.classList.remove('talking');statusEl.textContent='готов';statusEl.className='';currentAudio=null;if(onEnd)onEnd();};audio.onerror=function(){useNeural=false;systemSpeak(text,onEnd);};var p=audio.play();if(p&&p.catch)p.catch(function(){useNeural=false;systemSpeak(text,onEnd);});return;}catch(e){useNeural=false;systemSpeak(text,onEnd);return;}}systemSpeak(text,onEnd);}
+function systemSpeak(text,onEnd){if(!('speechSynthesis' in window)){if(onEnd)onEnd();return;}try{speechSynthesis.cancel();}catch(e){}var u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';u.rate=1.2;u.pitch=0.7;var voices=speechSynthesis.getVoices();var male=voices.find(function(v){return v.name&&(v.name.indexOf('Yuri')>=0||v.name.indexOf('Юрий')>=0);});var ru=male||voices.find(function(v){return v.lang==='ru-RU';})||voices.find(function(v){return v.lang&&v.lang.indexOf('ru')===0;});if(ru)u.voice=ru;u.onend=function(){face.classList.remove('talking');statusEl.textContent='готов';statusEl.className='';if(onEnd)onEnd();};u.onerror=u.onend;speechSynthesis.speak(u);}
+var conversationHistory=[];
+var BASE_SYSTEM='Ты Wave AI, умный голосовой ассистент мужского пола. Веди себя как живой человек: понимаешь контекст, шутишь, задаёшь встречные вопросы, помнишь что было раньше. Отвечай по-русски, 1-3 предложения, живо, естественно. Без смайликов и разметки.';
+function askAI(userText){conversationHistory.push({role:'user',content:userText});if(conversationHistory.length>16)conversationHistory.splice(0,conversationHistory.length-16);var sys=BASE_SYSTEM;var tc=getTastesContext();if(tc)sys+=' '+tc;sys+=' Устройство: '+DEVICE.os+', '+DEVICE.browser+'. Тема: '+THEMES[curTheme].n+'.';return fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys}].concat(conversationHistory),temperature:0.9,max_tokens:80})}).then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.json();}).then(function(data){var reply=(data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||data.response||'';reply=String(reply).replace(/[*_`#]/g,'').replace(/\n+/g,' ').trim();if(!reply)reply='Хм, не знаю что сказать.';conversationHistory.push({role:'assistant',content:reply});return reply;}).catch(function(err){console.warn(err);return fallbackAnswer(userText);});}
+function setMood(m){['happy','sad','angry','surprised'].forEach(function(x){face.classList.remove(x);});if(m)face.classList.add(m);}
+var NUM_WORDS={'ноль':0,'один':1,'одна':1,'два':2,'две':2,'три':3,'четыре':4,'пять':5,'шесть':6,'семь':7,'восемь':8,'девять':9,'десять':10,'одиннадцать':11,'двенадцать':12,'тринадцать':13,'четырнадцать':14,'пятнадцать':15,'шестнадцать':16,'семнадцать':17,'восемнадцать':18,'девятнадцать':19,'двадцать':20,'тридцать':30,'сорок':40,'пятьдесят':50,'шестьдесят':60,'семьдесят':70,'восемьдесят':80,'девяносто':90,'сто':100,'тысяча':1000};
+function wordsToNumbers(t){return t.split(/\s+/).map(function(w){var lw=w.toLowerCase().replace(/[^а-яё]/g,'');return NUM_WORDS.hasOwnProperty(lw)?NUM_WORDS[lw]:w;}).join(' ');}
+function tryMath(text){var s=' '+wordsToNumbers(text.toLowerCase())+' ';s=s.replace(/\s*сколько\s*(будет)?\s*/g,' ').replace(/\s*посчитай\s*/g,' ').replace(/\bплюс\b/g,'+').replace(/\bприбавить\b/g,'+').replace(/\bминус\b/g,'-').replace(/\bотнять\b/g,'-').replace(/\bвычесть\b/g,'-').replace(/\bумножить на\b/g,'*').replace(/\bумножить\b/g,'*').replace(/\bразделить на\b/g,'/').replace(/\bразделить\b/g,'/').replace(/,/g,'.').replace(/[^0-9+\-*\/.\s()]/g,' ').trim();if(!/[0-9]/.test(s)||!/[+\-*\/]/.test(s))return null;if(!/^[0-9+\-*\/.()\s]+$/.test(s))return null;try{var r=Function('"use strict";return ('+s+')')();if(typeof r!=='number'||!isFinite(r))return null;return Math.round(r*10000)/10000;}catch(e){return null;}}
+function handleCommand(text){var t=text.toLowerCase().trim();
+if(/зл(ое|ой|ым)?\s*лицо|разозлись|будь злым|злись/.test(t)){setMood('angry');return 'Вот моё злое лицо.';}
+if(/груст(ное|ным|ной)?\s*лицо|загрусти|будь грустным|погрусти/.test(t)){setMood('sad');return 'Мне грустно.';}
+if(/удивл(ённое|енное|ённым)?|удивись|будь удивлён/.test(t)){setMood('surprised');return 'Ого! Удивлён!';}
+if(/улыбнись|улыбк?а|весёлое лицо|радостное лицо|будь весёлым/.test(t)){setMood('happy');return 'Улыбаюсь!';}
+if(/обычное лицо|нормальное лицо|нейтральное|успокойся/.test(t)){setMood(null);return 'Обычное лицо.';}
+var tm=t.match(/тема\s+(\w+)/);if(tm){var key=tm[1];for(var k in THEMES){if(k.indexOf(key)>=0||THEMES[k].n.toLowerCase().indexOf(key)>=0){applyTheme(k);buildThemeList();return 'Тема '+THEMES[k].n+' включена.';}}}
+var im=t.match(/(?:сгенерируй|нарисуй|покажи|создай)\s+(?:картинку|изображение|рисунок)?\s*(.+)/i);if(im){var p=im[1].trim();if(p&&p.length>2){generateImage(p);return '__IMG__';}}
+var math=tryMath(t);if(math!==null)return 'Получается '+math+'.';
+if(t.indexOf('который час')>=0||t.indexOf('сколько времени')>=0){var d=new Date();return 'Сейчас '+d.getHours()+' часов '+d.getMinutes()+' минут.';}
+if(t.indexOf('какое число')>=0||t.indexOf('какая дата')>=0){var d2=new Date();var m=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];return 'Сегодня '+d2.getDate()+' '+m[d2.getMonth()]+' '+d2.getFullYear()+' года.';}
+if(t.indexOf('монетк')>=0)return Math.random()<0.5?'Выпал орёл.':'Выпала решка.';
+if(t.indexOf('кубик')>=0)return 'Выпало '+(Math.floor(Math.random()*6)+1)+'.';
+var rndM=t.match(/(?:случайное|рандом|число)\s*(?:от\s*)?(\d+)\s*(?:до|-)\s*(\d+)/);if(rndM){var a=+rndM[1],b=+rndM[2];return 'Случайное число: '+(Math.floor(Math.random()*(b-a+1))+a)+'.';}
+var tr=detectTaste(text);if(tr)return tr;
+if(t.indexOf('что мне нравится')>=0||t.indexOf('мои вкусы')>=0){if(TASTES.length===0)return 'Ты пока не рассказывал о вкусах.';return 'Тебе нравится: '+TASTES.join(', ')+'.';}
+if(t.indexOf('что за устройство')>=0||t.indexOf('какое у меня устройство')>=0)return 'Ты используешь '+DEVICE.os+', браузер '+DEVICE.browser+', экран '+DEVICE.screen+'. Заходил '+DEVICE_DATA.visits+' раз.';
+if(t.indexOf('какая тема')>=0||t.indexOf('текущая тема')>=0)return 'Сейчас тема: '+THEMES[curTheme].n+'.';
+if(t.indexOf('шутк')>=0||t.indexOf('анекдот')>=0){var jokes=['Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 равно DEC 25.','Заходит нейросеть в бар, а бармен: вам как обычно? Нейросеть: я тут впервые.','Что сказал один бит другому? Ты мне нравишься, но у нас разные байты.','Программист ставит на ночь два стакана: один с водой, второй пустой.'];return jokes[Math.floor(Math.random()*jokes.length)];}
+if(t.indexOf('факт')>=0){var facts=['Осьминог имеет три сердца и голубую кровь.','Мёд не портится — находили съедобный мёд в гробницах возрастом 3000 лет.','Бананы — это ягоды, а малина — нет.','У улитки около 25 тысяч зубов.','Свет от Солнца идёт до Земли 8 минут 20 секунд.'];return facts[Math.floor(Math.random()*facts.length)];}
+return null;}
+function generateImage(prompt){if(isBadPrompt(prompt)){speak('Извини, я не могу это нарисовать. Попробуй что-нибудь другое.');return;}face.classList.add('spraying');face.classList.remove('talking','listening');statusEl.textContent='рисует';statusEl.className='thinking';dialogEl.innerHTML='<span class="wave">Wave</span>Рисую: '+prompt+'…';speak('Рисую '+prompt);setTimeout(function(){var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt+', safe, censored, family friendly')+'?width=768&height=768&nologo=true&seed='+Math.floor(Math.random()*1000000);resultImg.src=url;resultImg.onload=function(){face.classList.remove('spraying');imgBox.classList.add('show');statusEl.textContent='готов';statusEl.className='';addToHistory('wave','[Картинка: '+prompt+']');};resultImg.onerror=function(){face.classList.remove('spraying');statusEl.textContent='ошибка картинки';statusEl.className='';speak('Не удалось нарисовать.');};},1500);}
+function fallbackAnswer(text){var t=text.toLowerCase();if(t.indexOf('привет')>=0)return 'Привет! Как ты?';if(t.indexOf('как дела')>=0)return 'Отлично! А у тебя?';if(t.indexOf('как ты')>=0)return 'Хорошо, спасибо. А ты?';if(t.indexOf('кто ты')>=0)return 'Я Wave AI, твой голосовой ассистент.';if(t.indexOf('пока')>=0||t.indexOf('до свидания')>=0)return 'Пока! Возвращайся.';if(t.indexOf('спасибо')>=0)return 'Пожалуйста!';return 'Интересно. Расскажи подробнее.';}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function processUserText(text){if(!text||!text.trim())return;text=text.trim();dialogEl.innerHTML='<span class="you">ты</span>'+text;addToHistory('user',text);imgBox.classList.remove('show');var cmd=handleCommand(text);if(cmd==='__IMG__')return;if(cmd){sleep(150).then(function(){addToHistory('wave',cmd);speak(cmd);});return;}statusEl.textContent='думает';statusEl.className='thinking';askAI(text).then(function(reply){addToHistory('wave',reply);speak(reply);});}
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+var recognition=null,isListening=false,finalText='';
+if(SR){recognition=new SR();recognition.lang='ru-RU';recognition.interimResults=true;recognition.continuous=false;
+recognition.onstart=function(){isListening=true;face.classList.add('listening');talkBtn.classList.add('active','listening');statusEl.textContent='слушаю';statusEl.className='listening';finalText='';dialogEl.innerHTML='';};
+recognition.onresult=function(e){var interim='',final='';for(var i=e.resultIndex;i<e.results.length;i++){var t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=t;else interim+=t;}if(final)finalText+=final;dialogEl.innerHTML='<span class="you">ты</span>'+(finalText+' '+interim).trim();};
+recognition.onerror=function(e){isListening=false;face.classList.remove('listening');talkBtn.classList.remove('active','listening');if(e.error==='not-allowed')dialogEl.textContent='Дай доступ к микрофону';statusEl.textContent='готов';statusEl.className='';};
+recognition.onend=function(){isListening=false;face.classList.remove('listening');talkBtn.classList.remove('active','listening');var t=finalText.trim();if(t)processUserText(t);else{statusEl.textContent='готов';statusEl.className='';speak('Не расслышал. Повтори ещё раз.');}};}
+talkBtn.onclick=function(){initAudio();playClick();if(!SR){speak('Браузер не поддерживает микрофон.');return;}if(isListening){recognition.stop();return;}stopSpeak();face.classList.remove('talking','waving','spraying');try{recognition.start();}catch(e){}};
+repeatBtn.onclick=function(){initAudio();playClick();if(lastSpokenText)speak(lastSpokenText);else speak('Пока нечего повторять.');};
+moodBtn.onclick=function(){initAudio();playClick();var moods=[null,'happy','sad','angry','surprised'];var names=['обычное','весёлое','грустное','злое','удивлённое'];var idx=moods.indexOf(moodBtn.dataset.mood||null);var next=(idx+1)%moods.length;moodBtn.dataset.mood=moods[next]||'';setMood(moods[next]);moodBtn.textContent=['😐','😊','😢','😠','😲'][next];speak('Теперь '+names[next]+' лицо.');};
+chatSend.onclick=function(){var t=chatField.value.trim();if(!t)return;initAudio();playClick();chatField.value='';stopSpeak();processUserText(t);};
+chatField.onkeydown=function(e){if(e.key==='Enter')chatSend.click();};
+attachBtn.onclick=function(){initAudio();playClick();fileInput.click();};
+fileInput.onchange=function(){var f=fileInput.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(ev){attachedImg.src=ev.target.result;attached.classList.add('show');speak('Фото прикреплено.');};reader.readAsDataURL(f);};
+removeAttach.onclick=function(){attached.classList.remove('show');attachedImg.src='';fileInput.value='';};
+document.querySelectorAll('.qbtn').forEach(function(btn){btn.onclick=function(){initAudio();playClick();stopSpeak();processUserText(btn.dataset.say);};});
+themeBtn.onclick=function(){initAudio();playClick();buildThemeList();themePanel.classList.add('show');};
+themeClose.onclick=function(){initAudio();playClick();themePanel.classList.remove('show');};
+helpBtn.onclick=function(){initAudio();playClick();helpPanel.classList.add('show');};
+helpClose.onclick=function(){initAudio();playClick();helpPanel.classList.remove('show');};
+histBtn.onclick=function(){initAudio();playClick();renderHistory();histPanel.classList.add('show');};
+histClose.onclick=function(){initAudio();playClick();histPanel.classList.remove('show');};
+clearHist.onclick=function(){initAudio();playClick();if(confirm('Очистить всю историю?')){HISTORY=[];saveHistory();renderHistory();}};
+function renderHistory(){historyList.innerHTML='';if(HISTORY.length===0){historyList.innerHTML='<p style="color:rgba(255,255,255,0.5);font-size:13px">История пуста.</p>';return;}HISTORY.slice(-30).reverse().forEach(function(item){var el=document.createElement('div');el.className='hist-item';var d=new Date(item.time);var ts=d.getDate()+'.'+(d.getMonth()+1)+' '+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();var who=item.role==='user'?'👤 Ты: ':'🌊 Wave: ';el.innerHTML='<div class="date">'+ts+'</div><div class="preview">'+who+escapeHtml(item.text)+'</div>';historyList.appendChild(el);});}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function blink(){face.classList.add('blink');setTimeout(function(){face.classList.remove('blink');},120);setTimeout(blink,2500+Math.random()*3500);}
+setTimeout(blink,2000);
+function startGreeting(){face.classList.add('waving');setTimeout(function(){face.classList.remove('waving');},2500);var g;if(DEVICE_DATA.visits>1)g='С возвращением! Ты заходил уже '+DEVICE_DATA.visits+' раз.';else g='Привет! Я Wave AI. Буду с тобой сегодня разговаривать.';speak(g);}
+document.body.addEventListener('touchstart',function(){initAudio();},{once:true});
+document.body.addEventListener('click',function(){initAudio();},{once:true});
+</script>
 </body>
 </html>
