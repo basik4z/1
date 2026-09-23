@@ -9,485 +9,385 @@
 <meta name="theme-color" content="#000000">
 <title>Wave AI</title>
 <style>
-* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0; }
-html,body { height:100%; overflow:hidden;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro",sans-serif;
-  background:#000; color:#fff; user-select:none; -webkit-user-select:none;
-  -webkit-font-smoothing:antialiased; }
-#app { display:flex; flex-direction:column; height:100dvh;
-  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom); }
-header { padding:14px 0 8px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
-.brand { font-size:12px; letter-spacing:8px; text-transform:uppercase;
-  color:rgba(255,255,255,0.35); font-family:"SF Mono",monospace; }
-.hbtns { display:flex; gap:8px; }
-.hbtn { width:36px; height:36px; border-radius:12px;
-  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-  color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  font-family:inherit; font-size:16px; transition:all 0.15s; }
-.hbtn:active { transform:scale(0.92); background:rgba(255,255,255,0.14); }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"SF Pro",sans-serif;background:#000;color:#fff;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
+header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.brand{font-size:12px;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:"SF Mono",monospace}
+.hbtns{display:flex;gap:8px}
+.hbtn{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:16px;transition:all 0.15s}
+.hbtn:active{transform:scale(0.92);background:rgba(255,255,255,0.14)}
 
-#faceWrap { flex:1; display:flex; align-items:center; justify-content:center;
-  min-height:0; position:relative; }
-#face { width:min(58vw,230px); height:min(58vw,230px);
-  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-#face svg { width:100%; height:100%; overflow:visible; }
-#face.listening { transform:scale(0.92); }
+#faceWrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+#face{width:min(58vw,230px);height:min(58vw,230px);transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+#face svg{width:100%;height:100%;overflow:visible}
+#face.listening{transform:scale(0.92)}
 
-#ear { opacity:0; transform-origin:150px 100px; transition:opacity 0.35s; }
-#face.listening #ear { opacity:1; animation:earPulse 1s infinite ease-in-out; }
-@keyframes earPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+#ear{opacity:0;transform-origin:150px 100px;transition:opacity 0.35s}
+#face.listening #ear{opacity:1;animation:earPulse 1s infinite ease-in-out}
+@keyframes earPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 
-#hand { opacity:0; transform-origin:190px 150px; transition:opacity 0.3s; }
-#face.waving #hand { opacity:1; animation:waveHand 0.5s infinite ease-in-out; }
-@keyframes waveHand { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(22deg)} }
+#hand{opacity:0;transform-origin:190px 150px;transition:opacity 0.3s}
+#face.waving #hand{opacity:1;animation:waveHand 0.5s infinite ease-in-out}
+@keyframes waveHand{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(22deg)}}
 
-#mouth { transition:all 0.15s; transform-origin:100px 130px; }
-#face.talking #mouth { animation:talkAnim 0.18s infinite alternate; }
-@keyframes talkAnim { from{transform:scaleY(1)} to{transform:scaleY(2.8)} }
+#mouth{transition:all 0.15s;transform-origin:100px 130px}
+#face.talking #mouth{animation:talkAnim 0.18s infinite alternate}
+@keyframes talkAnim{from{transform:scaleY(1)}to{transform:scaleY(2.8)}}
 
-#eyeL,#eyeR { transform-origin:center; transition:transform 0.1s; }
-#face.blink #eyeL, #face.blink #eyeR { transform:scaleY(0.08); }
-#pupilL,#pupilR { transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-#face.listening #pupilL, #face.listening #pupilR { transform:translate(3px,0); }
-#face.talking #eyeL, #face.talking #eyeR { transform:scaleY(0.75); }
-#browL,#browR { transition:opacity 0.3s; }
-#face.listening #browL, #face.listening #browR { opacity:1; }
+#eyeL,#eyeR{transform-origin:center;transition:transform 0.1s}
+#face.blink #eyeL,#face.blink #eyeR{transform:scaleY(0.08)}
+#pupilL,#pupilR{transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+#face.listening #pupilL,#face.listening #pupilR{transform:translate(3px,0)}
+#face.talking #eyeL,#face.talking #eyeR{transform:scaleY(0.75)}
+#browL,#browR{transition:opacity 0.3s}
+#face.listening #browL,#face.listening #browR{opacity:1}
 
-#dialog { text-align:center; font-size:17px; font-weight:300;
-  line-height:1.45; color:#fff; max-width:92%; margin:0 auto 8px;
-  min-height:48px; padding:0 8px; overflow-y:auto; max-height:22vh; }
-#dialog .you { color:rgba(255,255,255,0.4); font-size:11px;
-  display:block; margin-bottom:3px; letter-spacing:2px;
-  text-transform:uppercase; font-family:"SF Mono",monospace; }
-#dialog .wave { color:#a5b4fc; font-size:11px; display:block;
-  margin-bottom:3px; letter-spacing:2px; text-transform:uppercase;
-  font-family:"SF Mono",monospace; }
+#dialog{text-align:center;font-size:17px;font-weight:300;line-height:1.45;color:#fff;max-width:92%;margin:0 auto 8px;min-height:48px;padding:0 8px;overflow-y:auto;max-height:22vh}
+#dialog .you{color:rgba(255,255,255,0.4);font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
+#dialog .wave{color:#a5b4fc;font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
 
-#status { font-size:10px; letter-spacing:4px; text-transform:uppercase;
-  color:rgba(255,255,255,0.3); font-family:"SF Mono",monospace;
-  text-align:center; margin-bottom:10px; min-height:14px;
-  transition:color 0.3s; flex-shrink:0; }
-#status.listening { color:#fff; }
-#status.speaking { color:#a5b4fc; }
-#status.thinking { color:#fbbf24; }
+#status{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:"SF Mono",monospace;text-align:center;margin-bottom:10px;min-height:14px;transition:color 0.3s;flex-shrink:0}
+#status.listening{color:#fff}
+#status.speaking{color:#a5b4fc}
+#status.thinking{color:#fbbf24}
 
-#quick { display:flex; gap:6px; padding:0 0 8px; overflow-x:auto;
-  flex-shrink:0; scrollbar-width:none; }
-#quick::-webkit-scrollbar { display:none; }
-.qbtn { flex-shrink:0; padding:8px 14px; border-radius:16px;
-  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-  color:#fff; font-size:12px; cursor:pointer; font-family:inherit;
-  transition:all 0.15s; white-space:nowrap; }
-.qbtn:active { transform:scale(0.94); background:rgba(255,255,255,0.14); }
+#quick{display:flex;gap:6px;padding:0 0 8px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+#quick::-webkit-scrollbar{display:none}
+.qbtn{flex-shrink:0;padding:8px 14px;border-radius:16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap}
+.qbtn:active{transform:scale(0.94);background:rgba(255,255,255,0.14)}
 
-#controls { display:flex; gap:10px; align-items:center;
-  justify-content:center; margin-bottom:10px; flex-shrink:0; }
+#controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
+#talkBtn{position:relative;width:84px;height:84px;border-radius:50%;background:#000;border:1.5px solid rgba(255,255,255,0.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;flex-shrink:0}
+#talkBtn:active{transform:scale(0.94)}
+#talkBtn.active{background:#fff;border-color:#fff;box-shadow:0 0 60px rgba(255,255,255,0.5)}
+#talkBtn.active svg{stroke:#000}
+#talkBtn.listening::before,#talkBtn.listening::after{content:'';position:absolute;width:84px;height:84px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.4);animation:ring 1.6s infinite ease-out}
+#talkBtn.listening::after{animation-delay:0.8s}
+@keyframes ring{0%{transform:scale(1);opacity:0.7}100%{transform:scale(1.7);opacity:0}}
+#talkBtn svg{width:32px;height:32px;stroke:#fff;stroke-width:1.6;fill:none}
 
-#talkBtn { position:relative; width:84px; height:84px; border-radius:50%;
-  background:#000; border:1.5px solid rgba(255,255,255,0.3);
-  color:#fff; cursor:pointer; display:flex; align-items:center;
-  justify-content:center; transition:all 0.25s; flex-shrink:0; }
-#talkBtn:active { transform:scale(0.94); }
-#talkBtn.active { background:#fff; border-color:#fff;
-  box-shadow:0 0 60px rgba(255,255,255,0.5); }
-#talkBtn.active svg { stroke:#000; }
-#talkBtn.listening::before, #talkBtn.listening::after {
-  content:''; position:absolute; width:84px; height:84px; border-radius:50%;
-  border:1.5px solid rgba(255,255,255,0.4); animation:ring 1.6s infinite ease-out; }
-#talkBtn.listening::after { animation-delay:0.8s; }
-@keyframes ring { 0%{transform:scale(1);opacity:0.7} 100%{transform:scale(1.7);opacity:0} }
-#talkBtn svg { width:32px; height:32px; stroke:#fff; stroke-width:1.6; fill:none; }
+.ctrlbtn{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:inherit;font-size:18px}
+.ctrlbtn:active{transform:scale(0.9);background:rgba(255,255,255,0.14)}
+.ctrlbtn.active{background:#fff;color:#000;border-color:#fff}
 
-.ctrlbtn { width:50px; height:50px; border-radius:50%;
-  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
-  color:#fff; cursor:pointer; display:flex; align-items:center;
-  justify-content:center; transition:all 0.15s; font-family:inherit; }
-.ctrlbtn:active { transform:scale(0.9); background:rgba(255,255,255,0.14); }
-.ctrlbtn svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; }
-.ctrlbtn.active { background:#fff; color:#000; border-color:#fff; }
+#chatInput{display:none;padding:0 0 8px;gap:6px;flex-shrink:0}
+#chatInput.visible{display:flex}
+#chatInput input{flex:1;padding:12px 16px;border-radius:22px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:15px;font-family:inherit;outline:none}
+#chatInput input::placeholder{color:rgba(255,255,255,0.3)}
+#chatInput input:focus{border-color:rgba(255,255,255,0.5)}
+#chatInput button{padding:0 18px;border-radius:22px;background:#fff;color:#000;border:none;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
 
-#chatInput { display:none; padding:0 0 8px; gap:6px; flex-shrink:0; }
-#chatInput.visible { display:flex; }
-#chatInput input { flex:1; padding:12px 16px; border-radius:22px;
-  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-  color:#fff; font-size:15px; font-family:inherit; outline:none; }
-#chatInput input::placeholder { color:rgba(255,255,255,0.3); }
-#chatInput input:focus { border-color:rgba(255,255,255,0.5); }
-#chatInput button { padding:0 18px; border-radius:22px; background:#fff;
-  color:#000; border:none; font-weight:600; font-size:14px;
-  cursor:pointer; font-family:inherit; }
+#helpPanel{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);display:none;flex-direction:column;padding:60px 24px 40px;overflow-y:auto}
+#helpPanel.show{display:flex}
+#helpPanel h3{font-size:22px;margin-bottom:16px}
+#helpPanel p{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.75);margin-bottom:12px}
+#helpPanel code{background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:6px;font-family:"SF Mono",monospace;font-size:12px}
+#helpClose{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;font-family:inherit}
 
-#startScreen { position:fixed; inset:0; z-index:100; background:#000;
-  display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:30px; padding:40px 24px;
-  transition:opacity 0.8s; }
-#startScreen.hide { opacity:0; pointer-events:none; }
-#startName { font-size:46px; font-weight:200; letter-spacing:-1px;
-  display:flex; flex-wrap:wrap; justify-content:center; }
-#startName span { display:inline-block; opacity:0; transform:translateY(20px);
-  animation:letterIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-@keyframes letterIn { to{opacity:1;transform:translateY(0)} }
-#startSub { font-size:11px; letter-spacing:8px; text-transform:uppercase;
-  color:rgba(255,255,255,0.4); font-family:"SF Mono",monospace;
-  opacity:0; animation:fadeIn 1s ease 1s forwards; }
-@keyframes fadeIn { to{opacity:1} }
-#startBtn { padding:16px 48px; border-radius:40px; background:transparent;
-  border:1.5px solid rgba(255,255,255,0.3); color:#fff; font-size:13px;
-  letter-spacing:4px; text-transform:uppercase; font-family:"SF Mono",monospace;
-  cursor:pointer; transition:all 0.3s; opacity:0;
-  animation:fadeIn 1s ease 1.5s forwards; }
-#startBtn:active { transform:scale(0.95); background:#fff; color:#000; }
+#startScreen{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:40px 24px;transition:opacity 0.8s}
+#startScreen.hide{opacity:0;pointer-events:none}
+#startName{font-size:46px;font-weight:200;letter-spacing:-1px;display:flex;flex-wrap:wrap;justify-content:center}
+#startName span{display:inline-block;opacity:0;transform:translateY(20px);animation:letterIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes letterIn{to{opacity:1;transform:translateY(0)}}
+#startSub{font-size:11px;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.4);font-family:"SF Mono",monospace;opacity:0;animation:fadeIn 1s ease 1s forwards}
+@keyframes fadeIn{to{opacity:1}}
+#startBtn{padding:16px 48px;border-radius:40px;background:transparent;border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:13px;letter-spacing:4px;text-transform:uppercase;font-family:"SF Mono",monospace;cursor:pointer;transition:all 0.3s;opacity:0;animation:fadeIn 1s ease 1.5s forwards}
+#startBtn:active{transform:scale(0.95);background:#fff;color:#000}
 
-/* СПРАВОЧНАЯ ПАНЕЛЬ */
-#helpPanel { position:fixed; inset:0; z-index:200;
-  background:rgba(0,0,0,0.85); backdrop-filter:blur(20px);
-  display:none; flex-direction:column; padding:60px 24px 40px; overflow-y:auto; }
-#helpPanel.show { display:flex; }
-#helpPanel h3 { font-size:22px; margin-bottom:16px; }
-#helpPanel p { font-size:14px; line-height:1.7; color:rgba(255,255,255,0.7); margin-bottom:12px; }
-#helpPanel code { background:rgba(255,255,255,0.1); padding:2px 6px;
-  border-radius:6px; font-family:"SF Mono",monospace; font-size:12px; }
-#helpClose { position:absolute; top:20px; right:20px; width:40px; height:40px;
-  border-radius:50%; background:rgba(255,255,255,0.1);
-  border:1px solid rgba(255,255,255,0.2); color:#fff;
-  font-size:20px; cursor:pointer; }
-
-@media (max-width:400px) {
-  #dialog { font-size:15px; }
-  #talkBtn { width:76px; height:76px; }
-  #talkBtn svg { width:28px; height:28px; }
-  #startName { font-size:36px; }
+@media (max-width:400px){
+#dialog{font-size:15px}
+#talkBtn{width:76px;height:76px}
+#talkBtn svg{width:28px;height:28px}
+#startName{font-size:36px}
 }
 </style>
 </head>
 <body>
 
 <div id="app">
-  <header>
-    <div class="brand">WAVE · AI</div>
-    <div class="hbtns">
-      <button class="hbtn" id="helpBtn" title="Помощь">?</button>
-    </div>
-  </header>
+<header>
+<div class="brand">WAVE · AI</div>
+<div class="hbtns"><button class="hbtn" id="helpBtn">?</button></div>
+</header>
 
-  <div id="faceWrap">
-    <div id="face">
-      <svg viewBox="0 0 200 200">
-        <circle cx="100" cy="100" r="78" fill="#000" stroke="#fff" stroke-width="3"/>
-        <g id="eyeL">
-          <ellipse cx="74" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilL" cx="74" cy="86" r="5" fill="#000"/>
-          <circle cx="77" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
-        </g>
-        <g id="eyeR">
-          <ellipse cx="126" cy="86" rx="10" ry="13" fill="#fff"/>
-          <circle id="pupilR" cx="126" cy="86" r="5" fill="#000"/>
-          <circle cx="129" cy="83" r="1.8" fill="#fff" opacity="0.9"/>
-        </g>
-        <path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
-        <path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <g id="ear" transform="translate(150, 100)">
-          <path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#fff"/>
-          <path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#000" opacity="0.5"/>
-        </g>
-        <g id="hand" transform="translate(160, 130)">
-          <path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#fff"/>
-        </g>
-      </svg>
-    </div>
-  </div>
+<div id="faceWrap">
+<div id="face">
+<svg viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="78" fill="#000" stroke="#fff" stroke-width="3"/>
+<g id="eyeL"><ellipse cx="74" cy="86" rx="10" ry="13" fill="#fff"/><circle id="pupilL" cx="74" cy="86" r="5" fill="#000"/><circle cx="77" cy="83" r="1.8" fill="#fff" opacity="0.9"/></g>
+<g id="eyeR"><ellipse cx="126" cy="86" rx="10" ry="13" fill="#fff"/><circle id="pupilR" cx="126" cy="86" r="5" fill="#000"/><circle cx="129" cy="83" r="1.8" fill="#fff" opacity="0.9"/></g>
+<path id="browL" d="M 62 68 Q 74 62 88 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+<path id="browR" d="M 112 68 Q 126 62 138 68" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+<path id="mouth" d="M 78 128 Q 100 138 122 128" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+<g id="ear" transform="translate(150, 100)"><path d="M 0 0 C -6 -14, 4 -24, 12 -18 C 19 -12, 19 -2, 12 4 C 6 9, 0 7, 0 0 Z" fill="#fff"/><path d="M 4 0 C 1 -9, 6 -16, 10 -12 C 14 -8, 14 -2, 10 2 C 7 4, 4 3, 4 0 Z" fill="#000" opacity="0.5"/></g>
+<g id="hand" transform="translate(160, 130)"><path d="M 0 28 C -4 16, -2 6, 4 2 L 4 2 C 4 -4, 8 -6, 10 -4 L 12 -4 C 12 -10, 16 -12, 18 -8 L 20 -8 C 20 -14, 24 -16, 26 -12 L 28 -10 C 30 -6, 30 2, 28 10 C 26 20, 22 28, 16 30 C 8 32, 2 32, 0 28 Z" fill="#fff"/></g>
+</svg>
+</div>
+</div>
 
-  <div id="dialog"></div>
-  <div id="status">готов</div>
+<div id="dialog"></div>
+<div id="status">готов</div>
 
-  <div id="quick">
-    <button class="qbtn" data-say="привет">👋 Привет</button>
-    <button class="qbtn" data-say="как дела">💭 Как дела</button>
-    <button class="qbtn" data-say="расскажи шутку">😂 Шутка</button>
-    <button class="qbtn" data-say="расскажи факт">💡 Факт</button>
-    <button class="qbtn" data-say="который час">🕐 Время</button>
-    <button class="qbtn" data-say="плюс">🧮 Математика</button>
-  </div>
+<div id="quick">
+<button class="qbtn" data-say="привет">👋 Привет</button>
+<button class="qbtn" data-say="как дела">💭 Как дела</button>
+<button class="qbtn" data-say="расскажи шутку">😂 Шутка</button>
+<button class="qbtn" data-say="расскажи факт">💡 Факт</button>
+<button class="qbtn" data-say="который час">🕐 Время</button>
+<button class="qbtn" data-say="2 плюс 2">🧮 2+2</button>
+</div>
 
-  <div id="controls">
-    <button class="ctrlbtn" id="repeatBtn" title="Повторить">↻</button>
-    <button id="talkBtn">
-      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    </button>
-    <button class="ctrlbtn" id="chatBtn" title="Чат">💬</button>
-  </div>
+<div id="controls">
+<button class="ctrlbtn" id="repeatBtn" title="Повторить">↻</button>
+<button id="talkBtn"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+<button class="ctrlbtn" id="chatBtn" title="Чат">💬</button>
+</div>
 
-  <div id="chatInput">
-    <input id="chatField" type="text" placeholder="Напиши сообщение…" autocomplete="off">
-    <button id="chatSend">→</button>
-  </div>
+<div id="chatInput">
+<input id="chatField" type="text" placeholder="Напиши сообщение…" autocomplete="off">
+<button id="chatSend">→</button>
+</div>
 </div>
 
 <div id="helpPanel">
-  <button id="helpClose">×</button>
-  <h3>Что я умею</h3>
-  <p>💬 <b>Общаться</b> — говори или пиши, я отвечу.</p>
-  <p>🧮 <b>Считать</b> — скажи «<code>2 плюс 2</code>», «<code>10 минус 3</code>», «<code>5 умножить на 6</code>», «<code>20 разделить на 4</code>».</p>
-  <p>🕐 <b>Время и дата</b> — «который час», «какое число».</p>
-  <p>😂 <b>Развлечь</b> — «шутку», «факт», «анекдот».</p>
-  <p>🎲 <b>Случайное</b> — «подбрось монетку», «кинь кубик», «случайное число 1-100».</p>
-  <p>📝 <b>Запомнить</b> — «запомни купить хлеб». Потом спроси «что я просил запомнить».</p>
-  <p>🔊 <b>Голос</b> — человеческий, через нейросеть.</p>
+<button id="helpClose">×</button>
+<h3>Что я умею</h3>
+<p>💬 <b>Общаться</b> — говори или пиши, я отвечу.</p>
+<p>🧮 <b>Считать</b> — «<code>2 плюс 2</code>», «<code>10 минус 3</code>», «<code>5 умножить на 6</code>», «<code>20 разделить на 4</code>».</p>
+<p>🕐 <b>Время и дата</b> — «который час», «какое число».</p>
+<p>😂 <b>Развлечь</b> — «шутку», «факт», «анекдот».</p>
+<p>🎲 <b>Случайное</b> — «монетку», «кубик», «число от 1 до 100».</p>
+<p>📝 <b>Запомнить</b> — «запомни купить хлеб». Потом спроси «что я просил запомнить».</p>
 </div>
 
 <div id="startScreen">
-  <div id="startName"></div>
-  <div id="startSub">voice assistant</div>
-  <button id="startBtn">Начать</button>
+<div id="startName"></div>
+<div id="startSub">voice assistant</div>
+<button id="startBtn">Начать</button>
 </div>
 
 <script>
-/* ============ ЭЛЕМЕНТЫ ============ */
-const face = document.getElementById('face');
-const dialogEl = document.getElementById('dialog');
-const statusEl = document.getElementById('status');
-const talkBtn = document.getElementById('talkBtn');
-const repeatBtn = document.getElementById('repeatBtn');
-const chatBtn = document.getElementById('chatBtn');
-const chatInput = document.getElementById('chatInput');
-const chatField = document.getElementById('chatField');
-const chatSend = document.getElementById('chatSend');
-const helpBtn = document.getElementById('helpBtn');
-const helpPanel = document.getElementById('helpPanel');
-const helpClose = document.getElementById('helpClose');
-const startScreen = document.getElementById('startScreen');
-const startBtn = document.getElementById('startBtn');
-const startName = document.getElementById('startName');
+/* ЭЛЕМЕНТЫ */
+var face=document.getElementById('face');
+var dialogEl=document.getElementById('dialog');
+var statusEl=document.getElementById('status');
+var talkBtn=document.getElementById('talkBtn');
+var repeatBtn=document.getElementById('repeatBtn');
+var chatBtn=document.getElementById('chatBtn');
+var chatInput=document.getElementById('chatInput');
+var chatField=document.getElementById('chatField');
+var chatSend=document.getElementById('chatSend');
+var helpBtn=document.getElementById('helpBtn');
+var helpPanel=document.getElementById('helpPanel');
+var helpClose=document.getElementById('helpClose');
+var startScreen=document.getElementById('startScreen');
+var startBtn=document.getElementById('startBtn');
+var startName=document.getElementById('startName');
 
-/* ============ АНИМАЦИЯ ИМЕНИ ============ */
-['W','a','v','e',' ','A','I'].forEach((ch,i)=>{
-  const s = document.createElement('span');
-  s.textContent = ch === ' ' ? '\u00A0' : ch;
-  s.style.animationDelay = (i*80)+'ms';
+/* АНИМАЦИЯ ИМЕНИ */
+['W','a','v','e',' ','A','I'].forEach(function(ch,i){
+  var s=document.createElement('span');
+  s.textContent=ch===' '?'\u00A0':ch;
+  s.style.animationDelay=(i*80)+'ms';
   startName.appendChild(s);
 });
 
-/* ============ ЗВУКИ ============ */
-let audioCtx = null;
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+/* ЗВУКИ */
+var audioCtx=null;
+function initAudio(){
+  try{
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+  }catch(e){console.warn(e)}
 }
-function playClick() {
-  initAudio(); const t = audioCtx.currentTime;
-  const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-  o.type='sine'; o.frequency.setValueAtTime(880,t);
+function playClick(){
+  initAudio(); if(!audioCtx)return;
+  var t=audioCtx.currentTime;
+  var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type='sine';o.frequency.setValueAtTime(880,t);
   o.frequency.exponentialRampToValueAtTime(1400,t+0.07);
   g.gain.setValueAtTime(0.0001,t);
   g.gain.exponentialRampToValueAtTime(0.15,t+0.01);
   g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
-  o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t+0.25);
+  o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+0.25);
 }
-function playStartup() {
-  initAudio(); const t = audioCtx.currentTime;
-  const o1 = audioCtx.createOscillator(); const g1 = audioCtx.createGain();
-  o1.type='sine';
-  o1.frequency.setValueAtTime(220,t);
+function playStartup(){
+  initAudio(); if(!audioCtx)return;
+  var t=audioCtx.currentTime;
+  var o1=audioCtx.createOscillator(),g1=audioCtx.createGain();
+  o1.type='sine';o1.frequency.setValueAtTime(220,t);
   o1.frequency.exponentialRampToValueAtTime(880,t+0.6);
   g1.gain.setValueAtTime(0.0001,t);
   g1.gain.exponentialRampToValueAtTime(0.15,t+0.1);
   g1.gain.exponentialRampToValueAtTime(0.0001,t+0.7);
-  o1.connect(g1).connect(audioCtx.destination); o1.start(t); o1.stop(t+0.8);
-  const o2 = audioCtx.createOscillator(); const g2 = audioCtx.createGain();
-  o2.type='triangle';
-  o2.frequency.setValueAtTime(1320,t+0.5);
+  o1.connect(g1).connect(audioCtx.destination);o1.start(t);o1.stop(t+0.8);
+  var o2=audioCtx.createOscillator(),g2=audioCtx.createGain();
+  o2.type='triangle';o2.frequency.setValueAtTime(1320,t+0.5);
   o2.frequency.exponentialRampToValueAtTime(1760,t+0.7);
   g2.gain.setValueAtTime(0.0001,t+0.5);
   g2.gain.exponentialRampToValueAtTime(0.12,t+0.55);
   g2.gain.exponentialRampToValueAtTime(0.0001,t+1.0);
-  o2.connect(g2).connect(audioCtx.destination); o2.start(t+0.5); o2.stop(t+1.1);
+  o2.connect(g2).connect(audioCtx.destination);o2.start(t+0.5);o2.stop(t+1.1);
 }
-function playListen() {
-  initAudio(); const t = audioCtx.currentTime;
-  [660,880].forEach((f,i)=>{
-    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-    o.type='sine'; o.frequency.value=f;
+function playListen(){
+  initAudio(); if(!audioCtx)return;
+  var t=audioCtx.currentTime;
+  [660,880].forEach(function(f,i){
+    var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';o.frequency.value=f;
     g.gain.setValueAtTime(0.0001,t+i*0.09);
     g.gain.exponentialRampToValueAtTime(0.12,t+i*0.09+0.01);
     g.gain.exponentialRampToValueAtTime(0.0001,t+i*0.09+0.18);
     o.connect(g).connect(audioCtx.destination);
-    o.start(t+i*0.09); o.stop(t+i*0.09+0.25);
+    o.start(t+i*0.09);o.stop(t+i*0.09+0.25);
   });
 }
-</script>
-</body>
-</html>/* ============ ЧЕЛОВЕЧЕСКИЙ ГОЛОС ЧЕРЕЗ POLLINATIONS ============ */
-let currentAudio = null;
-let lastSpokenText = '';
-let useNeuralVoice = true;
-const VOICE = 'nova'; // nova = женский живой, echo = мужской, onyx = глубокий мужской, shimmer = мягкий женский
 
-async function speak(text, onEnd) {
-  if (!text) { onEnd && onEnd(); return; }
-  lastSpokenText = text;
-  stopSpeak();
+/* ГОЛОС */
+var currentAudio=null;
+var lastSpokenText='';
+var useNeuralVoice=true;
+var VOICE='nova';
 
-  face.classList.add('talking');
-  face.classList.remove('listening');
-  statusEl.textContent = 'говорит';
-  statusEl.className = 'speaking';
-  dialogEl.innerHTML = `<span class="wave">Wave</span>${text}`;
-
-  if (useNeuralVoice) {
-    try {
-      const url = 'https://text.pollinations.ai/' + encodeURIComponent(text) +
-                  '?model=openai-audio&voice=' + VOICE;
-      const audio = new Audio(url);
-      currentAudio = audio;
-      audio.onended = () => {
-        face.classList.remove('talking');
-        statusEl.textContent = 'готов';
-        statusEl.className = '';
-        currentAudio = null;
-        onEnd && onEnd();
-      };
-      audio.onerror = () => {
-        useNeuralVoice = false;
-        systemSpeak(text, onEnd);
-      };
-      await audio.play();
-      return;
-    } catch (err) {
-      console.warn('Neural TTS error:', err);
-      useNeuralVoice = false;
-      systemSpeak(text, onEnd);
-    }
-  } else {
-    systemSpeak(text, onEnd);
-  }
+function stopSpeak(){
+  if(currentAudio){try{currentAudio.pause()}catch(e){} currentAudio=null;}
+  try{speechSynthesis.cancel()}catch(e){}
 }
 
-function systemSpeak(text, onEnd) {
-  if (!('speechSynthesis' in window)) { onEnd && onEnd(); return; }
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ru-RU';
-  u.rate = 1.0;
-  u.pitch = 1.05;
-  const voices = speechSynthesis.getVoices();
-  const ruVoice = voices.find(v => v.lang === 'ru-RU') || voices.find(v => v.lang.startsWith('ru'));
-  if (ruVoice) u.voice = ruVoice;
-  u.onend = () => {
+function speak(text,onEnd){
+  if(!text){if(onEnd)onEnd();return}
+  lastSpokenText=text;
+  stopSpeak();
+  face.classList.add('talking');
+  face.classList.remove('listening');
+  statusEl.textContent='говорит';
+  statusEl.className='speaking';
+  dialogEl.innerHTML='<span class="wave">Wave</span>'+text;
+
+  if(useNeuralVoice){
+    try{
+      var url='https://text.pollinations.ai/'+encodeURIComponent(text)+'?model=openai-audio&voice='+VOICE;
+      var audio=new Audio(url);
+      currentAudio=audio;
+      audio.onended=function(){
+        face.classList.remove('talking');
+        statusEl.textContent='готов';
+        statusEl.className='';
+        currentAudio=null;
+        if(onEnd)onEnd();
+      };
+      audio.onerror=function(){
+        useNeuralVoice=false;
+        systemSpeak(text,onEnd);
+      };
+      var p=audio.play();
+      if(p&&p.catch) p.catch(function(){useNeuralVoice=false;systemSpeak(text,onEnd)});
+      return;
+    }catch(err){
+      useNeuralVoice=false;
+      systemSpeak(text,onEnd);
+      return;
+    }
+  }
+  systemSpeak(text,onEnd);
+}
+
+function systemSpeak(text,onEnd){
+  if(!('speechSynthesis' in window)){if(onEnd)onEnd();return}
+  try{speechSynthesis.cancel()}catch(e){}
+  var u=new SpeechSynthesisUtterance(text);
+  u.lang='ru-RU';u.rate=1.0;u.pitch=1.05;
+  var voices=speechSynthesis.getVoices();
+  var rv=voices.find(function(v){return v.lang==='ru-RU'})||voices.find(function(v){return v.lang&&v.lang.indexOf('ru')===0});
+  if(rv)u.voice=rv;
+  u.onend=function(){
     face.classList.remove('talking');
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-    onEnd && onEnd();
+    statusEl.textContent='готов';
+    statusEl.className='';
+    if(onEnd)onEnd();
   };
-  u.onerror = u.onend;
+  u.onerror=u.onend;
   speechSynthesis.speak(u);
 }
 
-function stopSpeak() {
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  speechSynthesis.cancel();
-}
+/* ИИ */
+var history=[];
+var SYSTEM='Ты Wave AI, дружелюбный голосовой ассистент. Отвечай коротко по-русски, 1-2 предложения, живо, естественно. Без смайликов и разметки.';
 
-/* ============ ИИ-ОТВЕТЫ ЧЕРЕЗ POLLINATIONS ============ */
-const history = [];
-const SYSTEM = 'Ты Wave AI, дружелюбный голосовой ассистент. Отвечай коротко по-русски, 1-2 предложения, живо, естественно. Без смайликов и разметки.';
-
-async function askAI(userText) {
-  history.push({ role: 'user', content: userText });
-  if (history.length > 20) history.splice(0, history.length - 20);
-  try {
-    const res = await fetch('https://text.pollinations.ai/openai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'openai',
-        messages: [{ role: 'system', content: SYSTEM }, ...history],
-        temperature: 0.9,
-        max_tokens: 120
-      })
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    let reply = (data.choices && data.choices[0] && data.choices[0].message.content) || data.response || '';
-    reply = reply.replace(/[*_`#]/g,'').replace(/\n+/g,' ').trim();
-    if (!reply) reply = 'Хм, не знаю что сказать.';
-    history.push({ role: 'assistant', content: reply });
+function askAI(userText){
+  history.push({role:'user',content:userText});
+  if(history.length>20)history.splice(0,history.length-20);
+  return fetch('https://text.pollinations.ai/openai',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'openai',
+      messages:[{role:'system',content:SYSTEM}].concat(history),
+      temperature:0.9,
+      max_tokens:120
+    })
+  }).then(function(res){
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  }).then(function(data){
+    var reply=(data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||data.response||'';
+    reply=String(reply).replace(/[*_`#]/g,'').replace(/\n+/g,' ').trim();
+    if(!reply)reply='Хм, не знаю что сказать.';
+    history.push({role:'assistant',content:reply});
     return reply;
-  } catch (err) {
-    console.warn('AI error:', err);
+  }).catch(function(err){
+    console.warn('AI error:',err);
     return fallbackAnswer(userText);
-  }
+  });
 }
 
-/* ============ КОМАНДЫ (калькулятор, время, игры, заметки) ============ */
-const notes = JSON.parse(localStorage.getItem('wave_notes') || '[]');
+/* КОМАНДЫ */
+var notes=[];
+try{notes=JSON.parse(localStorage.getItem('wave_notes')||'[]')}catch(e){notes=[]}
 
-function handleCommand(text) {
-  const t = text.toLowerCase().trim();
+function handleCommand(text){
+  var t=text.toLowerCase().trim();
+  var mathResult=tryMath(t);
+  if(mathResult!==null)return 'Получается '+mathResult+'.';
 
-  // --- Калькулятор: "2 плюс 2", "5 умножить на 6", "10 минус 3" ---
-  const mathResult = tryMath(t);
-  if (mathResult !== null) return `Получается ${mathResult}.`;
-
-  // --- Время ---
-  if (t.includes('который час') || t.includes('сколько времени') || t.includes('время сейчас')) {
-    const d = new Date();
-    return `Сейчас ${d.getHours()} часов ${d.getMinutes()} минут.`;
+  if(t.indexOf('который час')>=0||t.indexOf('сколько времени')>=0){
+    var d=new Date();
+    return 'Сейчас '+d.getHours()+' часов '+d.getMinutes()+' минут.';
   }
-
-  // --- Дата ---
-  if (t.includes('какое число') || t.includes('какое сегодня') || t.includes('какая дата')) {
-    const d = new Date();
-    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-    return `Сегодня ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} года.`;
+  if(t.indexOf('какое число')>=0||t.indexOf('какое сегодня')>=0||t.indexOf('какая дата')>=0){
+    var d2=new Date();
+    var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    return 'Сегодня '+d2.getDate()+' '+months[d2.getMonth()]+' '+d2.getFullYear()+' года.';
   }
-
-  // --- Монетка ---
-  if (t.includes('монетк') || t.includes('орёл или решка')) {
-    return Math.random() < 0.5 ? 'Выпал орёл.' : 'Выпала решка.';
+  if(t.indexOf('монетк')>=0||t.indexOf('орёл или решка')>=0){
+    return Math.random()<0.5?'Выпал орёл.':'Выпала решка.';
   }
-
-  // --- Кубик ---
-  if (t.includes('кубик') || t.includes('кости')) {
-    return `Выпало ${Math.floor(Math.random()*6)+1}.`;
+  if(t.indexOf('кубик')>=0||t.indexOf('кости')>=0){
+    return 'Выпало '+(Math.floor(Math.random()*6)+1)+'.';
   }
-
-  // --- Случайное число ---
-  const rndMatch = t.match(/(?:случайное|рандом|число)\s*(?:от\s*)?(\d+)\s*(?:до|-)\s*(\d+)/);
-  if (rndMatch) {
-    const a = +rndMatch[1], b = +rndMatch[2];
-    return `Случайное число: ${Math.floor(Math.random()*(b-a+1))+a}.`;
+  var rndMatch=t.match(/(?:случайное|рандом|число)\s*(?:от\s*)?(\d+)\s*(?:до|-)\s*(\d+)/);
+  if(rndMatch){
+    var a=+rndMatch[1],b=+rndMatch[2];
+    return 'Случайное число: '+(Math.floor(Math.random()*(b-a+1))+a)+'.';
   }
-
-  // --- Запомни ---
-  const rememberMatch = text.match(/запомни[,:\s]+(.+)/i);
-  if (rememberMatch) {
+  var rememberMatch=text.match(/запомни[,:\s]+(.+)/i);
+  if(rememberMatch){
     notes.push(rememberMatch[1].trim());
-    localStorage.setItem('wave_notes', JSON.stringify(notes));
-    return `Запомнил: ${rememberMatch[1].trim()}.`;
+    try{localStorage.setItem('wave_notes',JSON.stringify(notes))}catch(e){}
+    return 'Запомнил: '+rememberMatch[1].trim()+'.';
   }
-
-  // --- Что я просил запомнить ---
-  if (t.includes('что я просил') || t.includes('что запомнил') || t.includes('мои заметки')) {
-    if (notes.length === 0) return 'Ты пока ничего не просил запомнить.';
-    return 'Ты просил запомнить: ' + notes.join('; ') + '.';
+  if(t.indexOf('что я просил')>=0||t.indexOf('что запомнил')>=0||t.indexOf('мои заметки')>=0){
+    if(notes.length===0)return 'Ты пока ничего не просил запомнить.';
+    return 'Ты просил запомнить: '+notes.join('; ')+'.';
   }
-
-  // --- Очистить заметки ---
-  if (t.includes('забудь всё') || t.includes('очисти заметки')) {
-    notes.length = 0;
-    localStorage.setItem('wave_notes', '[]');
+  if(t.indexOf('забудь всё')>=0||t.indexOf('очисти заметки')>=0){
+    notes.length=0;
+    try{localStorage.setItem('wave_notes','[]')}catch(e){}
     return 'Заметки очищены.';
   }
-
-  // --- Шутка ---
-  if (t.includes('шутк') || t.includes('анекдот') || t.includes('рассмеши')) {
-    const jokes = [
+  if(t.indexOf('шутк')>=0||t.indexOf('анекдот')>=0||t.indexOf('рассмеши')>=0){
+    var jokes=[
       'Почему программисты путают Хэллоуин и Рождество? Потому что OCT 31 равно DEC 25.',
       'Заходит нейросеть в бар, а бармен: вам как обычно? Нейросеть: я тут впервые.',
       'Что сказал один бит другому? Ты мне нравишься, но у нас разные байты.',
@@ -496,10 +396,8 @@ function handleCommand(text) {
     ];
     return jokes[Math.floor(Math.random()*jokes.length)];
   }
-
-  // --- Факт ---
-  if (t.includes('факт') || t.includes('интересное')) {
-    const facts = [
+  if(t.indexOf('факт')>=0||t.indexOf('интересное')>=0){
+    var facts=[
       'Осьминог имеет три сердца и голубую кровь.',
       'Мёд не портится — археологи находили съедобный мёд в гробницах возрастом 3000 лет.',
       'Бананы — это ягоды, а малина — нет.',
@@ -510,227 +408,64 @@ function handleCommand(text) {
     ];
     return facts[Math.floor(Math.random()*facts.length)];
   }
-
-  // --- Помощь ---
-  if (t.includes('что ты умеешь') || t.includes('помощь') || t.includes('команды')) {
-    return 'Я умею: считать, говорить время и дату, рассказывать шутки и факты, подбрасывать монетку, кидать кубик, запоминать заметки. Просто говори.';
+  if(t.indexOf('что ты умеешь')>=0||t.indexOf('помощь')>=0||t.indexOf('команды')>=0){
+    return 'Я умею считать, говорить время и дату, рассказывать шутки и факты, подбрасывать монетку, кидать кубик, запоминать заметки. Просто говори.';
   }
-
   return null;
 }
 
-function tryMath(text) {
-  // Заменяем слова на символы
-  let s = ' ' + text.toLowerCase() + ' ';
-  s = s.replace(/\s*сколько\s*(будет)?\s*/g, ' ');
-  s = s.replace(/\s*посчитай\s*/g, ' ');
-  s = s.replace(/\s*равно\s*/g, ' ');
-  s = s.replace(/\bплюс\b/g, '+');
-  s = s.replace(/\bприбавить\b/g, '+');
-  s = s.replace(/\bминус\b/g, '-');
-  s = s.replace(/\bотнять\b/g, '-');
-  s = s.replace(/\bвычесть\b/g, '-');
-  s = s.replace(/\bумножить на\b/g, '*');
-  s = s.replace(/\bумножить\b/g, '*');
-  s = s.replace(/\bразделить на\b/g, '/');
-  s = s.replace(/\bразделить\b/g, '/');
-  s = s.replace(/\bделённое на\b/g, '/');
-  s = s.replace(/\bделенное на\b/g, '/');
-  s = s.replace(/\bв квадрате\b/g, '**2');
-  s = s.replace(/,/g, '.');
-  s = s.replace(/[^0-9+\-*/.\s()]/g, ' ');
-  s = s.trim();
+function tryMath(text){
+  var s=' '+text.toLowerCase()+' ';
+  s=s.replace(/\s*сколько\s*(будет)?\s*/g,' ');
+  s=s.replace(/\s*посчитай\s*/g,' ');
+  s=s.replace(/\s*равно\s*/g,' ');
+  s=s.replace(/\bплюс\b/g,'+');
+  s=s.replace(/\bприбавить\b/g,'+');
+  s=s.replace(/\bминус\b/g,'-');
+  s=s.replace(/\bотнять\b/g,'-');
+  s=s.replace(/\bвычесть\b/g,'-');
+  s=s.replace(/\bумножить на\b/g,'*');
+  s=s.replace(/\bумножить\b/g,'*');
+  s=s.replace(/\bразделить на\b/g,'/');
+  s=s.replace(/\bразделить\b/g,'/');
+  s=s.replace(/\bделённое на\b/g,'/');
+  s=s.replace(/\bделенное на\b/g,'/');
+  s=s.replace(/,/g,'.');
+  s=s.replace(/[^0-9+\-*\/.\s()]/g,' ');
+  s=s.trim();
 
-  if (!/[0-9]/.test(s) || !/[+\-*/]/.test(s)) return null;
+  if(!/[0-9]/.test(s)||!/[+\-*\/]/.test(s))return null;
+  if(!/^[0-9+\-*\/.()\s]+$/.test(s))return null;
 
-  try {
-    // Безопасный eval: только числа и операторы
-    if (!/^[0-9+\-*/.()\s]+$/.test(s)) return null;
-    const result = Function('"use strict";return (' + s + ')')();
-    if (typeof result !== 'number' || !isFinite(result)) return null;
-    return Math.round(result * 10000) / 10000;
-  } catch (e) {
-    return null;
-  }
+  try{
+    var result=Function('"use strict";return ('+s+')')();
+    if(typeof result!=='number'||!isFinite(result))return null;
+    return Math.round(result*10000)/10000;
+  }catch(e){return null}
 }
 
-function fallbackAnswer(text) {
-  const t = text.toLowerCase();
-  if (t.includes('привет') || t.includes('здравствуй')) return 'Привет! Как ты?';
-  if (t.includes('как дела')) return 'Отлично! А у тебя?';
-  if (t.includes('как ты')) return 'Хорошо, спасибо. А ты как?';
-  if (t.includes('пока') || t.includes('до свидания')) return 'Пока! Возвращайся.';
-  if (t.includes('спасибо')) return 'Пожалуйста!';
-  if (t.includes('кто ты')) return 'Я Wave AI, твой голосовой ассистент.';
-  if (t.includes('как тебя зовут')) return 'Меня зовут Wave.';
+function fallbackAnswer(text){
+  var t=text.toLowerCase();
+  if(t.indexOf('привет')>=0||t.indexOf('здравствуй')>=0)return 'Привет! Как ты?';
+  if(t.indexOf('как дела')>=0)return 'Отлично! А у тебя?';
+  if(t.indexOf('как ты')>=0)return 'Хорошо, спасибо. А ты как?';
+  if(t.indexOf('пока')>=0||t.indexOf('до свидания')>=0)return 'Пока! Возвращайся.';
+  if(t.indexOf('спасибо')>=0)return 'Пожалуйста!';
+  if(t.indexOf('кто ты')>=0)return 'Я Wave AI, твой голосовой ассистент.';
+  if(t.indexOf('как тебя зовут')>=0)return 'Меня зовут Wave.';
   return 'Интересно. Расскажи подробнее.';
 }
 
-/* ============ ОБРАБОТКА РЕПЛИКИ ============ */
-async function processUserText(text) {
-  if (!text.trim()) return;
-  dialogEl.innerHTML = `<span class="you">ты</span>${text}`;
+/* ОБРАБОТКА */
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
 
-  // 1. Сначала пробуем команды
-  const cmd = handleCommand(text);
-  if (cmd) {
-    await sleep(300);
-    speak(cmd);
+function processUserText(text){
+  if(!text||!text.trim())return;
+  dialogEl.innerHTML='<span class="you">ты</span>'+text;
+  var cmd=handleCommand(text);
+  if(cmd){
+    sleep(300).then(function(){speak(cmd)});
     return;
   }
-
-  // 2. Иначе — ИИ
-  statusEl.textContent = 'думает';
-  statusEl.className = 'thinking';
-  const reply = await askAI(text);
-  speak(reply);
-}
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-/* ============ РАСПОЗНАВАНИЕ РЕЧИ ============ */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-let isListening = false;
-let finalText = '';
-
-if (SR) {
-  recognition = new SR();
-  recognition.lang = 'ru-RU';
-  recognition.interimResults = true;
-  recognition.continuous = false;
-
-  recognition.onstart = () => {
-    isListening = true;
-    face.classList.add('listening');
-    talkBtn.classList.add('active','listening');
-    statusEl.textContent = 'слушаю';
-    statusEl.className = 'listening';
-    finalText = '';
-    dialogEl.innerHTML = '';
-  };
-
-  recognition.onresult = (e) => {
-    let interim = '', final = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      const t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) final += t; else interim += t;
-    }
-    if (final) finalText += final;
-    dialogEl.innerHTML = `<span class="you">ты</span>${(finalText+' '+interim).trim()}`;
-  };
-
-  recognition.onerror = (e) => {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('active','listening');
-    if (e.error === 'not-allowed') {
-      dialogEl.textContent = 'Дай доступ к микрофону';
-    }
-    statusEl.textContent = 'готов';
-    statusEl.className = '';
-  };
-
-  recognition.onend = () => {
-    isListening = false;
-    face.classList.remove('listening');
-    talkBtn.classList.remove('active','listening');
-    const t = finalText.trim();
-    if (t) processUserText(t);
-    else { statusEl.textContent = 'готов'; statusEl.className = ''; }
-  };
-}
-
-/* ============ КНОПКИ ============ */
-talkBtn.onclick = () => {
-  initAudio(); playClick();
-
-  if (!SR) {
-    speak('Извини, твой браузер не поддерживает распознавание речи.');
-    return;
-  }
-  if (isListening) { recognition.stop(); return; }
-  stopSpeak();
-  if (speechSynthesis.speaking) speechSynthesis.cancel();
-  face.classList.remove('talking','waving');
-  try {
-    recognition.start();
-    setTimeout(playListen, 100);
-  } catch (err) { console.warn(err); }
-};
-
-repeatBtn.onclick = () => {
-  initAudio(); playClick();
-  if (lastSpokenText) speak(lastSpokenText);
-  else speak('Пока нечего повторять.');
-};
-
-chatBtn.onclick = () => {
-  initAudio(); playClick();
-  chatInput.classList.toggle('visible');
-  chatBtn.classList.toggle('active');
-  if (chatInput.classList.contains('visible')) {
-    setTimeout(() => chatField.focus(), 100);
-  }
-};
-
-chatSend.onclick = () => {
-  const t = chatField.value.trim();
-  if (!t) return;
-  initAudio(); playClick();
-  chatField.value = '';
-  stopSpeak();
-  processUserText(t);
-};
-
-chatField.onkeydown = (e) => {
-  if (e.key === 'Enter') chatSend.click();
-};
-
-/* ============ БЫСТРЫЕ КНОПКИ ============ */
-document.querySelectorAll('.qbtn').forEach(btn => {
-  btn.onclick = () => {
-    initAudio(); playClick();
-    const text = btn.dataset.say;
-    if (text === 'плюс') {
-      chatInput.classList.add('visible');
-      chatBtn.classList.add('active');
-      chatField.value = '2 плюс 2';
-      chatField.focus();
-      return;
-    }
-    stopSpeak();
-    processUserText(text);
-  };
-});
-
-/* ============ ПОМОЩЬ ============ */
-helpBtn.onclick = () => { initAudio(); playClick(); helpPanel.classList.add('show'); };
-helpClose.onclick = () => { initAudio(); playClick(); helpPanel.classList.remove('show'); };
-
-/* ============ МОРГАНИЕ ============ */
-function blink() {
-  face.classList.add('blink');
-  setTimeout(() => face.classList.remove('blink'), 120);
-  setTimeout(blink, 2500 + Math.random() * 3500);
-}
-setTimeout(blink, 1500);
-
-/* ============ СТАРТ ============ */
-startBtn.onclick = () => {
-  initAudio(); playStartup();
-  startScreen.classList.add('hide');
-  setTimeout(() => startScreen.remove(), 900);
-
-  // Приветствие + взмах рукой
-  setTimeout(() => {
-    face.classList.add('waving');
-    speak('Привет! Я Wave AI. Буду с тобой сегодня разговаривать.', () => {
-      setTimeout(() => face.classList.remove('waving'), 300);
-    });
-  }, 400);
-};
-
-// Разрешение звука на iPhone
-document.body.addEventListener('touchstart', () => initAudio(), { once: true });
-document.body.addEventListener('click', () => initAudio(), { once: true });
+  statusEl.textContent='думает';
+  statusEl.className='thinking';
