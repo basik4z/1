@@ -1,0 +1,124 @@
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"SF Pro",sans-serif;background:#001a33;color:#fff;user-select:none;-webkit-user-select:none;-webkit-font-smoothing:antialiased}
+
+#bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#001f3f 0%,#0074D9 25%,#39CCCC 50%,#0074D9 75%,#001f3f 100%);background-size:400% 400%;animation:gradShift 15s ease infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(57,204,204,0.3),transparent 50%),radial-gradient(circle at 70% 80%,rgba(0,116,217,0.3),transparent 50%)}
+
+#splash{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity 0.6s}
+#splash.gone{opacity:0}
+#splashName{font-size:52px;font-weight:200;letter-spacing:-1px;color:#fff;text-shadow:0 0 40px rgba(57,204,204,0.8);z-index:2;display:flex;flex-wrap:wrap;justify-content:center;position:relative}
+#splashName span{display:inline-block;opacity:0;transform:translateY(30px);animation:letterIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes letterIn{to{opacity:1;transform:translateY(0)}}
+#waveSweep{position:absolute;inset:0;z-index:3;pointer-events:none}
+#waveSweep svg{width:100%;height:100%}
+
+#app{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;height:100dvh;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);opacity:0;transition:opacity 0.5s}
+#app.show{opacity:1}
+
+header{padding:14px 0 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:8px}
+.brand{font-size:12px;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,0.7);font-family:"SF Mono",monospace}
+.hbtns{display:flex;gap:6px}
+.hbtn{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(57,204,204,0.4);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;transition:all 0.15s}
+.hbtn:active{transform:scale(0.92);background:rgba(57,204,204,0.3)}
+
+#faceWrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
+#face{width:min(58vw,230px);height:min(58vw,230px);position:relative;transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 30px rgba(57,204,204,0.5))}
+#face svg{width:100%;height:100%;overflow:visible}
+#face.listening{transform:scale(0.92)}
+#face.spraying{animation:sprayAnim 0.6s infinite}
+@keyframes sprayAnim{0%,100%{transform:rotate(-3deg) scale(0.95)}50%{transform:rotate(3deg) scale(1.05)}}
+
+#sprayCan{opacity:0;transform-origin:100px 100px;transition:opacity 0.3s}
+#face.spraying #sprayCan{opacity:1;animation:sprayWave 0.4s infinite}
+@keyframes sprayWave{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+
+#ear{opacity:0;transform-origin:150px 100px;transition:opacity 0.35s}
+#face.listening #ear{opacity:1;animation:earPulse 1s infinite ease-in-out}
+@keyframes earPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+#hand{opacity:0;transform-origin:190px 150px;transition:opacity 0.3s}
+#face.waving #hand{opacity:1;animation:waveHand 0.5s 4 ease-in-out}
+@keyframes waveHand{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(22deg)}}
+
+#mouth{transition:all 0.15s;transform-origin:100px 130px}
+#face.talking #mouth{animation:talkAnim 0.18s infinite alternate}
+@keyframes talkAnim{from{transform:scaleY(1)}to{transform:scaleY(2.8)}}
+#face.sad #mouth{transform:translateY(-6px) scaleY(0.6) scaleX(0.7)}
+#face.angry #mouth{transform:translateY(4px) scaleY(1.3) scaleX(0.8)}
+#face.surprised #mouth{transform:scaleY(2.5) scaleX(0.6)}
+#face.happy #mouth{transform:translateY(2px) scaleY(1.3) scaleX(1.2)}
+
+#eyeL,#eyeR{transform-origin:center;transition:transform 0.1s}
+#face.blink #eyeL,#face.blink #eyeR{transform:scaleY(0.08)}
+#face.sad #eyeL,#face.sad #eyeR{transform:scaleY(0.7)}
+#face.angry #browL,#face.angry #browR{opacity:1}
+#face.angry #browL{transform:translateY(6px) rotate(20deg)}
+#face.angry #browR{transform:translateY(6px) rotate(-20deg)}
+#face.surprised #browL,#face.surprised #browR{opacity:1}
+#face.surprised #browL{transform:translateY(-8px)}
+#face.surprised #browR{transform:translateY(-8px)}
+#pupilL,#pupilR{transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+#face.listening #pupilL,#face.listening #pupilR{transform:translate(3px,0)}
+#face.talking #eyeL,#face.talking #eyeR{transform:scaleY(0.75)}
+#browL,#browR{transition:all 0.3s}
+#face.listening #browL,#face.listening #browR{opacity:1}
+
+#dialog{text-align:center;font-size:17px;font-weight:300;line-height:1.45;color:#fff;max-width:92%;margin:0 auto 8px;min-height:44px;padding:0 8px;overflow-y:auto;max-height:20vh;transition:all 0.3s;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+#dialog .you{color:rgba(255,255,255,0.6);font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
+#dialog .wave{color:#39CCCC;font-size:11px;display:block;margin-bottom:3px;letter-spacing:2px;text-transform:uppercase;font-family:"SF Mono",monospace}
+
+#imgBox{margin:0 auto 8px;max-width:75%;display:none;animation:imgIn 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+#imgBox.show{display:block}
+@keyframes imgIn{from{opacity:0;transform:scale(0.5) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+#imgBox img{width:100%;border-radius:20px;border:2px solid rgba(57,204,204,0.5);box-shadow:0 10px 40px rgba(0,0,0,0.6),0 0 40px rgba(57,204,204,0.3)}
+
+#status{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5);font-family:"SF Mono",monospace;text-align:center;margin-bottom:10px;min-height:14px;flex-shrink:0;transition:color 0.3s}
+#status.listening{color:#fff}
+#status.speaking{color:#39CCCC}
+#status.thinking{color:#FFDC00}
+
+#quick{display:flex;gap:6px;padding:0 0 8px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+#quick::-webkit-scrollbar{display:none}
+.qbtn{flex-shrink:0;padding:8px 14px;border-radius:16px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(57,204,204,0.3);color:#fff;font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap}
+.qbtn:active{transform:scale(0.94);background:rgba(57,204,204,0.3)}
+
+#controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
+#talkBtn{position:relative;width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#0074D9,#39CCCC);border:2px solid rgba(255,255,255,0.4);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;flex-shrink:0;box-shadow:0 8px 30px rgba(0,116,217,0.5)}
+#talkBtn:active{transform:scale(0.94)}
+#talkBtn.active{background:#fff;border-color:#39CCCC;box-shadow:0 0 60px rgba(57,204,204,0.8)}
+#talkBtn.active svg{stroke:#0074D9}
+#talkBtn.listening::before,#talkBtn.listening::after{content:'';position:absolute;width:84px;height:84px;border-radius:50%;border:2px solid rgba(57,204,204,0.6);animation:ring 1.6s infinite ease-out}
+#talkBtn.listening::after{animation-delay:0.8s}
+@keyframes ring{0%{transform:scale(1);opacity:0.7}100%{transform:scale(1.7);opacity:0}}
+#talkBtn svg{width:32px;height:32px;stroke:#fff;stroke-width:1.8;fill:none}
+
+.ctrlbtn{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(57,204,204,0.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:inherit;font-size:18px}
+.ctrlbtn:active{transform:scale(0.9);background:rgba(57,204,204,0.3)}
+.ctrlbtn.active{background:#39CCCC;color:#001f3f;border-color:#39CCCC}
+
+#chatInput{display:flex;padding:0 0 8px;gap:6px;flex-shrink:0}
+#chatInput input{flex:1;padding:12px 16px;border-radius:22px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(57,204,204,0.3);color:#fff;font-size:15px;font-family:inherit;outline:none}
+#chatInput input::placeholder{color:rgba(255,255,255,0.5)}
+#chatInput input:focus{border-color:#39CCCC;background:rgba(255,255,255,0.18)}
+#chatInput button{padding:0 20px;border-radius:22px;background:linear-gradient(135deg,#0074D9,#39CCCC);color:#fff;border:none;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(0,116,217,0.5)}
+
+.panel{position:fixed;inset:0;z-index:200;background:rgba(0,31,63,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;flex-direction:column;padding:60px 24px 30px;overflow-y:auto}
+.panel.show{display:flex}
+.panel h3{font-size:22px;margin-bottom:16px;color:#39CCCC}
+.panel p{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.85);margin-bottom:12px}
+.panel code{background:rgba(57,204,204,0.2);padding:2px 6px;border-radius:6px;font-family:"SF Mono",monospace;font-size:12px;color:#39CCCC}
+.panelClose{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(57,204,204,0.3);border:1px solid #39CCCC;color:#fff;font-size:20px;cursor:pointer;font-family:inherit}
+
+#historyList{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.hist-item{padding:14px;border-radius:16px;background:rgba(57,204,204,0.1);border:1px solid rgba(57,204,204,0.3);cursor:pointer;transition:all 0.15s}
+.hist-item:active{background:rgba(57,204,204,0.2)}
+.hist-item .date{font-size:11px;color:rgba(57,204,204,0.8);margin-bottom:4px;font-family:"SF Mono",monospace}
+.hist-item .preview{font-size:13px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media (max-width:400px){
+#dialog{font-size:15px}
+#talkBtn{width:76px;height:76px}
+#talkBtn svg{width:28px;height:28px}
+#splashName{font-size:38px}
+}
