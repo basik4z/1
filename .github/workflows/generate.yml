@@ -2,18 +2,30 @@ name: Deploy Wave
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inject secrets into index.html
+
+      - name: Подставляем секреты в index.html
         run: |
           sed -i "s|__EMAILJS_PUBLIC__|${{ secrets.EMAILJS_PUBLIC }}|g" index.html
           sed -i "s|__EMAILJS_SERVICE__|${{ secrets.EMAILJS_SERVICE }}|g" index.html
           sed -i "s|__EMAILJS_TEMPLATE__|${{ secrets.EMAILJS_TEMPLATE }}|g" index.html
           sed -i "s|__ADMIN_PASS__|${{ secrets.ADMIN_PASS }}|g" index.html
+
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
