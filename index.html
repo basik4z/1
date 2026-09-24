@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#06060f">
 <title>Wave · AI</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌙%3C/text%3E%3C/svg%3E">
@@ -19,8 +18,7 @@ window.WAVE_SECRETS = {
   appName:         'Wave',
   crystalsPerDay:  50,
   crystalsOnSignup:100,
-  codeTTLmin:      10,
-  currencyName:    'кристалл'
+  codeTTLmin:      10
 };
 </script>
 <style>
@@ -29,9 +27,7 @@ html,body{height:100dvh;overflow:hidden;font-family:'Inter',system-ui,sans-serif
   -webkit-font-smoothing:antialiased;background:var(--bg1);color:var(--tx);
   transition:background .5s,color .5s}
 :root{--bg1:#06060f;--bg2:#0f0e26;--bg3:#1a1838;--tx:#f2f2f8;--gr:#9a9ab0;
-  --ln:#2e2b78;--ac:#a78bfa;--glass:rgba(30,30,60,.55);
-  --danger:#ef4444;--ok:#22c55e;--warn:#f59e0b}
-
+  --ln:#2e2b78;--ac:#a78bfa;--glass:rgba(30,30,60,.55);--danger:#ef4444;--ok:#22c55e}
 body.wv-moon{--bg1:#06060f;--bg2:#0f0e26;--bg3:#1a1838;--tx:#f2f2f8;--gr:#9a9ab0;--ln:#2e2b78;--ac:#a78bfa;--glass:rgba(30,30,60,.55)}
 body.wv-aurora{--bg1:#071022;--bg2:#0d1c38;--bg3:#14304d;--tx:#e0f2ff;--gr:#7a9ab0;--ln:#2b4a78;--ac:#22d3ee;--glass:rgba(20,50,80,.55)}
 body.wv-neon{--bg1:#0d0221;--bg2:#1a0533;--bg3:#2a0a4a;--tx:#f0e6ff;--gr:#a080c0;--ln:#5a1a80;--ac:#ff00aa;--glass:rgba(60,0,80,.5)}
@@ -53,11 +49,9 @@ body.wv-frog{--bg1:#f3faf5;--bg2:#ddf1e3;--bg3:#c0e0c8;--tx:#082015;--gr:#486e55
 body.wv-wolf{--bg1:#f6f6f6;--bg2:#e8e8e8;--bg3:#cccccc;--tx:#181818;--gr:#6e6e6e;--ln:#d5d5d5;--ac:#4a4a4a;--glass:rgba(255,255,255,.85)}
 body.wv-shark{--bg1:#eef7fc;--bg2:#d4eaf6;--bg3:#b0d5ea;--tx:#081e2c;--gr:#4a6a80;--ln:#b5d9ee;--ac:#0369a1;--glass:rgba(255,255,255,.75)}
 body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;--ln:#f0d8a0;--ac:#b8840a;--glass:rgba(255,255,255,.75)}
-
 #scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #scene canvas{width:100%;height:100%;display:block}
 #root{position:relative;z-index:1;display:flex;flex-direction:column;height:100dvh}
-
 #bar{display:flex;align-items:center;justify-content:space-between;gap:8px;
   padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 8px;flex-shrink:0}
 .nb{width:40px;height:40px;border-radius:50%;flex-shrink:0;cursor:pointer;
@@ -75,14 +69,12 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   background:var(--ok);margin-right:5px;vertical-align:middle;animation:pl 2s infinite}
 #brand small .dot.off{background:var(--danger)}
 @keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
-
 #crystals{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;
   z-index:50;padding:6px 12px;border-radius:20px;background:var(--glass);
   border:1.5px solid var(--ln);backdrop-filter:blur(12px);
   font-size:12px;font-weight:700;color:var(--tx);display:flex;align-items:center;
   gap:5px;cursor:pointer}
 #crystals:active{transform:scale(.95)}
-
 #flow{flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;
   flex-direction:column;gap:12px;scroll-behavior:smooth}
 #flow::-webkit-scrollbar{width:0}
@@ -109,8 +101,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 .caret{display:inline-block;width:2px;height:1em;background:var(--ac);
   vertical-align:text-bottom;margin-left:2px;animation:ck .8s infinite}
 @keyframes ck{0%,50%{opacity:1}51%,100%{opacity:0}}
-.err{color:var(--danger);font-weight:600}
-
 .wait{padding:14px 18px}
 .wait .d{display:flex;gap:5px;margin-top:5px}
 .wait .d span{width:7px;height:7px;border-radius:50%;background:var(--ac);
@@ -118,7 +108,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 .wait .d span:nth-child(2){animation-delay:.15s}
 .wait .d span:nth-child(3){animation-delay:.3s}
 @keyframes bn{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-7px);opacity:1}}
-
 .void{flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:14px;padding:16px}
 .void .orb{width:88px;height:88px;border-radius:26px;display:flex;align-items:center;
@@ -133,7 +122,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   text-align:left;line-height:1.35;backdrop-filter:blur(10px);transition:transform .15s}
 .chip:active{transform:scale(.95)}
 .chip .ce{font-size:16px;display:block;margin-bottom:3px}
-
 #dock{padding:6px 14px calc(env(safe-area-inset-bottom,0px) + 12px);flex-shrink:0}
 #att{display:none;align-items:center;gap:10px;background:var(--bg2);padding:7px 11px;
   border-radius:14px;margin-bottom:7px;border:1px solid var(--ln)}
@@ -158,10 +146,9 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .15s}
 #go:active{transform:scale(.85)}
-#go:disabled{opacity:.4;cursor:not-allowed}
+#go:disabled{opacity:.4}
 #go svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2.3;
   stroke-linecap:round;stroke-linejoin:round}
-
 .sheet{position:fixed;inset:0;z-index:200;background:var(--bg1);display:none;
   flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 58px) 18px 24px;
   overflow-y:auto}
@@ -199,7 +186,7 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   background:var(--bg2);border:2px solid transparent;color:var(--tx);
   font-family:inherit;transition:transform .15s,border-color .2s}
 .swatch:active{transform:scale(.94)}
-.swatch.on{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac)22}
+.swatch.on{border-color:var(--ac)}
 .swatch .se{font-size:30px;display:block;margin-bottom:5px}
 .swatch .sn{font-size:12.5px;font-weight:600}
 #models{display:flex;flex-direction:column;gap:9px}
@@ -212,11 +199,9 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 .card .cn{font-size:14.5px;font-weight:700;margin-bottom:2px}
 .card .cs{font-size:11px;color:var(--gr)}
 .card .cb{font-size:9.5px;padding:3px 8px;border-radius:7px;background:var(--ac);
-  color:#fff;font-weight:800;flex-shrink:0;letter-spacing:.5px}
-
+  color:#fff;font-weight:800;flex-shrink:0}
 .modal{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.75);
-  backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;
-  padding:24px}
+  backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:24px}
 .modal.on{display:flex}
 .mbox{background:rgba(30,30,42,.98);border:1px solid rgba(255,255,255,.15);
   border-radius:28px;padding:28px 24px 20px;max-width:360px;width:100%;text-align:center;
@@ -227,7 +212,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   justify-content:center;font-size:42px;margin:0 auto 14px}
 .mtit{font-size:19px;font-weight:700;margin-bottom:6px}
 .msub2{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:18px}
-.mtxt{font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.75);margin-bottom:22px}
 .mbtns{display:flex;gap:9px}
 .mbtn{flex:1;padding:13px;border-radius:14px;border:none;font-size:14.5px;
   font-weight:700;cursor:pointer;font-family:inherit}
@@ -239,10 +223,9 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 .minput.code{font-size:22px;letter-spacing:8px;text-align:center;
   font-family:'JetBrains Mono',monospace}
 .mmsg{margin-top:12px;font-size:13px;min-height:18px}
-
 #term{position:fixed;inset:0;z-index:900;background:#000;display:none;
   flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 14px;
-  font-family:'JetBrains Mono',monospace;color:#00ff41;font-size:13px;overflow:hidden}
+  font-family:'JetBrains Mono',monospace;color:#00ff41;font-size:13px}
 #term.on{display:flex}
 #termBar{display:flex;justify-content:space-between;align-items:center;
   padding-bottom:10px;border-bottom:1px solid #00ff4133;margin-bottom:10px;flex-shrink:0}
@@ -253,8 +236,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 #termBar .dots span:nth-child(3){background:#28c840}
 #termBar .ti{color:#00ff4188;font-size:11px;letter-spacing:1.5px}
 #termLog{flex:1;overflow-y:auto;line-height:1.65;padding-right:6px}
-#termLog::-webkit-scrollbar{width:4px}
-#termLog::-webkit-scrollbar-thumb{background:#00ff4166;border-radius:2px}
 #termLog .li{word-break:break-word}
 #termLog .p{color:#a78bfa;margin-right:8px}
 #termLog .ok{color:#22c55e}
@@ -266,7 +247,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 #termIn .p{color:#a78bfa}
 #termIn input{flex:1;background:none;border:none;outline:none;color:#00ff41;
   font-family:inherit;font-size:13px;caret-color:#00ff41}
-
 #voice{position:fixed;inset:0;z-index:800;background:var(--bg1);display:none;
   flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 40px}
 #voice.on{display:flex}
@@ -284,7 +264,7 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   font-weight:700;margin-bottom:38px;min-height:15px}
 #vb{width:88px;height:88px;border-radius:50%;cursor:pointer;background:var(--ac);
   border:none;color:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .15s,box-shadow .3s}
+  box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .15s}
 #vb:active{transform:scale(.88)}
 #vb.live{animation:vp .8s infinite;box-shadow:0 0 50px var(--ac)}
 @keyframes vp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
@@ -292,7 +272,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 #vx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;
   width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--ln);
   color:var(--tx);font-size:21px;cursor:pointer;font-family:inherit}
-
 #intro{position:fixed;inset:0;z-index:1000;background:#06060f;display:flex;
   align-items:center;justify-content:center;transition:opacity .8s}
 #intro.out{opacity:0;pointer-events:none}
@@ -310,7 +289,6 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 #intro .sub{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:5px;
   text-transform:uppercase;margin-top:12px;opacity:0;animation:ia .8s 1.2s forwards}
 @keyframes ia{to{opacity:1}}
-
 #tip{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
   background:rgba(30,30,42,.98);color:#fff;padding:11px 20px;border-radius:15px;
   font-size:13.5px;opacity:0;pointer-events:none;transition:all .3s;z-index:1500;
@@ -335,12 +313,10 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
     <button class="nb" id="menuBtn">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <div id="brand" onclick="openModels()">Wave<small id="modelTag"><span class="dot" id="netDot"></span>DEEPSEEK</small></div>
+    <div id="brand"><span>Wave</span><small id="modelTag"><span class="dot" id="netDot"></span>DEEPSEEK</small></div>
     <button class="nb" id="themeBtn">🎨</button>
   </div>
-
   <div id="flow"></div>
-
   <div id="dock">
     <div id="att">
       <img id="attImg" src="">
@@ -362,54 +338,49 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   </div>
 </div>
 
-<button id="crystals" style="display:none" onclick="openCrystals()">💎 <span id="crCount">0</span></button>
+<button id="crystals" style="display:none" onclick="window.openCrystals()">💎 <span id="crCount">0</span></button>
 
-<!-- Меню -->
 <div class="sheet" id="menuSheet">
-  <button class="shx" onclick="closeSheet('menuSheet')">×</button>
+  <button class="shx" onclick="window.closeSheet('menuSheet')">×</button>
   <h2 id="userTitle">Гость</h2>
   <button class="btn" id="loginBtn">Войти / Регистрация</button>
   <button class="btn sec" id="profileBtn" style="display:none">👤 Профиль</button>
   <h2 class="sub">Чат</h2>
-  <button class="btn sec" onclick="newChat()">+ Новый чат</button>
-  <button class="btn sec" onclick="openChats()">💬 Мои чаты</button>
-  <button class="btn sec" onclick="exportChat()">📤 Экспорт</button>
-  <button class="btn sec" onclick="copyChat()">📋 Копировать чат</button>
-  <button class="btn sec" onclick="clearChat()">🗑 Очистить</button>
+  <button class="btn sec" onclick="window.newChat()">+ Новый чат</button>
+  <button class="btn sec" onclick="window.openChats()">💬 Мои чаты</button>
+  <button class="btn sec" onclick="window.exportChat()">📤 Экспорт</button>
+  <button class="btn sec" onclick="window.copyChat()">📋 Копировать чат</button>
+  <button class="btn sec" onclick="window.clearChat()">🗑 Очистить</button>
   <h2 class="sub">Ещё</h2>
-  <button class="btn sec" onclick="openTerm()">⌨️ Терминал</button>
-  <button class="btn sec" onclick="openAdmin()">🔐 Админ-панель</button>
+  <button class="btn sec" onclick="window.openTerm()">⌨️ Терминал</button>
+  <button class="btn sec" onclick="window.openAdmin()">🔐 Админ-панель</button>
   <button class="btn sec" id="logoutBtn" style="display:none">🚪 Выйти</button>
 </div>
 
-<!-- Чаты -->
 <div class="sheet" id="chatsSheet">
-  <button class="shx" onclick="closeSheet('chatsSheet')">×</button>
+  <button class="shx" onclick="window.closeSheet('chatsSheet')">×</button>
   <h2>Мои чаты</h2>
   <input class="search" id="search" placeholder="🔍 Поиск…">
   <div id="list"></div>
 </div>
 
-<!-- Темы -->
 <div class="sheet" id="themeSheet">
-  <button class="shx" onclick="closeSheet('themeSheet')">×</button>
+  <button class="shx" onclick="window.closeSheet('themeSheet')">×</button>
   <h2>Тема</h2>
   <div id="palette"></div>
 </div>
 
-<!-- Модели -->
 <div class="sheet" id="modelSheet">
-  <button class="shx" onclick="closeSheet('modelSheet')">×</button>
+  <button class="shx" onclick="window.closeSheet('modelSheet')">×</button>
   <h2>Модель ИИ</h2>
   <div id="models"></div>
 </div>
 
-<!-- Терминал -->
 <div id="term">
   <div id="termBar">
     <div class="dots"><span></span><span></span><span></span></div>
     <div class="ti">wave@terminal</div>
-    <button class="shx" style="position:static;width:34px;height:34px;font-size:17px" onclick="closeTerm()">×</button>
+    <button class="shx" style="position:static;width:34px;height:34px;font-size:17px" onclick="window.closeTerm()">×</button>
   </div>
   <div id="termLog"></div>
   <div id="termIn">
@@ -418,9 +389,8 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
   </div>
 </div>
 
-<!-- Голос -->
 <div id="voice">
-  <button id="vx" onclick="closeVoice()">×</button>
+  <button id="vx" onclick="window.closeVoice()">×</button>
   <div id="halo">
     <div class="hr h1"></div><div class="hr h2"></div><div class="hr h3"></div>
     <div id="face">🌙</div>
@@ -438,13 +408,9 @@ body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;
 <script>
 (() => {
 'use strict';
-
 const S = window.WAVE_SECRETS || {};
-const APP = {
-  user: null, chats: [], current: null, memory: [],
-  backend: 'deepseek', theme: 'moon', attached: null,
-  working: false, rec: null, hearing: false, heard: ''
-};
+const APP = { user:null, chats:[], current:null, memory:[], backend:'deepseek',
+  theme:'moon', attached:null, working:false, rec:null, hearing:false, heard:'' };
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -457,22 +423,18 @@ function md(t){
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   return s;
 }
-
 function vibrate(k='light'){
   if(!navigator.vibrate) return;
-  try{ navigator.vibrate({light:10,medium:20,heavy:[30,20,30],ok:[10,30,10],err:[50,30,50]}[k]||10); }catch(_){}
+  try{ navigator.vibrate({light:10,medium:20,heavy:[30,20,30],ok:[10,30,10]}[k]||10); }catch(_){}
 }
-
 let tipTimer;
 function note(m){
-  const t = $('tip');
-  t.textContent = m;
-  t.classList.add('on');
+  const t = $('tip'); t.textContent = m; t.classList.add('on');
   clearTimeout(tipTimer);
   tipTimer = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-/* ================= АККАУНТЫ ================= */
+/* ========== АККАУНТЫ ========== */
 function getUsers(){ try{ return JSON.parse(localStorage.getItem('wv_users')||'{}'); }catch{ return {}; } }
 function saveUsers(u){ try{ localStorage.setItem('wv_users', JSON.stringify(u)); }catch{} }
 function me(){ const e = localStorage.getItem('wv_user'); if(!e) return null; return getUsers()[e] || null; }
@@ -480,19 +442,47 @@ function saveMe(u){ const e = localStorage.getItem('wv_user'); if(!e) return; co
 
 function genCode(){ return String(Math.floor(100000 + Math.random()*900000)); }
 
+// ============================================================
+//  РЕАЛЬНАЯ ОТПРАВКА ЧЕРЕЗ EMAILJS — БЕЗ ЗАГЛУШЕК
+// ============================================================
 async function sendMail(to, code){
   const pub = S.emailjsPublic, svc = S.emailjsService, tpl = S.emailjsTemplate;
-  if(!pub || pub.startsWith('__')){
-    alert('EmailJS не настроен. Код: '+code+'\n\n(в рабочей версии код придёт на почту)');
-    return false;
+
+  console.log('[Wave] EmailJS отправка:');
+  console.log('  publicKey:', pub);
+  console.log('  serviceId:', svc);
+  console.log('  templateId:', tpl);
+  console.log('  to_email:', to);
+  console.log('  code:', code);
+
+  if(!pub || !svc || !tpl){
+    throw new Error('EmailJS не настроен: пустые ключи в WAVE_SECRETS');
   }
+  if(String(pub).includes('__') || String(svc).includes('__') || String(tpl).includes('__')){
+    throw new Error('В WAVE_SECRETS остались заглушки — GitHub Action не подставил значения. Проверь Actions.');
+  }
+  if(typeof emailjs === 'undefined'){
+    throw new Error('EmailJS SDK не загрузился. Проверь интернет / блокировщик.');
+  }
+
+  try{ emailjs.init({ publicKey: pub }); }catch(e){ console.warn('emailjs.init warn:', e); }
+
   try{
-    emailjs.init(pub);
-    await emailjs.send(svc, tpl, { to_email: to, code: code, email: to });
+    const r = await emailjs.send(svc, tpl, {
+      to_email: to,
+      email: to,
+      user_email: to,
+      reply_to: to,
+      code: code,
+      message: 'Ваш код для входа в Wave: ' + code,
+      subject: 'Wave · Код входа'
+    });
+    console.log('[Wave] EmailJS OK:', r);
     return true;
   }catch(e){
-    alert('Не удалось отправить письмо: '+e.message+'\n\nВаш код: '+code);
-    return false;
+    console.error('[Wave] EmailJS ERROR:', e);
+    const reason = (e && (e.text || e.message || e.status)) || 'unknown';
+    throw new Error('EmailJS: ' + reason);
   }
 }
 
@@ -529,7 +519,6 @@ function verify(input){
   return APP.user;
 }
 
-/* ================= UI АККАУНТА ================= */
 function openAuth(mode='login'){
   const m = document.createElement('div');
   m.className = 'modal on';
@@ -546,13 +535,9 @@ function openAuth(mode='login'){
       <div class="mmsg" id="aMsg"></div>
     </div>`;
   document.body.appendChild(m);
-
-  const emailI = m.querySelector('#aEmail');
-  const codeI = m.querySelector('#aCode');
-  const send = m.querySelector('#aSend');
-  const swap = m.querySelector('#aSwap');
-  const close = m.querySelector('#aClose');
-  const msg = m.querySelector('#aMsg');
+  const emailI = m.querySelector('#aEmail'), codeI = m.querySelector('#aCode');
+  const send = m.querySelector('#aSend'), swap = m.querySelector('#aSwap');
+  const close = m.querySelector('#aClose'), msg = m.querySelector('#aMsg');
   let step = 'email';
 
   send.onclick = async () => {
@@ -563,16 +548,11 @@ function openAuth(mode='login'){
       send.disabled = true; send.textContent='Отправляем…';
       try{
         await requestCode(email, mode);
-        step='code';
-        emailI.disabled = true;
-        codeI.style.display='block';
-        codeI.focus();
+        step='code'; emailI.disabled=true; codeI.style.display='block'; codeI.focus();
         send.textContent='Войти';
-        msg.style.color='#4ade80';
-        msg.textContent='Код отправлен на '+email;
+        msg.style.color='#4ade80'; msg.textContent='Код отправлен на '+email;
       }catch(e){
-        msg.style.color='#f87171';
-        msg.textContent=e.message;
+        msg.style.color='#f87171'; msg.textContent=e.message;
         send.textContent = mode==='login'?'Получить код':'Создать';
       }finally{ send.disabled=false; }
     } else {
@@ -580,7 +560,7 @@ function openAuth(mode='login'){
         verify(codeI.value);
         msg.style.color='#4ade80'; msg.textContent='Успех!';
         vibrate('ok');
-        setTimeout(() => { m.remove(); refreshUserUI(); redrawFlow(); }, 500);
+        setTimeout(()=>{ m.remove(); refreshUserUI(); redrawFlow(); }, 500);
       }catch(e){
         msg.style.color='#f87171'; msg.textContent=e.message;
       }
@@ -588,53 +568,38 @@ function openAuth(mode='login'){
   };
   swap.onclick = () => { m.remove(); openAuth(mode==='login'?'signup':'login'); };
   close.onclick = () => m.remove();
-  emailI.focus();
+  emailEfocus();
+  function emailEfocus(){ setTimeout(()=>emailI.focus(), 100); }
 }
 
 function refreshUserUI(){
-  const u = me();
-  APP.user = u;
+  const u = me(); APP.user = u;
   const isAuth = !!u;
   $('loginBtn').style.display = isAuth ? 'none' : 'block';
   $('profileBtn').style.display = isAuth ? 'block' : 'none';
   $('logoutBtn').style.display = isAuth ? 'block' : 'none';
   $('userTitle').textContent = isAuth ? (u.name || u.email) : 'Гость';
-  if(isAuth){
-    $('crystals').style.display = 'flex';
-    updateCrystalUI();
-  } else {
-    $('crystals').style.display = 'none';
-  }
+  $('crystals').style.display = isAuth ? 'flex' : 'none';
+  if(isAuth) updateCrystalUI();
 }
-
 function dailyCheck(){
   const u = me(); if(!u) return;
-  const now = new Date();
-  const last = new Date(u.lastDaily || 0);
+  const now = new Date(), last = new Date(u.lastDaily||0);
   if(last.toDateString() !== now.toDateString()){
     u.crystals = S.crystalsPerDay || 50;
     u.lastDaily = Date.now();
     saveMe(u);
-    note('💎 +'+(S.crystalsPerDay||50)+' кристаллов за день!');
+    note('💎 +'+(S.crystalsPerDay||50)+' кристаллов!');
   }
 }
-function updateCrystalUI(){
-  const u = me(); if(!u) return;
-  $('crCount').textContent = u.crystals || 0;
-}
+function updateCrystalUI(){ const u = me(); if(u) $('crCount').textContent = u.crystals || 0; }
 function spendCrystal(){
   const u = me(); if(!u) return true;
-  if((u.crystals||0) <= 0){
-    note('💎 Кристаллы кончились. Приходи завтра!');
-    return false;
-  }
-  u.crystals--;
-  saveMe(u);
-  updateCrystalUI();
-  return true;
+  if((u.crystals||0) <= 0){ note('💎 Кристаллы кончились'); return false; }
+  u.crystals--; saveMe(u); updateCrystalUI(); return true;
 }
 
-/* ================= ТЕМЫ ================= */
+/* ========== ТЕМЫ ========== */
 const THEMES = {
   moon:['🌙','Луна'], aurora:['🌌','Сияние'], neon:['💜','Неон'],
   matrix:['💚','Матрица'], sakura:['🌸','Сакура'], phoenix:['🔥','Феникс'],
@@ -644,7 +609,6 @@ const THEMES = {
   panda:['🐼','Панда'], tiger:['🐯','Тигр'], frog:['🐸','Жаба'],
   wolf:['🐺','Волк'], shark:['🦈','Акула'], bee:['🐝','Пчела']
 };
-
 function setTheme(k){
   if(!THEMES[k]) k='moon';
   APP.theme=k;
@@ -665,39 +629,26 @@ function buildPalette(){
   }
 }
 
-/* ================= АНИМАЦИЯ ФОНА ================= */
-let fxRAF = null, fxTheme = 'moon';
+/* ========== АНИМАЦИЯ ФОНА ========== */
+let fxRAF=null, fxTheme='moon';
 function startFx(theme){
   fxTheme = theme;
   if(fxRAF) cancelAnimationFrame(fxRAF);
-  const cv = $('fx'); const ctx = cv.getContext('2d');
+  const cv = $('fx'), ctx = cv.getContext('2d');
   function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
   resize(); addEventListener('resize', resize);
 
-  const stars = Array.from({length: 80}, () => ({
-    x:Math.random(), y:Math.random()*0.7, s:1+Math.random()*2,
-    t:Math.random()*Math.PI*2
-  }));
-  const snow = Array.from({length: 60}, () => ({
-    x:Math.random(), y:Math.random(), v:0.0005+Math.random()*0.0015,
-    s:1+Math.random()*2, a:Math.random()*Math.PI*2
-  }));
-  const petals = Array.from({length: 40}, () => ({
-    x:Math.random(), y:Math.random(), v:0.0008+Math.random()*0.0012,
-    s:3+Math.random()*4, a:Math.random()*Math.PI*2, rot:0
-  }));
-  const bubbles = Array.from({length: 35}, () => ({
-    x:Math.random(), y:1+Math.random(), v:0.001+Math.random()*0.002,
-    s:3+Math.random()*8
-  }));
-  const matrixCols = Math.floor(innerWidth/14);
-  const matrixDrops = Array.from({length:matrixCols}, () => Math.random()*innerHeight);
+  const stars = Array.from({length:80}, () => ({x:Math.random(), y:Math.random()*0.7, s:1+Math.random()*2, t:Math.random()*6}));
+  const snow = Array.from({length:60}, () => ({x:Math.random(), y:Math.random(), v:0.0005+Math.random()*0.0015, s:1+Math.random()*2, a:Math.random()*6}));
+  const petals = Array.from({length:40}, () => ({x:Math.random(), y:Math.random(), v:0.0008+Math.random()*0.0012, s:3+Math.random()*4, a:Math.random()*6}));
+  const bubbles = Array.from({length:35}, () => ({x:Math.random(), y:1+Math.random(), v:0.001+Math.random()*0.002, s:3+Math.random()*8}));
+  const cols = Math.floor(innerWidth/14);
+  const drops = Array.from({length:cols}, () => Math.random()*innerHeight);
 
-  let t = 0;
+  let t=0;
   function frame(){
     t++;
     ctx.clearRect(0,0,cv.width,cv.height);
-    const dark = ['moon','aurora','neon','matrix'].includes(fxTheme);
 
     if(fxTheme==='moon'){
       ctx.fillStyle='rgba(255,255,255,.9)';
@@ -708,10 +659,9 @@ function startFx(theme){
       });
       ctx.globalAlpha = 1;
     }
-
     if(fxTheme==='aurora'){
       for(let i=0;i<4;i++){
-        const g = ctx.createLinearGradient(0, 0, cv.width, cv.height*0.6);
+        const g = ctx.createLinearGradient(0,0,cv.width,cv.height*0.6);
         const hue = (t*0.3 + i*60) % 360;
         g.addColorStop(0, `hsla(${hue},80%,55%,0.15)`);
         g.addColorStop(0.5, `hsla(${hue+40},80%,60%,0.25)`);
@@ -720,7 +670,6 @@ function startFx(theme){
         ctx.fillRect(0, i*80 + Math.sin(t*0.02+i)*30, cv.width, 200);
       }
     }
-
     if(fxTheme==='neon'){
       ctx.strokeStyle = 'rgba(255,0,170,.3)';
       ctx.lineWidth = 1;
@@ -732,79 +681,50 @@ function startFx(theme){
         ctx.stroke();
       }
     }
-
     if(fxTheme==='matrix'){
       ctx.font = '14px monospace';
-      for(let i=0;i<matrixDrops.length;i++){
-        const x = i*14;
-        const y = matrixDrops[i];
+      for(let i=0;i<drops.length;i++){
         const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01'[Math.floor(Math.random()*28)];
         ctx.fillStyle = 'rgba(0,255,65,.8)';
-        ctx.fillText(c, x, y);
+        ctx.fillText(c, i*14, drops[i]);
         ctx.fillStyle = 'rgba(0,255,65,.15)';
-        ctx.fillText(c, x, y-16);
-        matrixDrops[i] += 4;
-        if(matrixDrops[i] > cv.height && Math.random() > 0.985) matrixDrops[i] = 0;
+        ctx.fillText(c, i*14, drops[i]-16);
+        drops[i] += 4;
+        if(drops[i] > cv.height && Math.random() > 0.985) drops[i] = 0;
       }
     }
-
     if(fxTheme==='sakura' || fxTheme==='phoenix'){
       petals.forEach(p => {
-        p.y += p.v; p.a += 0.02;
-        p.x += Math.sin(p.a)*0.001;
+        p.y += p.v; p.a += 0.02; p.x += Math.sin(p.a)*0.001;
         if(p.y > 1.1){ p.y=-0.1; p.x=Math.random(); }
-        ctx.save();
-        ctx.translate(p.x*cv.width, p.y*cv.height);
-        ctx.rotate(p.a);
+        ctx.save(); ctx.translate(p.x*cv.width, p.y*cv.height); ctx.rotate(p.a);
         ctx.fillStyle = fxTheme==='sakura' ? 'rgba(255,183,206,.7)' : 'rgba(255,140,60,.65)';
-        ctx.beginPath();
-        ctx.ellipse(0,0,p.s,p.s*0.6,0,0,7);
-        ctx.fill();
+        ctx.beginPath(); ctx.ellipse(0,0,p.s,p.s*0.6,0,0,7); ctx.fill();
         ctx.restore();
       });
     }
-
     if(fxTheme==='whale' || fxTheme==='shark' || fxTheme==='wave'){
       bubbles.forEach(b => {
         b.y -= b.v;
         if(b.y < -0.05){ b.y=1.1; b.x=Math.random(); }
-        ctx.strokeStyle = 'rgba(200,230,255,.4)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(b.x*cv.width, b.y*cv.height, b.s, 0, 7);
-        ctx.stroke();
+        ctx.strokeStyle = 'rgba(200,230,255,.4)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(b.x*cv.width, b.y*cv.height, b.s, 0, 7); ctx.stroke();
       });
     }
-
     if(fxTheme==='penguin' || fxTheme==='wolf'){
       ctx.fillStyle = 'rgba(255,255,255,.7)';
       snow.forEach(s => {
-        s.y += s.v; s.a += 0.01;
-        s.x += Math.sin(s.a)*0.0008;
+        s.y += s.v; s.a += 0.01; s.x += Math.sin(s.a)*0.0008;
         if(s.y > 1.05){ s.y=-0.05; s.x=Math.random(); }
         ctx.beginPath(); ctx.arc(s.x*cv.width, s.y*cv.height, s.s, 0, 7); ctx.fill();
       });
     }
-
-    if(dark && fxTheme==='moon'){
-      stars.forEach(s => {
-        if(Math.random() > 0.9975){
-          ctx.strokeStyle = 'rgba(255,255,255,.9)';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(s.x*cv.width, s.y*cv.height);
-          ctx.lineTo(s.x*cv.width-60, s.y*cv.height+30);
-          ctx.stroke();
-        }
-      });
-    }
-
     fxRAF = requestAnimationFrame(frame);
   }
   frame();
 }
 
-/* ================= ЧАТ ================= */
+/* ========== ЧАТ ========== */
 function getChats(){ try{ return JSON.parse(localStorage.getItem('wv_chats')||'[]'); }catch{ return []; } }
 function saveChats(c){ try{ localStorage.setItem('wv_chats', JSON.stringify(c)); }catch{} APP.chats=c; }
 function cur(){ return APP.chats.find(c => c.id === APP.current); }
@@ -820,16 +740,15 @@ function redrawFlow(){
   const flow = $('flow'); flow.innerHTML='';
   const c = cur();
   if(!c || c.messages.length===0){ flow.appendChild(emptyState()); return; }
-  c.messages.forEach((m, i) => {
+  c.messages.forEach((m) => {
     const el = document.createElement('div');
     el.className = 'bub ' + (m.role==='user'?'me':'ai');
     if(m.role==='user'){
       el.innerHTML = md(m.text);
       if(m.img){ const im = document.createElement('img'); im.src = m.img; el.appendChild(im); }
     } else {
-      if(m.isImg){
-        el.innerHTML = `<div class="bub-head"><span>Wave</span></div><img src="${m.text}">`;
-      } else {
+      if(m.isImg){ el.innerHTML = `<div class="bub-head"><span>Wave</span></div><img src="${m.text}">`; }
+      else {
         el.innerHTML = `<div class="bub-head"><span>Wave</span><button class="bub-copy">📋</button></div>${md(m.text)}`;
         el.querySelector('.bub-copy').onclick = () => clip(m.text);
       }
@@ -865,8 +784,7 @@ function appendMsg(role, text, isImg, img){
   const c = cur(); if(!c) return;
   c.messages.push({role, text, isImg:!!isImg, img: img||null, time:Date.now()});
   if(c.messages.length===1 && role==='user') c.title = text.substring(0,32) + (text.length>32?'…':'');
-  if(APP.user) APP.user.messages = (APP.user.messages||0) + 1;
-  if(APP.user) saveMe(APP.user);
+  if(APP.user){ APP.user.messages = (APP.user.messages||0) + 1; saveMe(APP.user); }
   saveChats(APP.chats);
   redrawFlow();
 }
@@ -908,14 +826,13 @@ function pourInk(full){
   })();
 }
 
-/* ================= ИИ ================= */
+/* ========== ИИ ========== */
 const BACKENDS = [
   {k:'deepseek', n:'DeepSeek', s:'Умная', b:'SMART'},
   {k:'openai', n:'OpenAI', s:'Быстрая', b:'FAST'},
   {k:'mistral', n:'Mistral', s:'Универсальная', b:'NORMAL'},
   {k:'qwen-coder', n:'Qwen', s:'Для кода', b:'CODE'}
 ];
-
 async function callBackend(kind, text){
   const msgs = [
     {role:'system', content:'Ты Wave — дружелюбный ИИ-ассистент. Помогаешь со школьными задачами. Решай пошагово. Отвечай по-русски.'},
@@ -934,7 +851,6 @@ async function callBackend(kind, text){
   if(!rep) throw new Error('empty');
   return rep;
 }
-
 async function respond(text){
   APP.memory.push({role:'user', content:text});
   if(APP.memory.length>10) APP.memory = APP.memory.slice(-10);
@@ -945,7 +861,6 @@ async function respond(text){
   }
   return offlineReply(text);
 }
-
 function offlineReply(text){
   const t = text.toLowerCase();
   const m = t.match(/[\d]+[\d\s+\-*/().]*[\d]/);
@@ -956,14 +871,14 @@ function offlineReply(text){
       if(isFinite(r)) return 'Ответ: '+r;
     }catch(_){}
   }
-  if(/привет|здравств|хай/.test(t)) return 'Привет! 👋 Чем помочь?';
+  if(/привет|здравств|хай/.test(t)) return 'Привет! 👋';
   if(/как дела/.test(t)) return 'Отлично! У тебя как?';
-  if(/кто ты|что ты/.test(t)) return 'Я Wave — ИИ-ассистент. Помогаю с задачами и просто болтаю.';
+  if(/кто ты/.test(t)) return 'Я Wave — ИИ-ассистент.';
   if(/спасибо/.test(t)) return 'Всегда рад! 😊';
-  return 'Сейчас не могу подключиться к серверу ИИ. Попробуй ещё раз или переформулируй.';
+  return 'Сейчас не могу подключиться к серверу ИИ. Попробуй ещё раз.';
 }
 
-/* ================= ОТПРАВКА ================= */
+/* ========== ОТПРАВКА ========== */
 function launch(){
   if(APP.working){ note('Подожди…'); return; }
   const text = $('input').value.trim();
@@ -981,7 +896,7 @@ function launch(){
     .catch(e => { hideWait(); APP.working=false; $('go').disabled=false; appendMsg('wave','Ошибка: '+e.message); });
 }
 
-/* ================= ЧАТЫ ================= */
+/* ========== СПИСОК ЧАТОВ ========== */
 function redrawList(){
   const wrap = $('list'); wrap.innerHTML='';
   const term = ($('search').value||'').toLowerCase();
@@ -1031,7 +946,7 @@ function clip(txt){
   }
 }
 
-/* ================= МОДЕЛИ ================= */
+/* ========== МОДЕЛИ ========== */
 function openModels(){
   vibrate();
   const w = $('models'); w.innerHTML='';
@@ -1051,9 +966,8 @@ function openModels(){
   $('modelSheet').classList.add('on');
 }
 
-/* ================= ПАНЕЛИ ================= */
+/* ========== ПАНЕЛИ ========== */
 function closeSheet(id){ $(id).classList.remove('on'); }
-
 function openCrystals(){
   const u = me(); if(!u){ note('Войди в аккаунт'); return; }
   vibrate();
@@ -1063,7 +977,7 @@ function openCrystals(){
   alert(`💎 Кристаллы: ${u.crystals||0}\n\nСброс через ${h} ч ${m} мин\nПридёт: ${S.crystalsPerDay||50} 💎`);
 }
 
-/* ================= АДМИН ================= */
+/* ========== АДМИН ========== */
 function openAdmin(){
   vibrate();
   const pass = prompt('Пароль администратора:');
@@ -1076,7 +990,7 @@ function openAdmin(){
     msg += `${u.avatar||'🌙'} ${u.name||u.email}\n   💎 ${u.crystals||0} · ${u.messages||0} сообщ.\n`;
   });
   if(list.length > 30) msg += `\n…и ещё ${list.length-30}`;
-  const action = prompt(msg + '\n\nВведи email для выдачи кристаллов (или пусто для отмены):');
+  const action = prompt(msg + '\n\nEmail для выдачи кристаллов (пусто — отмена):');
   if(action && users[action]){
     const amount = parseInt(prompt('Сколько кристаллов выдать?','100')||'0');
     if(amount){
@@ -1088,34 +1002,29 @@ function openAdmin(){
   }
 }
 
-/* ================= ТЕРМИНАЛ ================= */
+/* ========== ТЕРМИНАЛ ========== */
 function openTerm(){
-  vibrate();
-  closeSheet('menuSheet');
+  vibrate(); closeSheet('menuSheet');
   $('term').classList.add('on');
   $('termLog').innerHTML = '<div class="li"><span class="p">$</span>Wave Terminal v1.0</div><div class="li dm">Введи "help" для списка команд</div>';
   setTimeout(() => $('termInput').focus(), 200);
 }
 function closeTerm(){ $('term').classList.remove('on'); }
-
 function termCmd(line){
   const log = $('termLog');
   const add = (cls, txt) => {
     const d = document.createElement('div');
     d.className = 'li';
     d.innerHTML = cls ? `<span class="${cls}">${esc(txt)}</span>` : esc(txt);
-    log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
+    log.appendChild(d); log.scrollTop = log.scrollHeight;
   };
   add('p', '› '+line);
   const [cmd, ...args] = line.trim().split(/\s+/);
   const arg = args.join(' ');
   switch(cmd){
     case 'help':
-      ['help — список команд','clear — очистить','theme <name> — сменить тему',
-       'theme list — все темы','model <name> — модель','whoami — кто я',
-       'crystals — кристаллы','say <text> — озвучить','calc <expr> — калькулятор',
-       'time — время','date — дата','exit — закрыть'].forEach(l => add('in', l));
+      ['help','clear','theme <name>','theme list','model <name>','whoami',
+       'crystals','say <text>','calc <expr>','time','date','exit'].forEach(l => add('in', l));
       break;
     case 'clear': log.innerHTML=''; break;
     case 'theme':
@@ -1135,9 +1044,7 @@ function termCmd(line){
       const u2 = me();
       add('in', u2 ? `💎 ${u2.crystals}` : 'Требуется вход');
       break;
-    case 'say':
-      if(arg) say(arg); else add('er','say <text>');
-      break;
+    case 'say': if(arg) say(arg); else add('er','say <text>'); break;
     case 'calc':
       try{ add('ok', String(Function('"use strict";return ('+arg+')')())); }
       catch(_){ add('er','Ошибка'); }
@@ -1148,15 +1055,8 @@ function termCmd(line){
     default: add('er', 'Команда не найдена: '+cmd);
   }
 }
-$('termInput').addEventListener('keydown', e => {
-  if(e.key==='Enter'){
-    const v = e.target.value;
-    if(v.trim()) termCmd(v);
-    e.target.value='';
-  }
-});
 
-/* ================= ГОЛОС ================= */
+/* ========== ГОЛОС ========== */
 function openVoice(){
   vibrate();
   $('voice').classList.add('on');
@@ -1200,7 +1100,7 @@ function say(text){
   speechSynthesis.speak(u);
 }
 
-/* ================= ФАЙЛЫ ================= */
+/* ========== ФАЙЛЫ ========== */
 $('fileBtn').onclick = () => { vibrate(); $('fileIn').click(); };
 $('fileIn').onchange = () => {
   const f = $('fileIn').files[0]; if(!f) return;
@@ -1215,9 +1115,8 @@ $('fileIn').onchange = () => {
 };
 $('attRm').onclick = () => { APP.attached=null; $('fileIn').value=''; $('att').style.display='none'; };
 
-/* ================= СОБЫТИЯ ================= */
+/* ========== СОБЫТИЯ ========== */
 $('go').addEventListener('click', launch);
-$('go').addEventListener('pointerdown', e => { /* для отзывчивости */ });
 $('input').addEventListener('keydown', e => {
   if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); launch(); }
 });
@@ -1226,9 +1125,8 @@ $('themeBtn').onclick = () => { vibrate(); buildPalette(); $('themeSheet').class
 $('loginBtn').onclick = () => { closeSheet('menuSheet'); openAuth('login'); };
 $('logoutBtn').onclick = () => {
   if(confirm('Выйти из аккаунта?')){
-    localStorage.removeItem('wv_user');
-    APP.user=null; refreshUserUI(); closeSheet('menuSheet');
-    note('Выйдено');
+    localStorage.removeItem('wv_user'); APP.user=null; refreshUserUI();
+    closeSheet('menuSheet'); note('Выйдено');
   }
 };
 $('profileBtn').onclick = () => {
@@ -1242,8 +1140,11 @@ $('vb').onclick = () => {
   if(!APP.rec){ note('Микрофон не поддерживается'); return; }
   if(APP.hearing) APP.rec.stop(); else { try{ speechSynthesis.cancel(); }catch{}; try{ APP.rec.start(); }catch(_){} }
 };
+$('termInput').addEventListener('keydown', e => {
+  if(e.key==='Enter'){ const v = e.target.value; if(v.trim()) termCmd(v); e.target.value=''; }
+});
 
-/* ================= ИНТРО ================= */
+/* ========== ИНТРО ========== */
 function introAnimate(){
   ['W','a','v','e'].forEach((c,i) => {
     const s = document.createElement('span');
@@ -1257,51 +1158,34 @@ function introAnimate(){
   }, 2200);
 }
 
-/* ================= BOOT ================= */
+/* ========== BOOT ========== */
 function boot(){
-  // тема
   try{ const t = localStorage.getItem('wv_theme'); if(t) APP.theme=t; }catch{}
   setTheme(APP.theme);
 
-  // модель
   try{ const b = localStorage.getItem('wv_backend'); if(b) APP.backend=b; }catch{}
   BACKENDS.forEach(b => { if(b.k===APP.backend) $('modelTag').innerHTML = `<span class="dot" id="netDot"></span>${b.n.toUpperCase()}`; });
 
-  // юзер
   APP.user = me();
   refreshUserUI();
   dailyCheck();
 
-  // чаты
   APP.chats = getChats();
   if(!APP.chats.length) newChat();
   else { APP.current = APP.chats[0].id; redrawFlow(); }
 
-  // голос
   setupVoice();
 
-  // сеть
-  const dot = $('netDot');
-  if(dot) dot.className = 'dot' + (navigator.onLine?'':' off');
-  addEventListener('online', () => { if($('netDot')) $('netDot').className='dot'; note('Соединение восстановлено'); });
-  addEventListener('offline', () => { if($('netDot')) $('netDot').className='dot off'; note('Нет интернета'); });
+  addEventListener('online', () => { const d=$('netDot'); if(d) d.className='dot'; note('Онлайн'); });
+  addEventListener('offline', () => { const d=$('netDot'); if(d) d.className='dot off'; note('Нет интернета'); });
 
-  // intro
   introAnimate();
-
-  // daily check каждую минуту
   setInterval(dailyCheck, 60000);
-
-  // фокус на инпут при тапе по экрану (не на UI)
-  document.addEventListener('click', e => {
-    if(e.target.closest('button, input, .sheet, .modal, #term, #voice')) return;
-    if(!APP.working) $('input').focus();
-  });
 }
 
 boot();
 
-// Экспорт наружу для inline-обработчиков
+// Экспорт для inline onclick
 window.openModels = openModels;
 window.openChats = openChats;
 window.openAdmin = openAdmin;
