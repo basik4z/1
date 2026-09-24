@@ -4,385 +4,339 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Wave">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#08080f">
-<title>Wave</title>
-<link rel="manifest" id="mani">
-<link rel="icon" id="fav">
-<link rel="apple-touch-icon" id="atouch">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#06060f">
+<title>Wave · AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌙%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+window.WAVE_SECRETS = {
+  emailjsPublic:   '__EMAILJS_PUBLIC__',
+  emailjsService:  '__EMAILJS_SERVICE__',
+  emailjsTemplate: '__EMAILJS_TEMPLATE__',
+  adminPass:       '__ADMIN_PASS__',
+  appName:         'Wave',
+  crystalsPerDay:  50,
+  crystalsOnSignup:100,
+  codeTTLmin:      10,
+  currencyName:    'кристалл'
+};
+</script>
 <style>
-@font-face{font-family:'WF';src:url('https://raw.githubusercontent.com/basik4z/1/main/Super%20Waffles.ttf') format('truetype');font-display:swap}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100dvh;overflow:hidden;font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;background:var(--bg1);color:var(--tx);
+  transition:background .5s,color .5s}
+:root{--bg1:#06060f;--bg2:#0f0e26;--bg3:#1a1838;--tx:#f2f2f8;--gr:#9a9ab0;
+  --ln:#2e2b78;--ac:#a78bfa;--glass:rgba(30,30,60,.55);
+  --danger:#ef4444;--ok:#22c55e;--warn:#f59e0b}
 
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-
-:root{
-  --c1:#f6fbf8;--c2:#e3f3ea;--ct:#0a1f14;--cg:#5a7666;--cl:#c5e3d3;--ca:#0a8f5e;
-  --glass:rgba(255,255,255,.55);
-}
-.wv-wave  {--c1:#f2f8fd;--c2:#e0eef9;--ct:#082030;--cg:#5a7285;--cl:#c8dded;--ca:#0077cc;--glass:rgba(255,255,255,.6)}
-.wv-lion  {--c1:#fdf6ec;--c2:#fae6ca;--ct:#2c1808;--cg:#8a6030;--cl:#f0d5a8;--ca:#e0620a;--glass:rgba(255,255,255,.55)}
-.wv-croc  {--c1:#f2faf2;--c2:#dff2df;--ct:#0a200a;--cg:#4a704a;--cl:#c5e5c5;--ca:#137a2c;--glass:rgba(255,255,255,.6)}
-.wv-dragon{--c1:#fdf2f2;--c2:#fadcdc;--ct:#2c0808;--cg:#8a4a4a;--cl:#f0b5b5;--ca:#d81f1f;--glass:rgba(255,255,255,.55)}
-.wv-panda {--c1:#fbfbfb;--c2:#eaeaea;--ct:#151515;--cg:#6e6e6e;--cl:#d5d5d5;--ca:#3a3a3a;--glass:rgba(255,255,255,.7)}
-.wv-tiger {--c1:#fdf4e8;--c2:#fae0bc;--ct:#2c1200;--cg:#8a5420;--cl:#f0c898;--ca:#e0620a;--glass:rgba(255,255,255,.55)}
-.wv-frog  {--c1:#f3faf5;--c2:#ddf1e3;--ct:#082015;--cg:#486e55;--cl:#bfe2cb;--ca:#0a8f5e;--glass:rgba(255,255,255,.6)}
-.wv-wolf  {--c1:#f6f6f6;--c2:#e8e8e8;--ct:#181818;--cg:#6e6e6e;--cl:#d5d5d5;--ca:#4a4a4a;--glass:rgba(255,255,255,.7)}
-.wv-shark {--c1:#eef7fc;--c2:#d4eaf6;--ct:#081e2c;--cg:#4a6a80;--cl:#b5d9ee;--ca:#0369a1;--glass:rgba(255,255,255,.6)}
-.wv-bee   {--c1:#fefbf0;--c2:#fbeecb;--ct:#1a1400;--cg:#7a6018;--cl:#f0d8a0;--ca:#b8840a;--glass:rgba(255,255,255,.6)}
-.wv-moon  {--c1:#06060f;--c2:#0f0e26;--ct:#f2f2f8;--cg:#9a9ab0;--cl:#2e2b78;--ca:#a78bfa;--glass:rgba(30,30,60,.5)}
-
-html,body{height:100dvh;height:100vh;overflow:hidden;font-family:'WF','Inter',system-ui,sans-serif;
-  color:var(--ct);background:var(--c1);-webkit-font-smoothing:antialiased;
-  transition:background .4s,color .4s}
+body.wv-moon{--bg1:#06060f;--bg2:#0f0e26;--bg3:#1a1838;--tx:#f2f2f8;--gr:#9a9ab0;--ln:#2e2b78;--ac:#a78bfa;--glass:rgba(30,30,60,.55)}
+body.wv-aurora{--bg1:#071022;--bg2:#0d1c38;--bg3:#14304d;--tx:#e0f2ff;--gr:#7a9ab0;--ln:#2b4a78;--ac:#22d3ee;--glass:rgba(20,50,80,.55)}
+body.wv-neon{--bg1:#0d0221;--bg2:#1a0533;--bg3:#2a0a4a;--tx:#f0e6ff;--gr:#a080c0;--ln:#5a1a80;--ac:#ff00aa;--glass:rgba(60,0,80,.5)}
+body.wv-matrix{--bg1:#000a00;--bg2:#001500;--bg3:#002200;--tx:#00ff41;--gr:#008822;--ln:#005511;--ac:#00ff41;--glass:rgba(0,40,0,.6)}
+body.wv-sakura{--bg1:#fef4f8;--bg2:#fae0ee;--bg3:#f5c8dc;--tx:#2c0a1a;--gr:#8a4a6a;--ln:#f0c0d8;--ac:#ec4899;--glass:rgba(255,255,255,.75)}
+body.wv-phoenix{--bg1:#fdf2e8;--bg2:#fadcb8;--bg3:#f5c890;--tx:#3c0e00;--gr:#8a3a10;--ln:#f0b080;--ac:#dc2626;--glass:rgba(255,255,255,.55)}
+body.wv-whale{--bg1:#eef4fa;--bg2:#d8e6f3;--bg3:#c0d8ea;--tx:#04182c;--gr:#3a5878;--ln:#b0d0ea;--ac:#1e40af;--glass:rgba(255,255,255,.65)}
+body.wv-penguin{--bg1:#f4f8fb;--bg2:#dfeaf3;--bg3:#c8dcec;--tx:#08182c;--gr:#4a607a;--ln:#c0d8ea;--ac:#0ea5e9;--glass:rgba(255,255,255,.75)}
+body.wv-owl{--bg1:#f2f0fa;--bg2:#e0ddf0;--bg3:#c8c4e0;--tx:#100a2c;--gr:#5a507a;--ln:#c8c0e0;--ac:#7c3aed;--glass:rgba(255,255,255,.75)}
+body.wv-fox{--bg1:#fef4e8;--bg2:#fbe0c0;--bg3:#f5c890;--tx:#2c1400;--gr:#8a5010;--ln:#f0c898;--ac:#ea580c;--glass:rgba(255,255,255,.6)}
+body.wv-cat{--bg1:#fdf6fa;--bg2:#fae4ef;--bg3:#f5c8dc;--tx:#2c0a1e;--gr:#8a506a;--ln:#f0c0d8;--ac:#db2777;--glass:rgba(255,255,255,.75)}
+body.wv-wave{--bg1:#f2f8fd;--bg2:#e0eef9;--bg3:#c8ddec;--tx:#082030;--gr:#5a7285;--ln:#c8dded;--ac:#0077cc;--glass:rgba(255,255,255,.7)}
+body.wv-lion{--bg1:#fdf6ec;--bg2:#fae6ca;--bg3:#f0d0a0;--tx:#2c1808;--gr:#8a6030;--ln:#f0d5a8;--ac:#e0620a;--glass:rgba(255,255,255,.6)}
+body.wv-croc{--bg1:#f2faf2;--bg2:#dff2df;--bg3:#c0e0c0;--tx:#0a200a;--gr:#4a704a;--ln:#c5e5c5;--ac:#137a2c;--glass:rgba(255,255,255,.75)}
+body.wv-dragon{--bg1:#fdf2f2;--bg2:#fadcdc;--bg3:#f0b8b8;--tx:#2c0808;--gr:#8a4a4a;--ln:#f0b5b5;--ac:#d81f1f;--glass:rgba(255,255,255,.6)}
+body.wv-panda{--bg1:#fbfbfb;--bg2:#eaeaea;--bg3:#d0d0d0;--tx:#151515;--gr:#6e6e6e;--ln:#d5d5d5;--ac:#3a3a3a;--glass:rgba(255,255,255,.85)}
+body.wv-tiger{--bg1:#fdf4e8;--bg2:#fae0bc;--bg3:#f0c898;--tx:#2c1200;--gr:#8a5420;--ln:#f0c898;--ac:#e0620a;--glass:rgba(255,255,255,.6)}
+body.wv-frog{--bg1:#f3faf5;--bg2:#ddf1e3;--bg3:#c0e0c8;--tx:#082015;--gr:#486e55;--ln:#bfe2cb;--ac:#0a8f5e;--glass:rgba(255,255,255,.75)}
+body.wv-wolf{--bg1:#f6f6f6;--bg2:#e8e8e8;--bg3:#cccccc;--tx:#181818;--gr:#6e6e6e;--ln:#d5d5d5;--ac:#4a4a4a;--glass:rgba(255,255,255,.85)}
+body.wv-shark{--bg1:#eef7fc;--bg2:#d4eaf6;--bg3:#b0d5ea;--tx:#081e2c;--gr:#4a6a80;--ln:#b5d9ee;--ac:#0369a1;--glass:rgba(255,255,255,.75)}
+body.wv-bee{--bg1:#fefbf0;--bg2:#fbeecb;--bg3:#f0d8a0;--tx:#1a1400;--gr:#7a6018;--ln:#f0d8a0;--ac:#b8840a;--glass:rgba(255,255,255,.75)}
 
 #scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-#scene svg{width:100%;height:100%;display:block}
-
-.star{position:absolute;background:#fff;border-radius:50%;animation:twk 3s ease-in-out infinite}
-@keyframes twk{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.4)}}
-.shoot{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;box-shadow:0 0 8px #fff,0 0 16px rgba(255,255,255,.7)}
-.shoot::after{content:'';position:absolute;top:50%;right:0;width:100px;height:1.5px;background:linear-gradient(90deg,transparent,#fff);transform:translateY(-50%)}
-@keyframes sh{0%{transform:translate(0,0);opacity:0}8%{opacity:1}100%{transform:translate(-110vw,55vh);opacity:0}}
-.leafF{position:absolute;top:-30px;background:linear-gradient(135deg,#180d06,#2a1810);border-radius:0 60% 0 60%;opacity:.85}
-@keyframes lf{0%{transform:translateY(-40px) rotate(0);opacity:0}10%{opacity:.9}100%{transform:translateY(110vh) translateX(35px) rotate(360deg);opacity:.15}}
-.cld{position:absolute;background:radial-gradient(ellipse,rgba(180,180,210,.55),transparent 70%);filter:blur(12px);opacity:.14;animation:cd linear infinite}
-@keyframes cd{0%{transform:translateX(-250px)}100%{transform:translateX(110vw)}}
-.glow{filter:drop-shadow(0 0 40px rgba(255,255,220,.6)) drop-shadow(0 0 80px rgba(200,200,255,.3));animation:mg 6s ease-in-out infinite}
-@keyframes mg{0%,100%{filter:drop-shadow(0 0 40px rgba(255,255,220,.6)) drop-shadow(0 0 80px rgba(200,200,255,.3))}50%{filter:drop-shadow(0 0 65px rgba(255,255,220,.95)) drop-shadow(0 0 125px rgba(200,200,255,.5))}}
-.cats{transform-origin:50% 100%;animation:cs 3.5s ease-in-out infinite}
-@keyframes cs{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
-.tails{transform-origin:right center;animation:tl 1.5s ease-in-out infinite}
-@keyframes tl{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(16deg)}}
-.brn{transform-origin:right center;animation:bs 5s ease-in-out infinite}
-@keyframes bs{0%,100%{transform:rotate(-.8deg)}50%{transform:rotate(.8deg)}}
-.lvs{transform-origin:center;animation:lr 4s ease-in-out infinite}
-@keyframes lr{0%,100%{transform:rotate(-1deg) scale(1)}50%{transform:rotate(1deg) scale(1.02)}}
-
-#root{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;height:100dvh}
+#scene canvas{width:100%;height:100%;display:block}
+#root{position:relative;z-index:1;display:flex;flex-direction:column;height:100dvh}
 
 #bar{display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 10px;flex-shrink:0}
-.nb{width:42px;height:42px;border-radius:50%;flex-shrink:0;cursor:pointer;
-  background:var(--glass);border:1.5px solid var(--cl);color:var(--ct);font-family:inherit;font-size:18px;
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .15s}
-.nb:active{transform:scale(.88)}
-.nb svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-#brand{flex:1;min-width:0;text-align:center;cursor:pointer;font-size:19px;font-weight:700;color:var(--ct);
-  text-shadow:0 2px 14px rgba(0,0,0,.85);overflow:hidden}
-#brand small{display:block;font-size:10px;margin-top:2px;color:var(--cg);font-weight:600;letter-spacing:1.6px;
-  text-transform:uppercase;font-family:'Inter',sans-serif}
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 8px;flex-shrink:0}
+.nb{width:40px;height:40px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  background:var(--glass);border:1.5px solid var(--ln);color:var(--tx);font-size:18px;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);
+  transition:transform .15s}
+.nb:active{transform:scale(.9)}
+.nb svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+#brand{flex:1;min-width:0;text-align:center;cursor:pointer;font-size:18px;
+  font-weight:700;letter-spacing:.5px;overflow:hidden}
+#brand small{display:block;font-size:10px;margin-top:1px;color:var(--gr);
+  font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+#brand small .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--ok);margin-right:5px;vertical-align:middle;animation:pl 2s infinite}
+#brand small .dot.off{background:var(--danger)}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
 
-#flow{flex:1;overflow-y:auto;padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px}
+#crystals{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;
+  z-index:50;padding:6px 12px;border-radius:20px;background:var(--glass);
+  border:1.5px solid var(--ln);backdrop-filter:blur(12px);
+  font-size:12px;font-weight:700;color:var(--tx);display:flex;align-items:center;
+  gap:5px;cursor:pointer}
+#crystals:active{transform:scale(.95)}
+
+#flow{flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;
+  flex-direction:column;gap:12px;scroll-behavior:smooth}
 #flow::-webkit-scrollbar{width:0}
-
-.bub{position:relative;max-width:85%;padding:12px 16px;border-radius:22px;font-size:16px;line-height:1.55;
-  word-wrap:break-word;color:var(--ct);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.1);
-  animation:bi .35s cubic-bezier(.34,1.56,.64,1)}
-@keyframes bi{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
-.bub.me{align-self:flex-end;background:rgba(139,92,246,.4);border-bottom-right-radius:6px}
-.bub.ai{align-self:flex-start;background:rgba(20,20,45,.55);border-bottom-left-radius:6px}
-.bub-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.bub-mark{font-size:11px;letter-spacing:1.6px;color:var(--ca);font-weight:800;text-transform:uppercase}
-.bub-copy{background:none;border:none;color:var(--cg);cursor:pointer;font-size:13px;opacity:.7;padding:2px 5px}
-.bub code{background:rgba(0,0,0,.4);padding:2px 6px;border-radius:6px;font-family:monospace;font-size:14px}
-.bub pre{background:rgba(0,0,0,.5);padding:12px;border-radius:12px;overflow-x:auto;margin:8px 0;
-  font-family:monospace;font-size:13px;white-space:pre-wrap}
-.bub img{max-width:100%;border-radius:14px;display:block;margin-top:6px}
-.caret{display:inline-block;width:2px;height:1em;background:var(--ca);vertical-align:text-bottom;
-  margin-left:2px;animation:ck .8s infinite}
+.bub{position:relative;max-width:88%;padding:11px 15px;border-radius:20px;
+  font-size:15.5px;line-height:1.55;word-wrap:break-word;color:var(--tx);
+  backdrop-filter:blur(14px);border:1px solid rgba(128,128,128,.15);
+  animation:bi .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bi{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+.bub.me{align-self:flex-end;background:var(--ac);color:#fff;
+  border-bottom-right-radius:5px;border-color:transparent}
+.bub.ai{align-self:flex-start;background:var(--glass);border-bottom-left-radius:5px}
+.bub-head{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:5px;font-size:10.5px;letter-spacing:1.4px;font-weight:800;
+  color:var(--ac);text-transform:uppercase}
+.bub.me .bub-head{color:rgba(255,255,255,.75)}
+.bub-copy{background:none;border:none;color:inherit;cursor:pointer;font-size:12px;
+  opacity:.6;padding:2px 4px}
+.bub code{background:rgba(128,128,128,.25);padding:1px 5px;border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:13.5px}
+.bub pre{background:rgba(0,0,0,.35);padding:10px 12px;border-radius:10px;
+  overflow-x:auto;margin:7px 0;font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;white-space:pre-wrap;line-height:1.5}
+.bub img{max-width:100%;border-radius:12px;display:block;margin-top:6px}
+.caret{display:inline-block;width:2px;height:1em;background:var(--ac);
+  vertical-align:text-bottom;margin-left:2px;animation:ck .8s infinite}
 @keyframes ck{0%,50%{opacity:1}51%,100%{opacity:0}}
+.err{color:var(--danger);font-weight:600}
 
-.wait{padding:16px 20px}
-.wait .d{display:flex;gap:6px}
-.wait .d span{width:8px;height:8px;border-radius:50%;background:var(--ca);animation:bn 1.2s infinite}
-.wait .d span:nth-child(2){animation-delay:.2s}
-.wait .d span:nth-child(3){animation-delay:.4s}
-@keyframes bn{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-8px);opacity:1}}
+.wait{padding:14px 18px}
+.wait .d{display:flex;gap:5px;margin-top:5px}
+.wait .d span{width:7px;height:7px;border-radius:50%;background:var(--ac);
+  animation:bn 1.2s infinite}
+.wait .d span:nth-child(2){animation-delay:.15s}
+.wait .d span:nth-child(3){animation-delay:.3s}
+@keyframes bn{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-7px);opacity:1}}
 
-.void{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px}
-.void .orb{width:100px;height:100px;border-radius:24px;display:flex;align-items:center;justify-content:center;
-  font-size:54px;background:linear-gradient(135deg,#8b5cf6,#39CCCC);
-  box-shadow:0 14px 44px rgba(139,92,246,.65);animation:fl 4s ease-in-out infinite}
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.void .vt{font-size:22px;font-weight:700;color:var(--ct);text-align:center;text-shadow:0 2px 14px rgba(0,0,0,.9)}
-.void .vs{font-size:14px;color:var(--cg);text-align:center;max-width:80%;text-shadow:0 2px 10px rgba(0,0,0,.9)}
-.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:420px;margin-top:8px}
-.chip{padding:12px;border-radius:14px;cursor:pointer;background:var(--glass);border:1px solid var(--cl);
-  color:var(--ct);font-family:inherit;font-size:12px;text-align:left;line-height:1.35;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .15s}
+.void{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;padding:16px}
+.void .orb{width:88px;height:88px;border-radius:26px;display:flex;align-items:center;
+  justify-content:center;font-size:46px;background:linear-gradient(135deg,var(--ac),#39CCCC);
+  box-shadow:0 12px 40px rgba(139,92,246,.5);animation:fl 4s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+.void .vt{font-size:20px;font-weight:700;text-align:center}
+.void .vs{font-size:13px;color:var(--gr);text-align:center;max-width:82%;line-height:1.5}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;max-width:440px;margin-top:6px}
+.chip{padding:11px;border-radius:13px;cursor:pointer;background:var(--glass);
+  border:1px solid var(--ln);color:var(--tx);font-family:inherit;font-size:12px;
+  text-align:left;line-height:1.35;backdrop-filter:blur(10px);transition:transform .15s}
 .chip:active{transform:scale(.95)}
-.chip .ce{font-size:17px;display:block;margin-bottom:4px}
+.chip .ce{font-size:16px;display:block;margin-bottom:3px}
 
-#dock{padding:8px 16px calc(env(safe-area-inset-bottom,0px) + 14px);flex-shrink:0}
-#att{display:none;align-items:center;gap:10px;background:var(--c2);padding:8px 12px;border-radius:16px;
-  margin-bottom:8px;border:1px solid var(--cl)}
-#att img{width:44px;height:44px;border-radius:10px;object-fit:cover}
-#att .an{flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ct)}
-#att .ax{background:none;border:none;color:#dc2626;font-size:20px;cursor:pointer;padding:0 6px;font-family:inherit}
+#dock{padding:6px 14px calc(env(safe-area-inset-bottom,0px) + 12px);flex-shrink:0}
+#att{display:none;align-items:center;gap:10px;background:var(--bg2);padding:7px 11px;
+  border-radius:14px;margin-bottom:7px;border:1px solid var(--ln)}
+#att img{width:40px;height:40px;border-radius:9px;object-fit:cover}
+#att .an{flex:1;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#att .ax{background:none;border:none;color:var(--danger);font-size:19px;cursor:pointer;
+  padding:0 6px;font-family:inherit}
+#entry{display:flex;align-items:center;gap:7px;padding:5px 5px 5px 12px;border-radius:28px;
+  background:var(--glass);border:1.5px solid var(--ln);backdrop-filter:blur(24px);
+  box-shadow:0 6px 24px rgba(0,0,0,.1)}
+#input{flex:1;background:none;border:none;outline:none;color:var(--tx);font-size:16px;
+  font-family:inherit;padding:8px 0;min-width:0}
+#input::placeholder{color:var(--gr)}
+.big{width:38px;height:38px;border-radius:50%;background:none;border:none;color:var(--gr);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform .15s,background .2s}
+.big:active{transform:scale(.85);background:rgba(128,128,128,.15)}
+.big svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.big.mic{color:var(--ac)}
+#go{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--ac);border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .15s}
+#go:active{transform:scale(.85)}
+#go:disabled{opacity:.4;cursor:not-allowed}
+#go svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2.3;
+  stroke-linecap:round;stroke-linejoin:round}
 
-#entry{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 14px;border-radius:30px;
-  background:var(--glass);border:1.5px solid var(--cl);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  box-shadow:0 8px 28px rgba(0,60,30,.1)}
-#input{flex:1;background:none;border:none;outline:none;color:var(--ct);font-size:16px;font-family:inherit;
-  padding:8px 0;min-width:0}
-#input::placeholder{color:var(--cg)}
-.big{width:40px;height:40px;border-radius:50%;background:none;border:none;color:var(--cg);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
-.big:active{transform:scale(.88)}
-.big svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.big.mic{color:var(--ca)}
-#go{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:var(--ca);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);transition:transform .15s}
-#go:active{transform:scale(.88)}
-#go svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
-
-.sheet{position:fixed;inset:0;z-index:200;background:var(--c1);display:none;flex-direction:column;
-  padding:calc(env(safe-area-inset-top,0px) + 60px) 20px 30px;overflow-y:auto}
+.sheet{position:fixed;inset:0;z-index:200;background:var(--bg1);display:none;
+  flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 58px) 18px 24px;
+  overflow-y:auto}
 .sheet.on{display:flex;animation:si .3s ease}
-@keyframes si{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.sheet h2{font-size:26px;margin-bottom:20px;font-weight:800;color:var(--ct)}
-.shx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:20px;width:42px;height:42px;
-  border-radius:50%;background:var(--c2);border:1px solid var(--cl);color:var(--ct);font-size:20px;
-  cursor:pointer;font-family:inherit}
-
-#list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.row{padding:14px 16px;border-radius:18px;background:var(--c2);display:flex;justify-content:space-between;
-  align-items:center;gap:8px;cursor:pointer;color:var(--ct);transition:transform .15s}
+@keyframes si{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.sheet h2{font-size:23px;margin-bottom:16px;font-weight:800}
+.sheet h2.sub{font-size:17px;margin-top:22px;margin-bottom:10px;opacity:.7}
+.shx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 18px);right:18px;
+  width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--ln);
+  color:var(--tx);font-size:19px;cursor:pointer;font-family:inherit}
+#list{display:flex;flex-direction:column;gap:9px;margin-top:8px}
+.row{padding:12px 14px;border-radius:16px;background:var(--bg2);display:flex;
+  justify-content:space-between;align-items:center;gap:8px;cursor:pointer;
+  transition:transform .15s}
 .row:active{transform:scale(.98)}
-.row.on{background:var(--ca);color:#fff}
+.row.on{background:var(--ac);color:#fff}
 .row .info{flex:1;min-width:0}
-.row .ti{font-size:15px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.row .me{font-size:11px;opacity:.7}
-.row .rm{width:32px;height:32px;border-radius:50%;background:rgba(220,38,38,.2);border:none;color:#dc2626;
-  font-size:15px;cursor:pointer;font-family:inherit;flex-shrink:0}
-
-.btn{padding:15px;border-radius:18px;margin-top:10px;width:100%;background:var(--ca);border:none;color:#fff;
-  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .15s}
+.row .ti{font-size:14.5px;font-weight:600;margin-bottom:2px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.row .me{font-size:10.5px;opacity:.7}
+.row .rm{width:30px;height:30px;border-radius:50%;background:rgba(239,68,68,.15);
+  border:none;color:var(--danger);font-size:14px;cursor:pointer;
+  font-family:inherit;flex-shrink:0}
+.btn{padding:14px;border-radius:16px;margin-top:9px;width:100%;background:var(--ac);
+  border:none;color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:transform .15s}
 .btn:active{transform:scale(.97)}
-.btn.sec{background:var(--c2);color:var(--ct);border:1px solid var(--cl)}
-.btn.don{background:linear-gradient(135deg,#f59e0b,#ef4444);font-size:16px;padding:17px;margin-top:22px;
-  box-shadow:0 8px 24px rgba(245,158,11,.35)}
-
-.search{width:100%;padding:13px 15px;border-radius:15px;margin-top:12px;background:var(--c2);
-  border:1px solid var(--cl);color:var(--ct);font-family:inherit;font-size:14px;outline:none}
-.search:focus{border-color:var(--ca)}
-
-#palette{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.swatch{padding:18px 12px;border-radius:20px;cursor:pointer;text-align:center;background:var(--c2);
-  border:2px solid transparent;color:var(--ct);font-family:inherit;transition:transform .15s,border-color .2s}
-.swatch:active{transform:scale(.95)}
-.swatch.on{border-color:var(--ca)}
-.swatch .se{font-size:34px;display:block;margin-bottom:6px}
-.swatch .sn{font-size:13px;font-weight:600}
-
-#models{display:flex;flex-direction:column;gap:10px}
-.card{padding:16px;border-radius:18px;cursor:pointer;background:var(--c2);border:2px solid transparent;
-  color:var(--ct);font-family:inherit;display:flex;justify-content:space-between;align-items:center;
-  gap:12px;transition:transform .15s}
+.btn.sec{background:var(--bg2);color:var(--tx);border:1px solid var(--ln)}
+.btn.danger{background:var(--danger)}
+.search{width:100%;padding:12px 14px;border-radius:14px;margin-top:10px;background:var(--bg2);
+  border:1px solid var(--ln);color:var(--tx);font-family:inherit;font-size:14px;outline:none}
+.search:focus{border-color:var(--ac)}
+#palette{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.swatch{padding:14px 10px;border-radius:18px;cursor:pointer;text-align:center;
+  background:var(--bg2);border:2px solid transparent;color:var(--tx);
+  font-family:inherit;transition:transform .15s,border-color .2s}
+.swatch:active{transform:scale(.94)}
+.swatch.on{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac)22}
+.swatch .se{font-size:30px;display:block;margin-bottom:5px}
+.swatch .sn{font-size:12.5px;font-weight:600}
+#models{display:flex;flex-direction:column;gap:9px}
+.card{padding:14px;border-radius:16px;cursor:pointer;background:var(--bg2);
+  border:2px solid transparent;color:var(--tx);font-family:inherit;display:flex;
+  justify-content:space-between;align-items:center;gap:10px;transition:transform .15s}
 .card:active{transform:scale(.98)}
-.card.on{border-color:var(--ca);background:rgba(139,92,246,.18)}
+.card.on{border-color:var(--ac);background:var(--glass)}
 .card .ci{flex:1;min-width:0;text-align:left}
-.card .cn{font-size:15px;font-weight:700;margin-bottom:3px}
-.card .cs{font-size:11px;color:var(--cg)}
-.card .cb{font-size:10px;padding:3px 8px;border-radius:8px;background:var(--ca);color:#fff;font-weight:800;flex-shrink:0}
-
-#voice{position:fixed;inset:0;z-index:800;background:var(--c1);display:none;flex-direction:column;
-  align-items:center;justify-content:center;padding:60px 24px 40px}
-#voice.on{display:flex}
-#halo{width:min(70vw,290px);height:min(70vw,290px);position:relative;display:flex;align-items:center;
-  justify-content:center;margin-bottom:30px}
-.hr{position:absolute;border-radius:50%;border:2px solid var(--ca);opacity:.3}
-.hr.h1{inset:0;animation:hp 3s ease-in-out infinite}
-.hr.h2{inset:-15px;animation:hp 3s ease-in-out infinite .5s;opacity:.2}
-.hr.h3{inset:-30px;animation:hp 3s ease-in-out infinite 1s;opacity:.1}
-@keyframes hp{0%,100%{transform:scale(1)}50%{transform:scale(1.08);opacity:.15}}
-#face{width:66%;height:66%;border-radius:50%;background:var(--c2);display:flex;align-items:center;
-  justify-content:center;font-size:84px}
-#vt{font-size:22px;font-weight:600;color:var(--ct);text-align:center;margin-bottom:8px;max-width:90%}
-#vs{font-size:13px;color:var(--cg);letter-spacing:2px;text-transform:uppercase;font-weight:700;
-  margin-bottom:42px;min-height:16px}
-#vb{width:94px;height:94px;border-radius:50%;cursor:pointer;background:var(--ca);border:none;color:#fff;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition:transform .15s,box-shadow .3s}
-#vb:active{transform:scale(.88)}
-#vb.live{animation:vp .8s infinite;box-shadow:0 0 50px var(--ca)}
-@keyframes vp{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-#vb svg{width:40px;height:40px;stroke:#fff;fill:none;stroke-width:1.9}
-#vx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);left:20px;width:46px;height:46px;
-  border-radius:50%;background:var(--c2);border:1px solid var(--cl);color:var(--ct);font-size:22px;
-  cursor:pointer;font-family:inherit}
-
-#intro{position:fixed;inset:0;z-index:900;background:#06060f;display:flex;align-items:center;
-  justify-content:center;transition:opacity .8s}
-#intro.out{opacity:0;pointer-events:none}
-#intro .box{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2}
-#intro .lg{width:126px;height:126px;border-radius:30px;margin-bottom:22px;
-  background:linear-gradient(135deg,#8b5cf6,#39CCCC);display:flex;align-items:center;justify-content:center;
-  font-size:68px;box-shadow:0 22px 66px rgba(139,92,246,.65);animation:ip 2s infinite}
-@keyframes ip{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-#intro .nm{font-size:46px;color:#fff;text-shadow:0 0 70px rgba(139,92,246,.95);display:flex;
-  flex-wrap:wrap;justify-content:center;gap:8px;font-weight:700}
-#intro .nm span{display:inline-block;opacity:0;transform:translateY(44px) scale(.5);
-  animation:ii .8s cubic-bezier(.34,1.56,.64,1) forwards}
-@keyframes ii{to{opacity:1;transform:translateY(0) scale(1)}}
-#intro .sub{font-size:12px;color:rgba(255,255,255,.5);letter-spacing:5px;text-transform:uppercase;
-  margin-top:14px;opacity:0;animation:ia .8s 1.2s forwards;font-family:'Inter',sans-serif}
-@keyframes ia{to{opacity:1}}
-#intro .sweep{position:absolute;inset:0;z-index:3;pointer-events:none}
-#intro .sweep svg{width:100%;height:100%}
-
-#term{position:fixed;inset:0;z-index:1000;background:#0a0a0f;display:none;align-items:center;
-  justify-content:center;padding:30px}
-#term.on{display:flex}
-#term.out{opacity:0;pointer-events:none;display:none}
-#term .out{width:100%;max-width:380px;font-family:monospace;color:#4ade80;font-size:13px;line-height:1.8}
-#term .out .l{opacity:0;animation:ti .3s forwards}
-@keyframes ti{to{opacity:1}}
-#term .out .p{color:#8b5cf6;margin-right:8px}
-#term .out .ok{color:#4ade80}
-#term .out .in{color:#60a5fa}
-#term .out .dm{color:rgba(255,255,255,.4)}
+.card .cn{font-size:14.5px;font-weight:700;margin-bottom:2px}
+.card .cs{font-size:11px;color:var(--gr)}
+.card .cb{font-size:9.5px;padding:3px 8px;border-radius:7px;background:var(--ac);
+  color:#fff;font-weight:800;flex-shrink:0;letter-spacing:.5px}
 
 .modal{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.75);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;
-  justify-content:center;padding:24px}
+  backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;
+  padding:24px}
 .modal.on{display:flex}
-.mbox{background:rgba(30,30,42,.98);border:1px solid rgba(255,255,255,.15);border-radius:30px;
-  padding:30px 26px 22px;max-width:340px;width:100%;text-align:center;
-  box-shadow:0 22px 66px rgba(0,0,0,.75);animation:mi .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes mi{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.mico{width:84px;height:84px;border-radius:22px;background:linear-gradient(135deg,#8b5cf6,#39CCCC);
-  display:flex;align-items:center;justify-content:center;font-size:46px;margin:0 auto 16px;
-  box-shadow:0 10px 32px rgba(139,92,246,.55)}
-.mtit{font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
-.msub2{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:20px}
-.mtxt{font-size:13px;line-height:1.6;color:rgba(255,255,255,.75);margin-bottom:24px}
-.mtxt b{color:#8b5cf6}
-.mbtns{display:flex;gap:10px}
-.mbtn{flex:1;padding:14px;border-radius:15px;border:none;font-size:15px;font-weight:700;
-  cursor:pointer;font-family:inherit}
+.mbox{background:rgba(30,30,42,.98);border:1px solid rgba(255,255,255,.15);
+  border-radius:28px;padding:28px 24px 20px;max-width:360px;width:100%;text-align:center;
+  animation:mi .4s cubic-bezier(.34,1.56,.64,1);color:#fff}
+@keyframes mi{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:none}}
+.mico{width:78px;height:78px;border-radius:22px;
+  background:linear-gradient(135deg,#8b5cf6,#39CCCC);display:flex;align-items:center;
+  justify-content:center;font-size:42px;margin:0 auto 14px}
+.mtit{font-size:19px;font-weight:700;margin-bottom:6px}
+.msub2{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:18px}
+.mtxt{font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.75);margin-bottom:22px}
+.mbtns{display:flex;gap:9px}
+.mbtn{flex:1;padding:13px;border-radius:14px;border:none;font-size:14.5px;
+  font-weight:700;cursor:pointer;font-family:inherit}
 .mbtn.c{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
 .mbtn.o{background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff}
+.minput{width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);color:#fff;font-size:15px;
+  font-family:inherit;outline:none;margin-bottom:10px}
+.minput.code{font-size:22px;letter-spacing:8px;text-align:center;
+  font-family:'JetBrains Mono',monospace}
+.mmsg{margin-top:12px;font-size:13px;min-height:18px}
 
-#ios{position:fixed;inset:0;z-index:1200;background:rgba(10,10,22,.98);display:none;flex-direction:column;
-  padding:calc(env(safe-area-inset-top,0px) + 42px) 24px 40px;overflow-y:auto;color:#fff}
-#ios.on{display:flex}
-#ios h2{font-size:22px;font-weight:700;margin-bottom:24px;text-align:center}
-.stp{display:flex;align-items:flex-start;gap:14px;padding:16px;background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);border-radius:18px;margin-bottom:12px}
-.stp .n{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#39CCCC);
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
-.stp .t{font-size:15px;font-weight:600;margin-bottom:6px}
-.stp .d{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
-#iosx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:20px;width:44px;height:44px;
-  border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;
-  font-size:20px;cursor:pointer;font-family:inherit}
+#term{position:fixed;inset:0;z-index:900;background:#000;display:none;
+  flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 14px;
+  font-family:'JetBrains Mono',monospace;color:#00ff41;font-size:13px;overflow:hidden}
+#term.on{display:flex}
+#termBar{display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:10px;border-bottom:1px solid #00ff4133;margin-bottom:10px;flex-shrink:0}
+#termBar .dots{display:flex;gap:6px}
+#termBar .dots span{width:11px;height:11px;border-radius:50%}
+#termBar .dots span:nth-child(1){background:#ff5f57}
+#termBar .dots span:nth-child(2){background:#febc2e}
+#termBar .dots span:nth-child(3){background:#28c840}
+#termBar .ti{color:#00ff4188;font-size:11px;letter-spacing:1.5px}
+#termLog{flex:1;overflow-y:auto;line-height:1.65;padding-right:6px}
+#termLog::-webkit-scrollbar{width:4px}
+#termLog::-webkit-scrollbar-thumb{background:#00ff4166;border-radius:2px}
+#termLog .li{word-break:break-word}
+#termLog .p{color:#a78bfa;margin-right:8px}
+#termLog .ok{color:#22c55e}
+#termLog .er{color:#ef4444}
+#termLog .in{color:#60a5fa}
+#termLog .dm{color:#00ff4166}
+#termIn{display:flex;gap:8px;padding-top:10px;border-top:1px solid #00ff4133;
+  flex-shrink:0;align-items:center}
+#termIn .p{color:#a78bfa}
+#termIn input{flex:1;background:none;border:none;outline:none;color:#00ff41;
+  font-family:inherit;font-size:13px;caret-color:#00ff41}
 
-#don{position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.8);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;
-  justify-content:center;padding:24px}
-#don.on{display:flex}
-.dbox{background:linear-gradient(160deg,rgba(42,22,10,.98),rgba(32,12,12,.98));
-  border:1px solid rgba(245,158,11,.3);border-radius:30px;padding:34px 26px 26px;max-width:340px;
-  width:100%;text-align:center;box-shadow:0 22px 66px rgba(0,0,0,.8),0 0 70px rgba(245,158,11,.2);
-  animation:mi .4s cubic-bezier(.34,1.56,.64,1)}
-.dh{font-size:68px;margin-bottom:16px;animation:hb 1.2s ease-in-out infinite}
-@keyframes hb{0%,100%{transform:scale(1)}25%{transform:scale(1.15)}50%{transform:scale(1)}}
-.dt{font-size:23px;font-weight:700;color:#fff;margin-bottom:8px}
-.ds{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:22px;line-height:1.5}
-.dp{font-size:38px;font-weight:800;background:linear-gradient(135deg,#f59e0b,#ef4444);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  margin-bottom:26px;letter-spacing:-1px}
-.db{width:100%;padding:17px;border-radius:17px;background:linear-gradient(135deg,#f59e0b,#ef4444);
-  border:none;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;
-  margin-bottom:10px;box-shadow:0 8px 30px rgba(245,158,11,.4)}
-.db:active{transform:scale(.96)}
-.dc{width:100%;padding:14px;border-radius:17px;background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.15);color:#fff;font-size:15px;font-weight:600;
-  cursor:pointer;font-family:inherit}
+#voice{position:fixed;inset:0;z-index:800;background:var(--bg1);display:none;
+  flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 40px}
+#voice.on{display:flex}
+#halo{width:min(68vw,270px);height:min(68vw,270px);position:relative;
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px}
+.hr{position:absolute;border-radius:50%;border:2px solid var(--ac);opacity:.3}
+.hr.h1{inset:0;animation:hp 3s ease-in-out infinite}
+.hr.h2{inset:-14px;animation:hp 3s ease-in-out infinite .5s;opacity:.2}
+.hr.h3{inset:-28px;animation:hp 3s ease-in-out infinite 1s;opacity:.1}
+@keyframes hp{0%,100%{transform:scale(1)}50%{transform:scale(1.08);opacity:.12}}
+#face{width:66%;height:66%;border-radius:50%;background:var(--bg2);display:flex;
+  align-items:center;justify-content:center;font-size:76px}
+#vt{font-size:20px;font-weight:600;text-align:center;margin-bottom:6px;max-width:90%}
+#vs{font-size:12px;color:var(--gr);letter-spacing:2px;text-transform:uppercase;
+  font-weight:700;margin-bottom:38px;min-height:15px}
+#vb{width:88px;height:88px;border-radius:50%;cursor:pointer;background:var(--ac);
+  border:none;color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .15s,box-shadow .3s}
+#vb:active{transform:scale(.88)}
+#vb.live{animation:vp .8s infinite;box-shadow:0 0 50px var(--ac)}
+@keyframes vp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+#vb svg{width:38px;height:38px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round}
+#vx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;
+  width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--ln);
+  color:var(--tx);font-size:21px;cursor:pointer;font-family:inherit}
 
-#tip{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(30,30,42,.98);color:#fff;padding:13px 22px;border-radius:17px;font-size:14px;
-  opacity:0;pointer-events:none;transition:all .3s;z-index:1500;
-  border:1px solid rgba(255,255,255,.15);max-width:90%;text-align:center}
+#intro{position:fixed;inset:0;z-index:1000;background:#06060f;display:flex;
+  align-items:center;justify-content:center;transition:opacity .8s}
+#intro.out{opacity:0;pointer-events:none}
+#intro .box{display:flex;flex-direction:column;align-items:center}
+#intro .lg{width:118px;height:118px;border-radius:28px;margin-bottom:20px;
+  background:linear-gradient(135deg,#8b5cf6,#39CCCC);display:flex;align-items:center;
+  justify-content:center;font-size:62px;box-shadow:0 20px 62px rgba(139,92,246,.65);
+  animation:ip 2s infinite}
+@keyframes ip{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.08) rotate(4deg)}}
+#intro .nm{font-size:44px;color:#fff;text-shadow:0 0 70px rgba(139,92,246,.95);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;font-weight:700}
+#intro .nm span{display:inline-block;opacity:0;transform:translateY(44px) scale(.5);
+  animation:ii .8s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes ii{to{opacity:1;transform:none}}
+#intro .sub{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:5px;
+  text-transform:uppercase;margin-top:12px;opacity:0;animation:ia .8s 1.2s forwards}
+@keyframes ia{to{opacity:1}}
+
+#tip{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(30,30,42,.98);color:#fff;padding:11px 20px;border-radius:15px;
+  font-size:13.5px;opacity:0;pointer-events:none;transition:all .3s;z-index:1500;
+  border:1px solid rgba(255,255,255,.15);max-width:88%;text-align:center}
 #tip.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-#progress{position:fixed;top:0;left:0;height:3px;background:var(--ca);width:0;transition:width .3s;
-  z-index:9999;box-shadow:0 0 12px var(--ca)}
-#top{position:fixed;bottom:100px;right:20px;width:46px;height:46px;border-radius:50%;background:var(--ca);
-  color:#fff;border:none;font-size:20px;cursor:pointer;display:none;z-index:50;
-  box-shadow:0 6px 16px rgba(0,0,0,.4);font-family:inherit;align-items:center;justify-content:center}
-#top.on{display:flex}
-#halt{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);padding:11px 22px;
-  border-radius:22px;background:#dc2626;color:#fff;border:none;font-size:14px;font-weight:700;
-  cursor:pointer;display:none;z-index:60;font-family:inherit;box-shadow:0 6px 16px rgba(220,38,38,.5)}
-#halt.on{display:block}
 </style>
 </head>
 <body class="wv-moon">
 
-<div id="progress"></div>
-<div id="term"><div class="out" id="termOut"></div></div>
-
-<div class="modal" id="installM">
-  <div class="mbox">
-    <div class="mico" id="installIco">🌙</div>
-    <div class="mtit">Установить приложение?</div>
-    <div class="msub2">Wave · ИИ-ассистент</div>
-    <div class="mtxt">Приложение <b>Wave</b> будет добавлено на главный экран и откроется как обычное приложение.</div>
-    <div class="mbtns">
-      <button class="mbtn c" id="installNo">Отмена</button>
-      <button class="mbtn o" id="installYes">Установить</button>
-    </div>
-  </div>
-</div>
-
-<div id="don">
-  <div class="dbox">
-    <div class="dh">❤️</div>
-    <div class="dt">Поддержать автора</div>
-    <div class="ds">Спасибо за поддержку! Твой вклад помогает развивать Wave</div>
-    <div class="dp">1150 ₽</div>
-    <button class="db" id="donGo">💜 Поддержать</button>
-    <button class="dc" id="donNo">Позже</button>
-  </div>
-</div>
-
-<div id="ios">
-  <button id="iosx">×</button>
-  <h2>Как установить Wave</h2>
-  <div class="stp"><div class="n">1</div><div><div class="t">Открой в Safari</div><div class="d">Если ты в другом браузере — открой ссылку в Safari</div></div></div>
-  <div class="stp"><div class="n">2</div><div><div class="t">Нажми «Поделиться» ⬆</div><div class="d">Квадрат со стрелкой вверх внизу экрана</div></div></div>
-  <div class="stp"><div class="n">3</div><div><div class="t">Выбери «На экран Домой»</div><div class="d">Пролистай список вниз</div></div></div>
-  <div class="stp"><div class="n">4</div><div><div class="t">Нажми «Добавить»</div><div class="d">Сверху справа. Иконка появится на главном экране</div></div></div>
-  <button class="btn" id="iosOk" style="margin-top:22px">Понятно</button>
-</div>
+<div id="scene"><canvas id="fx"></canvas></div>
 
 <div id="intro">
   <div class="box">
-    <div class="lg" id="introLogo">🌙</div>
+    <div class="lg">🌙</div>
     <div class="nm" id="introName"></div>
     <div class="sub">AI ASSISTANT</div>
   </div>
-  <div class="sweep"><svg viewBox="0 0 400 800" preserveAspectRatio="none"><path id="sweepPath" d="M 0 900 Q 100 900 200 900 T 400 900 L 400 900 L 0 900 Z" fill="#06060f"/></svg></div>
 </div>
-
-<div id="scene"></div>
 
 <div id="root">
   <div id="bar">
-    <button class="nb" id="openChats">
+    <button class="nb" id="menuBtn">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <div id="brand">Wave<small id="modelTag">DEEPSEEK</small></div>
-    <button class="nb" id="openPalette">🎨</button>
+    <div id="brand" onclick="openModels()">Wave<small id="modelTag"><span class="dot" id="netDot"></span>DEEPSEEK</small></div>
+    <button class="nb" id="themeBtn">🎨</button>
   </div>
 
   <div id="flow"></div>
@@ -394,11 +348,11 @@ html,body{height:100dvh;height:100vh;overflow:hidden;font-family:'WF','Inter',sy
       <button class="ax" id="attRm">×</button>
     </div>
     <div id="entry">
-      <button class="big" id="pickFile">
+      <button class="big" id="fileBtn">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
       <input id="input" type="text" placeholder="Сообщение…" autocomplete="off">
-      <button class="big mic" id="openVoice">
+      <button class="big mic" id="voiceBtn">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       </button>
       <button id="go">
@@ -408,39 +362,65 @@ html,body{height:100dvh;height:100vh;overflow:hidden;font-family:'WF','Inter',sy
   </div>
 </div>
 
-<button id="top">↑</button>
-<button id="halt">■ Стоп</button>
+<button id="crystals" style="display:none" onclick="openCrystals()">💎 <span id="crCount">0</span></button>
 
-<input type="file" id="fileIn" accept="image/*" style="display:none">
+<!-- Меню -->
+<div class="sheet" id="menuSheet">
+  <button class="shx" onclick="closeSheet('menuSheet')">×</button>
+  <h2 id="userTitle">Гость</h2>
+  <button class="btn" id="loginBtn">Войти / Регистрация</button>
+  <button class="btn sec" id="profileBtn" style="display:none">👤 Профиль</button>
+  <h2 class="sub">Чат</h2>
+  <button class="btn sec" onclick="newChat()">+ Новый чат</button>
+  <button class="btn sec" onclick="openChats()">💬 Мои чаты</button>
+  <button class="btn sec" onclick="exportChat()">📤 Экспорт</button>
+  <button class="btn sec" onclick="copyChat()">📋 Копировать чат</button>
+  <button class="btn sec" onclick="clearChat()">🗑 Очистить</button>
+  <h2 class="sub">Ещё</h2>
+  <button class="btn sec" onclick="openTerm()">⌨️ Терминал</button>
+  <button class="btn sec" onclick="openAdmin()">🔐 Админ-панель</button>
+  <button class="btn sec" id="logoutBtn" style="display:none">🚪 Выйти</button>
+</div>
 
+<!-- Чаты -->
 <div class="sheet" id="chatsSheet">
-  <button class="shx" id="chatsClose">×</button>
-  <h2>Управление</h2>
-  <button class="btn" id="newChat">+ Новый чат</button>
-  <input type="text" class="search" id="search" placeholder="🔍 Поиск по чатам…">
-  <button class="btn sec" id="exportChat">📤 Экспорт чата</button>
-  <button class="btn sec" id="copyChat">📋 Копировать чат</button>
-  <button class="btn sec" id="installBtn">📲 Установить приложение</button>
-  <button class="btn sec" id="clearChat">🗑 Очистить историю</button>
-  <button class="btn don" id="donateBtn">❤️ Поддержать · 1150 ₽</button>
-  <h2 style="margin-top:26px;font-size:20px">Мои чаты</h2>
+  <button class="shx" onclick="closeSheet('chatsSheet')">×</button>
+  <h2>Мои чаты</h2>
+  <input class="search" id="search" placeholder="🔍 Поиск…">
   <div id="list"></div>
 </div>
 
-<div class="sheet" id="paletteSheet">
-  <button class="shx" id="paletteClose">×</button>
+<!-- Темы -->
+<div class="sheet" id="themeSheet">
+  <button class="shx" onclick="closeSheet('themeSheet')">×</button>
   <h2>Тема</h2>
   <div id="palette"></div>
 </div>
 
+<!-- Модели -->
 <div class="sheet" id="modelSheet">
-  <button class="shx" id="modelClose">×</button>
-  <h2>Выбор модели</h2>
+  <button class="shx" onclick="closeSheet('modelSheet')">×</button>
+  <h2>Модель ИИ</h2>
   <div id="models"></div>
 </div>
 
+<!-- Терминал -->
+<div id="term">
+  <div id="termBar">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="ti">wave@terminal</div>
+    <button class="shx" style="position:static;width:34px;height:34px;font-size:17px" onclick="closeTerm()">×</button>
+  </div>
+  <div id="termLog"></div>
+  <div id="termIn">
+    <span class="p">›</span>
+    <input id="termInput" autocomplete="off" spellcheck="false">
+  </div>
+</div>
+
+<!-- Голос -->
 <div id="voice">
-  <button id="vx">×</button>
+  <button id="vx" onclick="closeVoice()">×</button>
   <div id="halo">
     <div class="hr h1"></div><div class="hr h2"></div><div class="hr h3"></div>
     <div id="face">🌙</div>
@@ -453,379 +433,405 @@ html,body{height:100dvh;height:100vh;overflow:hidden;font-family:'WF','Inter',sy
 </div>
 
 <div id="tip"></div>
+<input type="file" id="fileIn" accept="image/*" style="display:none">
 
 <script>
 (() => {
+'use strict';
 
-const SKIN = {
-  wave:   ['🌊','Волна',    '#0077cc'],
-  lion:   ['🦁','Лев',      '#e0620a'],
-  croc:   ['🐊','Крокодил', '#137a2c'],
-  dragon: ['🐉','Дракон',   '#d81f1f'],
-  panda:  ['🐼','Панда',    '#3a3a3a'],
-  tiger:  ['🐯','Тигр',     '#e0620a'],
-  frog:   ['🐸','Жаба',     '#0a8f5e'],
-  wolf:   ['🐺','Волк',     '#4a4a4a'],
-  shark:  ['🦈','Акула',    '#0369a1'],
-  bee:    ['🐝','Пчела',    '#b8840a'],
-  moon:   ['🌙','Луна',     '#a78bfa']
-};
-
-const BACKENDS = [
-  {k:'deepseek',   n:'DeepSeek',   s:'Умная — для задач',       b:'SMART'},
-  {k:'openai',     n:'OpenAI',     s:'Быстрая — для болтовни',  b:'FAST'},
-  {k:'mistral',    n:'Mistral',    s:'Средняя, универсальная',  b:'NORMAL'},
-  {k:'qwen-coder', n:'Qwen Coder', s:'Для программирования',    b:'CODE'}
-];
-
-const PRESETS = [
-  ['📐','Реши уравнение 2x + 5 = 13'],
-  ['🌍','Расскажи про солнечную систему'],
-  ['💻','Напиши код на Python для сортировки'],
-  ['📝','Помоги написать сочинение про осень'],
-  ['🧪','Объясни что такое фотосинтез'],
-  ['🎨','Нарисуй кота в космосе']
-];
-
-const SYSTEM = 'Ты Wave — умный ИИ-ассистент. Помогаешь со школьными задачами (1-11 класс). Решай пошагово: условие → формула → решение → ответ. Общайся дружелюбно. Отвечай по-русски. Форматирование: **жирный**, списки.';
-
+const S = window.WAVE_SECRETS || {};
 const APP = {
-  chats: [],
-  current: null,
-  memory: [],
-  backend: 'deepseek',
-  skin: 'moon',
-  attached: null,
-  working: false,
-  listener: null,
-  hearing: false,
-  heard: '',
-  voiceOk: true,
-  playing: null,
-  audio: null,
-  installer: null
+  user: null, chats: [], current: null, memory: [],
+  backend: 'deepseek', theme: 'moon', attached: null,
+  working: false, rec: null, hearing: false, heard: ''
 };
 
-const $id = id => document.getElementById(id);
-const $all = sel => document.querySelectorAll(sel);
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-function tremor(kind = 'light'){
-  if(!navigator.vibrate) return;
-  const map = {light:10, medium:20, heavy:[30,20,30], ok:[10,30,10], err:[50,30,50]};
-  try{ navigator.vibrate(map[kind] || 10); }catch(_){}
-}
-
-let tipTimer;
-function note(msg){
-  const el = $id('tip');
-  el.textContent = msg;
-  el.classList.add('on');
-  clearTimeout(tipTimer);
-  tipTimer = setTimeout(() => el.classList.remove('on'), 2200);
-}
-
-function shield(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function style(txt){
-  if(!txt) return '';
-  let s = shield(txt);
+function md(t){
+  if(!t) return '';
+  let s = esc(t);
   s = s.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
   s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   return s;
 }
 
-function clip(txt){
-  tremor('light');
-  if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(txt).then(() => note('Скопировано ✓')).catch(() => slowClip(txt));
-  } else slowClip(txt);
-}
-function slowClip(txt){
-  const t = document.createElement('textarea');
-  t.value = txt;
-  t.style.cssText = 'position:fixed;left:-9999px';
-  document.body.appendChild(t);
-  t.select();
-  try{ document.execCommand('copy'); note('Скопировано ✓'); }catch(_){ note('Ошибка'); }
-  document.body.removeChild(t);
+function vibrate(k='light'){
+  if(!navigator.vibrate) return;
+  try{ navigator.vibrate({light:10,medium:20,heavy:[30,20,30],ok:[10,30,10],err:[50,30,50]}[k]||10); }catch(_){}
 }
 
-function buildIcon(emoji, color){
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${color}"/><stop offset="100%" stop-color="${color}aa"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="url(#g)"/><text x="256" y="256" font-size="280" text-anchor="middle" dominant-baseline="central" dy=".1em">${emoji}</text></svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+let tipTimer;
+function note(m){
+  const t = $('tip');
+  t.textContent = m;
+  t.classList.add('on');
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-function syncManifest(key){
-  const [emoji, , color] = SKIN[key] || SKIN.moon;
-  const ic = buildIcon(emoji, color);
-  const m = {
-    name:'Wave', short_name:'Wave', start_url:'./', scope:'./',
-    display:'standalone', background_color:'#06060f', theme_color:color,
-    icons:[
-      {src:ic, sizes:'192x192', type:'image/svg+xml'},
-      {src:ic, sizes:'512x512', type:'image/svg+xml'}
-    ]
+/* ================= АККАУНТЫ ================= */
+function getUsers(){ try{ return JSON.parse(localStorage.getItem('wv_users')||'{}'); }catch{ return {}; } }
+function saveUsers(u){ try{ localStorage.setItem('wv_users', JSON.stringify(u)); }catch{} }
+function me(){ const e = localStorage.getItem('wv_user'); if(!e) return null; return getUsers()[e] || null; }
+function saveMe(u){ const e = localStorage.getItem('wv_user'); if(!e) return; const all=getUsers(); all[e]=u; saveUsers(all); APP.user=u; }
+
+function genCode(){ return String(Math.floor(100000 + Math.random()*900000)); }
+
+async function sendMail(to, code){
+  const pub = S.emailjsPublic, svc = S.emailjsService, tpl = S.emailjsTemplate;
+  if(!pub || pub.startsWith('__')){
+    alert('EmailJS не настроен. Код: '+code+'\n\n(в рабочей версии код придёт на почту)');
+    return false;
+  }
+  try{
+    emailjs.init(pub);
+    await emailjs.send(svc, tpl, { to_email: to, code: code, email: to });
+    return true;
+  }catch(e){
+    alert('Не удалось отправить письмо: '+e.message+'\n\nВаш код: '+code);
+    return false;
+  }
+}
+
+async function requestCode(email, mode){
+  const users = getUsers();
+  if(mode==='login' && !users[email]) throw new Error('Аккаунт не найден. Зарегистрируйтесь.');
+  if(mode==='signup' && users[email]) throw new Error('Email уже занят. Войдите.');
+  const code = genCode();
+  const ttl = (S.codeTTLmin || 10) * 60 * 1000;
+  sessionStorage.setItem('wv_pending', JSON.stringify({email, code, mode, exp: Date.now()+ttl}));
+  await sendMail(email, code);
+  return code;
+}
+
+function verify(input){
+  const raw = sessionStorage.getItem('wv_pending');
+  if(!raw) throw new Error('Код не запрошен');
+  const p = JSON.parse(raw);
+  if(Date.now() > p.exp) throw new Error('Код истёк');
+  if(String(input).trim() !== String(p.code)) throw new Error('Неверный код');
+  const users = getUsers();
+  if(!users[p.email]){
+    users[p.email] = {
+      email: p.email, name: p.email.split('@')[0], avatar: '🌙',
+      created: Date.now(), crystals: S.crystalsOnSignup || 100,
+      lastDaily: Date.now(), messages: 0
+    };
+  }
+  users[p.email].lastLogin = Date.now();
+  saveUsers(users);
+  sessionStorage.removeItem('wv_pending');
+  localStorage.setItem('wv_user', p.email);
+  APP.user = users[p.email];
+  return APP.user;
+}
+
+/* ================= UI АККАУНТА ================= */
+function openAuth(mode='login'){
+  const m = document.createElement('div');
+  m.className = 'modal on';
+  m.innerHTML = `
+    <div class="mbox">
+      <div class="mico">🔐</div>
+      <div class="mtit">${mode==='login'?'Вход в Wave':'Регистрация'}</div>
+      <div class="msub2">Код придёт на почту</div>
+      <input class="minput" id="aEmail" type="email" placeholder="твой@gmail.com">
+      <input class="minput code" id="aCode" type="text" inputmode="numeric" maxlength="6" placeholder="000000" style="display:none">
+      <button class="mbtn o" id="aSend" style="width:100%;margin-bottom:8px">${mode==='login'?'Получить код':'Создать'}</button>
+      <button class="mbtn c" id="aSwap" style="width:100%">${mode==='login'?'Нет аккаунта? →':'Уже есть? Войти'}</button>
+      <button class="mbtn c" id="aClose" style="width:100%;margin-top:8px">Отмена</button>
+      <div class="mmsg" id="aMsg"></div>
+    </div>`;
+  document.body.appendChild(m);
+
+  const emailI = m.querySelector('#aEmail');
+  const codeI = m.querySelector('#aCode');
+  const send = m.querySelector('#aSend');
+  const swap = m.querySelector('#aSwap');
+  const close = m.querySelector('#aClose');
+  const msg = m.querySelector('#aMsg');
+  let step = 'email';
+
+  send.onclick = async () => {
+    msg.textContent = '';
+    if(step==='email'){
+      const email = emailI.value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.style.color='#f87171'; msg.textContent='Введи корректный email'; return; }
+      send.disabled = true; send.textContent='Отправляем…';
+      try{
+        await requestCode(email, mode);
+        step='code';
+        emailI.disabled = true;
+        codeI.style.display='block';
+        codeI.focus();
+        send.textContent='Войти';
+        msg.style.color='#4ade80';
+        msg.textContent='Код отправлен на '+email;
+      }catch(e){
+        msg.style.color='#f87171';
+        msg.textContent=e.message;
+        send.textContent = mode==='login'?'Получить код':'Создать';
+      }finally{ send.disabled=false; }
+    } else {
+      try{
+        verify(codeI.value);
+        msg.style.color='#4ade80'; msg.textContent='Успех!';
+        vibrate('ok');
+        setTimeout(() => { m.remove(); refreshUserUI(); redrawFlow(); }, 500);
+      }catch(e){
+        msg.style.color='#f87171'; msg.textContent=e.message;
+      }
+    }
   };
-  const blob = new Blob([JSON.stringify(m)], {type:'application/json'});
-  $id('mani').href = URL.createObjectURL(blob);
-  $id('fav').href = ic;
-  $id('atouch').href = ic;
-  const tc = document.querySelector('meta[name="theme-color"]');
-  if(tc) tc.content = color;
-  $id('installIco').textContent = emoji;
+  swap.onclick = () => { m.remove(); openAuth(mode==='login'?'signup':'login'); };
+  close.onclick = () => m.remove();
+  emailI.focus();
 }
 
-if('serviceWorker' in navigator){
-  const code = `self.addEventListener("install",e=>self.skipWaiting());self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));self.addEventListener("fetch",e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
-  const b = new Blob([code], {type:'text/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(b)).catch(() => {});
-}
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  APP.installer = e;
-});
-
-function wipeScene(){ $id('scene').innerHTML = ''; }
-
-function paintSky(){
-  const wrap = $id('scene');
-  wrap.style.background = 'linear-gradient(180deg,#06060f 0%,#0a0a1e 40%,#0e0c25 70%,#06060f 100%)';
-
-  for(let i = 0; i < 80; i++){
-    const s = 1 + Math.random() * 2.5;
-    const el = document.createElement('div');
-    el.className = 'star';
-    el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*70}%;width:${s}px;height:${s}px;animation-duration:${1.5+Math.random()*3}s;animation-delay:${Math.random()*3}s`;
-    wrap.appendChild(el);
-  }
-  for(let i = 0; i < 5; i++){
-    const el = document.createElement('div');
-    el.className = 'shoot';
-    el.style.cssText = `left:${20+Math.random()*80}%;top:${Math.random()*30}%;animation:sh ${3+Math.random()*2}s linear infinite;animation-delay:${Math.random()*8}s`;
-    wrap.appendChild(el);
-  }
-  for(let i = 0; i < 3; i++){
-    const el = document.createElement('div');
-    el.className = 'cld';
-    el.style.cssText = `top:${30+Math.random()*30}%;width:${100+Math.random()*80}px;height:${20+Math.random()*15}px;animation-duration:${40+Math.random()*30}s;animation-delay:${-Math.random()*30}s`;
-    wrap.appendChild(el);
-  }
-
-  const scene = document.createElement('div');
-  scene.innerHTML = `
-  <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <g class="glow">
-      <circle cx="300" cy="140" r="55" fill="#f5f0d5"/>
-      <circle cx="285" cy="125" r="8" fill="#e8e0b8" opacity="0.5"/>
-      <circle cx="315" cy="150" r="12" fill="#e8e0b8" opacity="0.4"/>
-      <circle cx="295" cy="160" r="6" fill="#e8e0b8" opacity="0.5"/>
-      <circle cx="320" cy="120" r="5" fill="#e8e0b8" opacity="0.4"/>
-    </g>
-    <g>
-      <path d="M 0 800 L 0 200 Q 20 150 60 130 Q 100 110 140 130 L 140 140 Q 100 125 60 145 Q 30 165 20 220 L 20 800 Z" fill="#0a0810"/>
-      <path d="M 5 500 Q 40 480 70 490 Q 50 510 5 520 Z" fill="#0a0810"/>
-      <path d="M 8 400 Q 50 380 90 395 Q 60 410 8 420 Z" fill="#0a0810"/>
-    </g>
-    <g class="brn" style="transform-origin:20% 100%">
-      <path d="M 30 250 Q 100 230 180 240 Q 250 250 320 275 Q 260 285 180 270 Q 100 260 30 275 Z" fill="#0a0810"/>
-      <g class="cats" transform="translate(150, 175)">
-        <ellipse cx="30" cy="60" rx="32" ry="45" fill="#000"/>
-        <ellipse cx="30" cy="20" rx="22" ry="20" fill="#000"/>
-        <path d="M 12 10 L 8 -8 L 22 6 Z" fill="#000"/>
-        <path d="M 48 10 L 52 -8 L 38 6 Z" fill="#000"/>
-        <ellipse cx="22" cy="20" rx="2.5" ry="3.5" fill="#7dd3fc"/>
-        <ellipse cx="38" cy="20" rx="2.5" ry="3.5" fill="#7dd3fc"/>
-        <circle cx="22" cy="20" r="1" fill="#000"/>
-        <circle cx="38" cy="20" r="1" fill="#000"/>
-        <g class="tails" transform="translate(60, 80)">
-          <path d="M 0 0 Q 25 -15 35 10 Q 40 25 50 15" stroke="#000" stroke-width="6" fill="none" stroke-linecap="round"/>
-        </g>
-      </g>
-    </g>
-    <g class="lvs">
-      <ellipse cx="60" cy="100" rx="50" ry="30" fill="#0a0810"/>
-      <ellipse cx="130" cy="70" rx="55" ry="35" fill="#0a0810"/>
-      <ellipse cx="200" cy="90" rx="50" ry="28" fill="#0a0810"/>
-      <ellipse cx="260" cy="110" rx="45" ry="25" fill="#0a0810"/>
-      <ellipse cx="90" cy="55" rx="40" ry="22" fill="#0a0810"/>
-      <ellipse cx="220" cy="50" rx="35" ry="20" fill="#0a0810"/>
-    </g>
-    <path d="M 0 750 Q 100 720 200 740 Q 300 760 400 730 L 400 800 L 0 800 Z" fill="#080610"/>
-    <g opacity="0.6">
-      <circle cx="80" cy="745" r="1.5" fill="#fbbf24"/>
-      <circle cx="120" cy="750" r="1" fill="#fbbf24"/>
-      <circle cx="150" cy="742" r="1.5" fill="#fbbf24"/>
-      <circle cx="200" cy="748" r="1" fill="#fbbf24"/>
-      <circle cx="260" cy="745" r="1.5" fill="#fbbf24"/>
-      <circle cx="300" cy="750" r="1" fill="#fbbf24"/>
-    </g>
-  </svg>`;
-  wrap.appendChild(scene);
-
-  for(let i = 0; i < 20; i++){
-    const size = 5 + Math.random() * 7;
-    const el = document.createElement('div');
-    el.className = 'leafF';
-    el.style.cssText = `left:${Math.random()*60}%;width:${size}px;height:${size*0.6}px;animation:lf ${8+Math.random()*8}s linear infinite;animation-delay:${Math.random()*12}s`;
-    wrap.appendChild(el);
+function refreshUserUI(){
+  const u = me();
+  APP.user = u;
+  const isAuth = !!u;
+  $('loginBtn').style.display = isAuth ? 'none' : 'block';
+  $('profileBtn').style.display = isAuth ? 'block' : 'none';
+  $('logoutBtn').style.display = isAuth ? 'block' : 'none';
+  $('userTitle').textContent = isAuth ? (u.name || u.email) : 'Гость';
+  if(isAuth){
+    $('crystals').style.display = 'flex';
+    updateCrystalUI();
+  } else {
+    $('crystals').style.display = 'none';
   }
 }
 
-const SKY = {
-  wave:'linear-gradient(180deg,#001f3f,#0077cc,#39CCCC)',
-  lion:'linear-gradient(180deg,#7c2d12,#e0620a,#fbbf24)',
-  croc:'linear-gradient(180deg,#052e16,#137a2c,#4ade80)',
-  dragon:'linear-gradient(180deg,#450a0a,#d81f1f,#f87171)',
-  panda:'linear-gradient(180deg,#1f1f1f,#525252,#fbcfe8)',
-  tiger:'linear-gradient(180deg,#1c1917,#e0620a,#fbbf24)',
-  frog:'linear-gradient(180deg,#022c22,#0a8f5e,#6ee7b7)',
-  wolf:'linear-gradient(180deg,#0a0a0a,#4a4a4a,#a3a3a3)',
-  shark:'linear-gradient(180deg,#082f49,#0369a1,#67e8f9)',
-  bee:'linear-gradient(180deg,#000,#b8840a,#fde047)'
+function dailyCheck(){
+  const u = me(); if(!u) return;
+  const now = new Date();
+  const last = new Date(u.lastDaily || 0);
+  if(last.toDateString() !== now.toDateString()){
+    u.crystals = S.crystalsPerDay || 50;
+    u.lastDaily = Date.now();
+    saveMe(u);
+    note('💎 +'+(S.crystalsPerDay||50)+' кристаллов за день!');
+  }
+}
+function updateCrystalUI(){
+  const u = me(); if(!u) return;
+  $('crCount').textContent = u.crystals || 0;
+}
+function spendCrystal(){
+  const u = me(); if(!u) return true;
+  if((u.crystals||0) <= 0){
+    note('💎 Кристаллы кончились. Приходи завтра!');
+    return false;
+  }
+  u.crystals--;
+  saveMe(u);
+  updateCrystalUI();
+  return true;
+}
+
+/* ================= ТЕМЫ ================= */
+const THEMES = {
+  moon:['🌙','Луна'], aurora:['🌌','Сияние'], neon:['💜','Неон'],
+  matrix:['💚','Матрица'], sakura:['🌸','Сакура'], phoenix:['🔥','Феникс'],
+  whale:['🐳','Кит'], penguin:['🐧','Пингвин'], owl:['🦉','Сова'],
+  fox:['🦊','Лиса'], cat:['🐱','Кот'], wave:['🌊','Волна'],
+  lion:['🦁','Лев'], croc:['🐊','Крокодил'], dragon:['🐉','Дракон'],
+  panda:['🐼','Панда'], tiger:['🐯','Тигр'], frog:['🐸','Жаба'],
+  wolf:['🐺','Волк'], shark:['🦈','Акула'], bee:['🐝','Пчела']
 };
 
-function pickSkin(key){
-  if(!SKIN[key]) key = 'moon';
-  APP.skin = key;
-  document.body.className = 'wv-' + key;
-  try{ localStorage.setItem('wave_skin', key); }catch(_){}
-  $id('face').textContent = SKIN[key][0];
-  $id('introLogo').textContent = SKIN[key][0];
-  syncManifest(key);
-  wipeScene();
-  if(key === 'moon') paintSky();
-  else $id('scene').style.background = SKY[key] || 'linear-gradient(180deg,#06060f,#0f0e26)';
+function setTheme(k){
+  if(!THEMES[k]) k='moon';
+  APP.theme=k;
+  document.body.className = 'wv-'+k;
+  try{ localStorage.setItem('wv_theme', k); }catch{}
+  $('face').textContent = THEMES[k][0];
+  startFx(k);
+  buildPalette();
 }
-
-function wakeAudio(){
-  try{
-    if(!APP.audio) APP.audio = new (window.AudioContext || window.webkitAudioContext)();
-    if(APP.audio.state === 'suspended') APP.audio.resume();
-  }catch(_){}
-}
-function blip(){
-  wakeAudio();
-  if(!APP.audio) return;
-  const t = APP.audio.currentTime;
-  const o = APP.audio.createOscillator();
-  const g = APP.audio.createGain();
-  o.type = 'sine';
-  o.frequency.setValueAtTime(660, t);
-  o.frequency.exponentialRampToValueAtTime(990, t + .05);
-  g.gain.setValueAtTime(.0001, t);
-  g.gain.exponentialRampToValueAtTime(.08, t + .01);
-  g.gain.exponentialRampToValueAtTime(.0001, t + .12);
-  o.connect(g).connect(APP.audio.destination);
-  o.start(t);
-  o.stop(t + .15);
-}
-function silence(){
-  if(APP.playing){ try{ APP.playing.pause(); }catch(_){} APP.playing = null; }
-  try{ speechSynthesis.cancel(); }catch(_){}
-}
-
-function loadStore(){
-  try{ APP.chats = JSON.parse(localStorage.getItem('wave_chats') || '[]'); }
-  catch(_){ APP.chats = []; }
-}
-function saveStore(){
-  try{ localStorage.setItem('wave_chats', JSON.stringify(APP.chats)); }catch(_){}
-}
-function current(){
-  return APP.chats.find(c => c.id === APP.current);
-}
-
-function addChat(){
-  const id = 'c' + Date.now();
-  APP.chats.unshift({id, title:'Новый чат', messages:[], created:Date.now()});
-  APP.current = id;
-  APP.memory = [];
-  saveStore();
-  $id('input').value = '';
-  readDraft();
-  redrawFlow();
-  redrawList();
-}
-
-function readDraft(){
-  try{ $id('input').value = localStorage.getItem('wave_d_' + (APP.current || 'x')) || ''; }
-  catch(_){}
-}
-function writeDraft(){
-  try{ localStorage.setItem('wave_d_' + (APP.current || 'x'), $id('input').value); }catch(_){}
-}
-
-function appendMsg(role, text, isImg, imgData){
-  let c = current();
-  if(!c){ addChat(); c = current(); }
-  c.messages.push({role, text, isImg: !!isImg, attachedImg: imgData || null, time: Date.now()});
-  if(c.messages.length === 1 && role === 'user'){
-    c.title = text.substring(0, 32) + (text.length > 32 ? '…' : '');
-  }
-  saveStore();
-  redrawFlow();
-  redrawList();
-}
-
-function emptyState(){
-  const box = document.createElement('div');
-  box.className = 'void';
-  box.innerHTML = `
-    <div class="orb">${SKIN[APP.skin][0]}</div>
-    <div class="vt">Привет! Я Wave</div>
-    <div class="vs">Задай вопрос по учёбе или просто поговорим</div>`;
-  const grid = document.createElement('div');
-  grid.className = 'chips';
-  PRESETS.forEach(([e, t]) => {
+function buildPalette(){
+  const w = $('palette'); w.innerHTML='';
+  for(const k in THEMES){
     const b = document.createElement('button');
-    b.className = 'chip';
-    b.innerHTML = `<span class="ce">${e}</span>${shield(t)}`;
-    b.onclick = () => {
-      tremor('light');
-      $id('input').value = t;
-      writeDraft();
-      launch();
-    };
-    grid.appendChild(b);
-  });
-  box.appendChild(grid);
-  return box;
+    b.className = 'swatch'+(k===APP.theme?' on':'');
+    b.innerHTML = `<span class="se">${THEMES[k][0]}</span><span class="sn">${THEMES[k][1]}</span>`;
+    b.onclick = () => { vibrate('medium'); setTheme(k); };
+    w.appendChild(b);
+  }
+}
+
+/* ================= АНИМАЦИЯ ФОНА ================= */
+let fxRAF = null, fxTheme = 'moon';
+function startFx(theme){
+  fxTheme = theme;
+  if(fxRAF) cancelAnimationFrame(fxRAF);
+  const cv = $('fx'); const ctx = cv.getContext('2d');
+  function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  const stars = Array.from({length: 80}, () => ({
+    x:Math.random(), y:Math.random()*0.7, s:1+Math.random()*2,
+    t:Math.random()*Math.PI*2
+  }));
+  const snow = Array.from({length: 60}, () => ({
+    x:Math.random(), y:Math.random(), v:0.0005+Math.random()*0.0015,
+    s:1+Math.random()*2, a:Math.random()*Math.PI*2
+  }));
+  const petals = Array.from({length: 40}, () => ({
+    x:Math.random(), y:Math.random(), v:0.0008+Math.random()*0.0012,
+    s:3+Math.random()*4, a:Math.random()*Math.PI*2, rot:0
+  }));
+  const bubbles = Array.from({length: 35}, () => ({
+    x:Math.random(), y:1+Math.random(), v:0.001+Math.random()*0.002,
+    s:3+Math.random()*8
+  }));
+  const matrixCols = Math.floor(innerWidth/14);
+  const matrixDrops = Array.from({length:matrixCols}, () => Math.random()*innerHeight);
+
+  let t = 0;
+  function frame(){
+    t++;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const dark = ['moon','aurora','neon','matrix'].includes(fxTheme);
+
+    if(fxTheme==='moon'){
+      ctx.fillStyle='rgba(255,255,255,.9)';
+      stars.forEach(s => {
+        const a = 0.3 + 0.7*Math.abs(Math.sin(s.t + t*0.02));
+        ctx.globalAlpha = a;
+        ctx.beginPath(); ctx.arc(s.x*cv.width, s.y*cv.height, s.s, 0, 7); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    if(fxTheme==='aurora'){
+      for(let i=0;i<4;i++){
+        const g = ctx.createLinearGradient(0, 0, cv.width, cv.height*0.6);
+        const hue = (t*0.3 + i*60) % 360;
+        g.addColorStop(0, `hsla(${hue},80%,55%,0.15)`);
+        g.addColorStop(0.5, `hsla(${hue+40},80%,60%,0.25)`);
+        g.addColorStop(1, 'transparent');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, i*80 + Math.sin(t*0.02+i)*30, cv.width, 200);
+      }
+    }
+
+    if(fxTheme==='neon'){
+      ctx.strokeStyle = 'rgba(255,0,170,.3)';
+      ctx.lineWidth = 1;
+      for(let i=0;i<12;i++){
+        ctx.beginPath();
+        const x0 = (i*97 + t*0.5) % cv.width;
+        ctx.moveTo(x0, 0);
+        ctx.lineTo(x0 + Math.sin(t*0.01+i)*50, cv.height);
+        ctx.stroke();
+      }
+    }
+
+    if(fxTheme==='matrix'){
+      ctx.font = '14px monospace';
+      for(let i=0;i<matrixDrops.length;i++){
+        const x = i*14;
+        const y = matrixDrops[i];
+        const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01'[Math.floor(Math.random()*28)];
+        ctx.fillStyle = 'rgba(0,255,65,.8)';
+        ctx.fillText(c, x, y);
+        ctx.fillStyle = 'rgba(0,255,65,.15)';
+        ctx.fillText(c, x, y-16);
+        matrixDrops[i] += 4;
+        if(matrixDrops[i] > cv.height && Math.random() > 0.985) matrixDrops[i] = 0;
+      }
+    }
+
+    if(fxTheme==='sakura' || fxTheme==='phoenix'){
+      petals.forEach(p => {
+        p.y += p.v; p.a += 0.02;
+        p.x += Math.sin(p.a)*0.001;
+        if(p.y > 1.1){ p.y=-0.1; p.x=Math.random(); }
+        ctx.save();
+        ctx.translate(p.x*cv.width, p.y*cv.height);
+        ctx.rotate(p.a);
+        ctx.fillStyle = fxTheme==='sakura' ? 'rgba(255,183,206,.7)' : 'rgba(255,140,60,.65)';
+        ctx.beginPath();
+        ctx.ellipse(0,0,p.s,p.s*0.6,0,0,7);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    if(fxTheme==='whale' || fxTheme==='shark' || fxTheme==='wave'){
+      bubbles.forEach(b => {
+        b.y -= b.v;
+        if(b.y < -0.05){ b.y=1.1; b.x=Math.random(); }
+        ctx.strokeStyle = 'rgba(200,230,255,.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(b.x*cv.width, b.y*cv.height, b.s, 0, 7);
+        ctx.stroke();
+      });
+    }
+
+    if(fxTheme==='penguin' || fxTheme==='wolf'){
+      ctx.fillStyle = 'rgba(255,255,255,.7)';
+      snow.forEach(s => {
+        s.y += s.v; s.a += 0.01;
+        s.x += Math.sin(s.a)*0.0008;
+        if(s.y > 1.05){ s.y=-0.05; s.x=Math.random(); }
+        ctx.beginPath(); ctx.arc(s.x*cv.width, s.y*cv.height, s.s, 0, 7); ctx.fill();
+      });
+    }
+
+    if(dark && fxTheme==='moon'){
+      stars.forEach(s => {
+        if(Math.random() > 0.9975){
+          ctx.strokeStyle = 'rgba(255,255,255,.9)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(s.x*cv.width, s.y*cv.height);
+          ctx.lineTo(s.x*cv.width-60, s.y*cv.height+30);
+          ctx.stroke();
+        }
+      });
+    }
+
+    fxRAF = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ================= ЧАТ ================= */
+function getChats(){ try{ return JSON.parse(localStorage.getItem('wv_chats')||'[]'); }catch{ return []; } }
+function saveChats(c){ try{ localStorage.setItem('wv_chats', JSON.stringify(c)); }catch{} APP.chats=c; }
+function cur(){ return APP.chats.find(c => c.id === APP.current); }
+
+function newChat(){
+  const c = {id:'c'+Date.now(), title:'Новый чат', messages:[], created:Date.now()};
+  APP.chats.unshift(c); APP.current = c.id; APP.memory = [];
+  saveChats(APP.chats);
+  redrawFlow(); redrawList(); closeSheet('menuSheet'); closeSheet('chatsSheet');
 }
 
 function redrawFlow(){
-  const flow = $id('flow');
-  flow.innerHTML = '';
-  const c = current();
-  if(!c || c.messages.length === 0){
-    flow.appendChild(emptyState());
-    return;
-  }
-  c.messages.forEach((msg, i) => {
+  const flow = $('flow'); flow.innerHTML='';
+  const c = cur();
+  if(!c || c.messages.length===0){ flow.appendChild(emptyState()); return; }
+  c.messages.forEach((m, i) => {
     const el = document.createElement('div');
-    el.className = 'bub ' + (msg.role === 'user' ? 'me' : 'ai');
-    if(msg.role === 'user'){
-      el.innerHTML = style(msg.text);
-      if(msg.attachedImg){
-        const im = document.createElement('img');
-        im.src = msg.attachedImg;
-        el.appendChild(im);
-      }
-      el.addEventListener('contextmenu', ev => { ev.preventDefault(); rework(i); });
-      let t;
-      el.addEventListener('touchstart', () => { t = setTimeout(() => rework(i), 650); }, {passive:true});
-      el.addEventListener('touchend', () => clearTimeout(t));
-      el.addEventListener('touchmove', () => clearTimeout(t));
+    el.className = 'bub ' + (m.role==='user'?'me':'ai');
+    if(m.role==='user'){
+      el.innerHTML = md(m.text);
+      if(m.img){ const im = document.createElement('img'); im.src = m.img; el.appendChild(im); }
     } else {
-      el.className = 'bub ai';
-      if(msg.isImg){
-        el.innerHTML = `<div class="bub-head"><span class="bub-mark">Wave</span></div><img src="${msg.text}">`;
+      if(m.isImg){
+        el.innerHTML = `<div class="bub-head"><span>Wave</span></div><img src="${m.text}">`;
       } else {
-        el.innerHTML = `<div class="bub-head"><span class="bub-mark">Wave</span><button class="bub-copy">📋</button></div>${style(msg.text)}`;
-        el.querySelector('.bub-copy').onclick = () => clip(msg.text);
+        el.innerHTML = `<div class="bub-head"><span>Wave</span><button class="bub-copy">📋</button></div>${md(m.text)}`;
+        el.querySelector('.bub-copy').onclick = () => clip(m.text);
       }
     }
     flow.appendChild(el);
@@ -833,29 +839,36 @@ function redrawFlow(){
   flow.scrollTop = flow.scrollHeight;
 }
 
-function rework(i){
-  const c = current();
-  if(!c || !c.messages[i] || c.messages[i].role !== 'user') return;
-  tremor('medium');
-  const old = c.messages[i].text;
-  const nv = prompt('Редактировать сообщение:', old);
-  if(nv === null || nv === old || !nv.trim()) return;
-  c.messages = c.messages.slice(0, i);
-  c.messages.push({role:'user', text: nv.trim(), time: Date.now()});
-  saveStore();
-  redrawFlow();
-  redrawList();
-  APP.memory = [];
-  c.messages.forEach(m => {
-    if(m.text && (m.role === 'user' || m.role === 'assistant')) APP.memory.push({role: m.role, content: m.text});
+function emptyState(){
+  const el = document.createElement('div');
+  el.className = 'void';
+  el.innerHTML = `
+    <div class="orb">${THEMES[APP.theme][0]}</div>
+    <div class="vt">Привет! Я Wave</div>
+    <div class="vs">Спроси что угодно — отвечу</div>`;
+  const grid = document.createElement('div');
+  grid.className = 'chips';
+  [['📐','Реши 2x + 5 = 13'],['🌍','Что такое фотосинтез?'],
+   ['💻','Напиши код на Python'],['📝','Сочинение про осень'],
+   ['🎨','Нарисуй кота в космосе'],['🧪','Как работает гравитация?']].forEach(([e,t])=>{
+    const b = document.createElement('button');
+    b.className='chip';
+    b.innerHTML = `<span class="ce">${e}</span>${esc(t)}`;
+    b.onclick = () => { vibrate(); $('input').value = t; launch(); };
+    grid.appendChild(b);
   });
-  if(APP.memory.length > 10) APP.memory = APP.memory.slice(-10);
-  showWait(); startProgress();
-  APP.working = true;
-  $id('halt').classList.add('on');
-  respond(nv.trim())
-    .then(r => { hideWait(); endProgress(); APP.working = false; $id('halt').classList.remove('on'); pourInk(r); })
-    .catch(() => { hideWait(); endProgress(); APP.working = false; $id('halt').classList.remove('on'); appendMsg('wave','Ошибка.'); });
+  el.appendChild(grid);
+  return el;
+}
+
+function appendMsg(role, text, isImg, img){
+  const c = cur(); if(!c) return;
+  c.messages.push({role, text, isImg:!!isImg, img: img||null, time:Date.now()});
+  if(c.messages.length===1 && role==='user') c.title = text.substring(0,32) + (text.length>32?'…':'');
+  if(APP.user) APP.user.messages = (APP.user.messages||0) + 1;
+  if(APP.user) saveMe(APP.user);
+  saveChats(APP.chats);
+  redrawFlow();
 }
 
 function showWait(){
@@ -863,626 +876,444 @@ function showWait(){
   const el = document.createElement('div');
   el.className = 'bub ai wait';
   el.id = 'waitDot';
-  el.innerHTML = `<span class="bub-mark">Wave</span><div class="d"><span></span><span></span><span></span></div>`;
-  $id('flow').appendChild(el);
-  $id('flow').scrollTop = $id('flow').scrollHeight;
+  el.innerHTML = `<div class="bub-head"><span>Wave</span></div><div class="d"><span></span><span></span><span></span></div>`;
+  $('flow').appendChild(el);
+  $('flow').scrollTop = $('flow').scrollHeight;
 }
-function hideWait(){ const el = $id('waitDot'); if(el) el.remove(); }
+function hideWait(){ const e = $('waitDot'); if(e) e.remove(); }
 
-function pourInk(full, done){
-  const c = current();
-  if(!c) return;
-  c.messages.push({role:'assistant', text:'', time: Date.now()});
-  saveStore();
+function pourInk(full){
+  const c = cur(); if(!c) return;
+  c.messages.push({role:'assistant', text:'', time:Date.now()});
+  saveChats(APP.chats);
   const el = document.createElement('div');
   el.className = 'bub ai';
-  el.innerHTML = `<div class="bub-head"><span class="bub-mark">Wave</span><button class="bub-copy">📋</button></div><span class="ink"></span><span class="caret"></span>`;
-  $id('flow').appendChild(el);
-  const span = el.querySelector('.ink');
-  const cur = el.querySelector('.caret');
+  el.innerHTML = `<div class="bub-head"><span>Wave</span><button class="bub-copy">📋</button></div><span class="ink"></span><span class="caret"></span>`;
+  $('flow').appendChild(el);
+  const span = el.querySelector('.ink'), cur2 = el.querySelector('.caret');
   const cp = el.querySelector('.bub-copy');
   let i = 0;
   (function step(){
     if(i >= full.length){
-      cur.remove();
-      const idx = c.messages.length - 1;
-      c.messages[idx].text = full;
-      saveStore();
+      cur2.remove();
+      c.messages[c.messages.length-1].text = full;
+      saveChats(APP.chats);
       cp.onclick = () => clip(full);
-      if(done) done();
       return;
     }
-    span.innerHTML = style(full.substring(0, i + 1));
+    span.innerHTML = md(full.substring(0, i+1));
     i++;
-    $id('flow').scrollTop = $id('flow').scrollHeight;
-    setTimeout(step, 18);
+    $('flow').scrollTop = $('flow').scrollHeight;
+    setTimeout(step, 14);
   })();
 }
 
-function hopTo(id){
-  APP.current = id;
-  APP.memory = [];
-  const c = current();
-  if(c){
-    c.messages.forEach(m => {
-      if(!m.isImg && (m.role === 'user' || m.role === 'assistant') && m.text){
-        APP.memory.push({role: m.role, content: m.text});
-      }
-    });
-    if(APP.memory.length > 10) APP.memory = APP.memory.slice(-10);
-  }
-  readDraft();
-  redrawFlow();
-  redrawList();
-  $id('chatsSheet').classList.remove('on');
-}
-
-function paintRows(list){
-  const cl = $id('list');
-  cl.innerHTML = '';
-  if(list.length === 0){
-    cl.innerHTML = '<p style="opacity:.5;font-size:14px;text-align:center;padding:20px">Ничего не найдено</p>';
-    return;
-  }
-  list.forEach(c => {
-    const el = document.createElement('div');
-    el.className = 'row' + (c.id === APP.current ? ' on' : '');
-    const d = new Date(c.created);
-    const ds = `${d.getDate()}.${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
-    el.innerHTML = `<div class="info"><div class="ti">${shield(c.title)}</div><div class="me">${ds} · ${c.messages.length} сообщ.</div></div><button class="rm">×</button>`;
-    el.onclick = e => {
-      if(e.target.classList.contains('rm')) return;
-      tremor('light');
-      hopTo(c.id);
-    };
-    el.querySelector('.rm').onclick = e => {
-      e.stopPropagation();
-      tremor('medium');
-      if(confirm('Удалить чат?')){
-        APP.chats = APP.chats.filter(x => x.id !== c.id);
-        if(APP.current === c.id) APP.current = null;
-        saveStore();
-        if(!APP.current && APP.chats.length > 0) APP.current = APP.chats[0].id;
-        else if(APP.chats.length === 0) addChat();
-        redrawFlow();
-        redrawList();
-      }
-    };
-    cl.appendChild(el);
-  });
-}
-
-function redrawList(){
-  const term = $id('search').value.trim().toLowerCase();
-  if(!term){ paintRows(APP.chats); return; }
-  const filtered = APP.chats.filter(c =>
-    c.title.toLowerCase().includes(term) ||
-    c.messages.some(m => m.text && m.text.toLowerCase().includes(term))
-  );
-  paintRows(filtered);
-}
+/* ================= ИИ ================= */
+const BACKENDS = [
+  {k:'deepseek', n:'DeepSeek', s:'Умная', b:'SMART'},
+  {k:'openai', n:'OpenAI', s:'Быстрая', b:'FAST'},
+  {k:'mistral', n:'Mistral', s:'Универсальная', b:'NORMAL'},
+  {k:'qwen-coder', n:'Qwen', s:'Для кода', b:'CODE'}
+];
 
 async function callBackend(kind, text){
-  const msgs = [{role:'system', content: SYSTEM}, ...APP.memory, {role:'user', content: text}];
+  const msgs = [
+    {role:'system', content:'Ты Wave — дружелюбный ИИ-ассистент. Помогаешь со школьными задачами. Решай пошагово. Отвечай по-русски.'},
+    ...APP.memory,
+    {role:'user', content: text}
+  ];
   const r = await fetch('https://text.pollinations.ai/openai', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({model: kind, messages: msgs, temperature:0.8, max_tokens:800})
+    body: JSON.stringify({model: kind, messages: msgs, temperature:0.8})
   });
-  if(!r.ok) throw new Error('HTTP ' + r.status);
+  if(!r.ok) throw new Error('HTTP '+r.status);
   const d = await r.json();
   let rep = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || d.response || '';
   rep = String(rep).trim();
-  if(!rep || rep.length < 2) throw new Error('empty');
+  if(!rep) throw new Error('empty');
   return rep;
 }
 
 async function respond(text){
-  APP.memory.push({role:'user', content: text});
-  if(APP.memory.length > 10) APP.memory = APP.memory.slice(-10);
-  const order = [APP.backend, ...BACKENDS.filter(b => b.k !== APP.backend).map(b => b.k)];
+  APP.memory.push({role:'user', content:text});
+  if(APP.memory.length>10) APP.memory = APP.memory.slice(-10);
+  const order = [APP.backend, ...BACKENDS.filter(b=>b.k!==APP.backend).map(b=>b.k)];
   for(const k of order){
     try{ return await callBackend(k, text); }
-    catch(e){ console.warn('Backend ' + k + ' failed:', e.message); }
+    catch(e){ console.warn(k, e.message); }
   }
-  return await backupResponse(text);
+  return offlineReply(text);
 }
 
-async function backupResponse(text){
-  const urls = [
-    `https://text.pollinations.ai/${encodeURIComponent(text)}?model=deepseek`,
-    `https://text.pollinations.ai/${encodeURIComponent(text)}?model=mistral`,
-    `https://text.pollinations.ai/${encodeURIComponent(text)}`
-  ];
-  for(const u of urls){
+function offlineReply(text){
+  const t = text.toLowerCase();
+  const m = t.match(/[\d]+[\d\s+\-*/().]*[\d]/);
+  if(m){
     try{
-      const r = await fetch(u);
-      if(!r.ok) continue;
-      let t = await r.text();
-      t = t.replace(/[*_`#]/g, '').trim();
-      if(t.length > 1500) t = t.substring(0, 1500);
-      if(!t) continue;
-      APP.memory.push({role:'assistant', content: t});
-      return t;
+      const expr = m[0].replace(/[^0-9+\-*/().]/g,'');
+      const r = Function('"use strict";return ('+expr+')')();
+      if(isFinite(r)) return 'Ответ: '+r;
     }catch(_){}
   }
-  return 'Не удалось ответить. Проверь соединение.';
+  if(/привет|здравств|хай/.test(t)) return 'Привет! 👋 Чем помочь?';
+  if(/как дела/.test(t)) return 'Отлично! У тебя как?';
+  if(/кто ты|что ты/.test(t)) return 'Я Wave — ИИ-ассистент. Помогаю с задачами и просто болтаю.';
+  if(/спасибо/.test(t)) return 'Всегда рад! 😊';
+  return 'Сейчас не могу подключиться к серверу ИИ. Попробуй ещё раз или переформулируй.';
 }
 
-const WORDNUM = {ноль:0,один:1,два:2,три:3,четыре:4,пять:5,шесть:6,семь:7,восемь:8,девять:9,десять:10};
-
-function wordsToDigits(t){
-  return t.split(/\s+/).map(w => {
-    const l = w.toLowerCase().replace(/[^а-яё]/g, '');
-    return WORDNUM.hasOwnProperty(l) ? WORDNUM[l] : w;
-  }).join(' ');
-}
-
-function attemptMath(txt){
-  let s = ' ' + wordsToDigits(txt.toLowerCase()) + ' ';
-  s = s.replace(/\bплюс\b/g, '+')
-       .replace(/\bминус\b/g, '-')
-       .replace(/\bумножить на\b/g, '*')
-       .replace(/\bразделить на\b/g, '/')
-       .replace(/,/g, '.')
-       .replace(/[^0-9+\-*\/.\s()]/g, ' ')
-       .trim();
-  if(!/[0-9]/.test(s) || !/[+\-*\/]/.test(s)) return null;
-  try{
-    const r = Function('"use strict";return (' + s + ')')();
-    if(typeof r !== 'number' || !isFinite(r)) return null;
-    return Math.round(r * 10000) / 10000;
-  }catch(_){ return null; }
-}
-
-function catchCommand(txt){
-  const t = txt.toLowerCase().trim();
-  const mSkin = t.match(/тема\s+(\w+)/);
-  if(mSkin){
-    for(const k in SKIN){
-      if(k.includes(mSkin[1]) || SKIN[k][1].toLowerCase().includes(mSkin[1])){
-        pickSkin(k);
-        buildSwatches();
-        return 'Тема: ' + SKIN[k][1];
-      }
-    }
-  }
-  const mBack = t.match(/модель\s+(\w+)/);
-  if(mBack){
-    for(const b of BACKENDS){
-      if(b.k.includes(mBack[1]) || b.n.toLowerCase().includes(mBack[1])){
-        APP.backend = b.k;
-        $id('modelTag').textContent = b.n.toUpperCase();
-        try{ localStorage.setItem('wave_backend', b.k); }catch(_){}
-        buildCards();
-        return 'Модель: ' + b.n;
-      }
-    }
-  }
-  const mDraw = t.match(/(?:сгенерируй|нарисуй|покажи|создай)\s+(?:картинку|изображение|рисунок)?\s*(.+)/i);
-  if(mDraw && mDraw[1].trim().length > 2){
-    paintImage(mDraw[1].trim());
-    return '__IMG__';
-  }
-  const r = attemptMath(t);
-  if(r !== null) return 'Ответ: ' + r;
-  if(t.includes('который час')){
-    const d = new Date();
-    return 'Сейчас ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
-  }
-  if(t.includes('монетк')) return Math.random() < 0.5 ? 'Орёл!' : 'Решка!';
-  if(t.includes('кубик')) return 'Выпало: ' + (Math.floor(Math.random() * 6) + 1);
-  return null;
-}
-
-function paintImage(prompt){
-  appendMsg('user', 'Нарисуй: ' + prompt);
-  showWait();
-  setTimeout(() => {
-    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=768&nologo=true&seed=${Math.floor(Math.random()*1000000)}`;
-    const im = new Image();
-    im.onload = () => { hideWait(); appendMsg('wave', url, true); };
-    im.onerror = () => { hideWait(); appendMsg('wave', 'Не удалось сгенерировать.'); };
-    im.src = url;
-  }, 800);
-}
-
-function startProgress(){
-  const p = $id('progress');
-  p.style.width = '0';
-  setTimeout(() => p.style.width = '30%', 50);
-  setTimeout(() => p.style.width = '70%', 600);
-  setTimeout(() => p.style.width = '90%', 1600);
-}
-function endProgress(){
-  $id('progress').style.width = '100%';
-  setTimeout(() => $id('progress').style.width = '0', 400);
-}
-
+/* ================= ОТПРАВКА ================= */
 function launch(){
-  if(APP.working){ note('Подожди завершения…'); return; }
-  let text = $id('input').value.trim();
+  if(APP.working){ note('Подожди…'); return; }
+  const text = $('input').value.trim();
   if(!text && !APP.attached) return;
+  if(APP.user && !spendCrystal()) return;
   const img = APP.attached;
   APP.attached = null;
-  $id('att').style.display = 'none';
-  $id('fileIn').value = '';
-  try{ localStorage.removeItem('wave_d_' + (APP.current || 'x')); }catch(_){}
+  $('att').style.display='none'; $('fileIn').value='';
   appendMsg('user', text || '[Изображение]', false, img);
-  const hit = catchCommand(text);
-  if(hit === '__IMG__') return;
-  if(hit){ setTimeout(() => appendMsg('wave', hit), 100); return; }
+  $('input').value = '';
   showWait();
-  startProgress();
-  APP.working = true;
-  $id('halt').classList.add('on');
+  APP.working = true; $('go').disabled = true;
   respond(text || 'Опиши изображение')
-    .then(r => { hideWait(); endProgress(); APP.working = false; $id('halt').classList.remove('on'); pourInk(r); })
-    .catch(() => { hideWait(); endProgress(); APP.working = false; $id('halt').classList.remove('on'); appendMsg('wave','Не удалось ответить.'); });
+    .then(r => { hideWait(); APP.working=false; $('go').disabled=false; pourInk(r); })
+    .catch(e => { hideWait(); APP.working=false; $('go').disabled=false; appendMsg('wave','Ошибка: '+e.message); });
 }
 
-function exportChat(){
-  const c = current();
-  if(!c || c.messages.length === 0){ note('Чат пуст'); return; }
-  let out = `=== ${c.title} ===\n\n`;
-  c.messages.forEach(m => {
-    const who = m.role === 'user' ? 'Вы' : 'Wave';
-    out += `[${who}] ${m.text || '[изображение]'}\n\n`;
-  });
-  const b = new Blob([out], {type:'text/plain;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(b);
-  a.download = `wave-${Date.now()}.txt`;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  note('Экспортировано ✓');
-}
-
-function copyChat(){
-  const c = current();
-  if(!c || c.messages.length === 0){ note('Чат пуст'); return; }
-  const txt = c.messages.map(m =>
-    (m.role === 'user' ? 'Вы: ' : 'Wave: ') + (m.text || '[изображение]')
-  ).join('\n\n');
-  clip(txt);
-}
-
-function buildSwatches(){
-  const wrap = $id('palette');
-  wrap.innerHTML = '';
-  for(const k in SKIN){
-    const el = document.createElement('button');
-    el.className = 'swatch' + (k === APP.skin ? ' on' : '');
-    el.innerHTML = `<span class="se">${SKIN[k][0]}</span><span class="sn">${SKIN[k][1]}</span>`;
-    el.onclick = () => { tremor('medium'); pickSkin(k); buildSwatches(); };
-    wrap.appendChild(el);
-  }
-}
-function buildCards(){
-  const wrap = $id('models');
-  wrap.innerHTML = '';
-  BACKENDS.forEach(b => {
-    const el = document.createElement('button');
-    el.className = 'card' + (b.k === APP.backend ? ' on' : '');
-    el.innerHTML = `<div class="ci"><div class="cn">${b.n}</div><div class="cs">${b.s}</div></div><span class="cb">${b.b}</span>`;
-    el.onclick = () => {
-      tremor('medium');
-      APP.backend = b.k;
-      $id('modelTag').textContent = b.n.toUpperCase();
-      try{ localStorage.setItem('wave_backend', b.k); }catch(_){}
-      buildCards();
-      $id('modelSheet').classList.remove('on');
-      note('Модель: ' + b.n);
+/* ================= ЧАТЫ ================= */
+function redrawList(){
+  const wrap = $('list'); wrap.innerHTML='';
+  const term = ($('search').value||'').toLowerCase();
+  const list = APP.chats.filter(c => !term || c.title.toLowerCase().includes(term));
+  if(!list.length){ wrap.innerHTML='<p style="opacity:.5;text-align:center;padding:20px">Пусто</p>'; return; }
+  list.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'row'+(c.id===APP.current?' on':'');
+    const d = new Date(c.created);
+    el.innerHTML = `<div class="info"><div class="ti">${esc(c.title)}</div><div class="me">${d.toLocaleDateString()} · ${c.messages.length} сообщ.</div></div><button class="rm">×</button>`;
+    el.onclick = e => { if(e.target.classList.contains('rm')) return; APP.current=c.id; redrawFlow(); redrawList(); closeSheet('chatsSheet'); };
+    el.querySelector('.rm').onclick = e => {
+      e.stopPropagation();
+      if(confirm('Удалить чат?')){
+        APP.chats = APP.chats.filter(x=>x.id!==c.id);
+        if(APP.current===c.id) APP.current = APP.chats[0]?.id || null;
+        if(!APP.current) newChat();
+        else { saveChats(APP.chats); redrawFlow(); redrawList(); }
+      }
     };
     wrap.appendChild(el);
   });
 }
-
-$id('go').onclick = () => {
-  tremor('light'); blip();
-  $id('input').value = '';
-  writeDraft();
-  launch();
-};
-$id('input').onkeydown = e => {
-  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); $id('go').click(); }
-};
-$id('input').addEventListener('input', writeDraft);
-
-$id('pickFile').onclick = () => { tremor('light'); blip(); $id('fileIn').click(); };
-$id('fileIn').onchange = () => {
-  const f = $id('fileIn').files[0];
-  if(!f) return;
-  const rd = new FileReader();
-  rd.onload = e => {
-    APP.attached = e.target.result;
-    $id('attImg').src = APP.attached;
-    $id('attName').textContent = f.name;
-    $id('att').style.display = 'flex';
-  };
-  rd.readAsDataURL(f);
-};
-$id('attRm').onclick = () => {
-  tremor('light');
-  APP.attached = null;
-  $id('fileIn').value = '';
-  $id('att').style.display = 'none';
-};
-
-$id('openChats').onclick = () => { tremor('light'); blip(); redrawList(); $id('chatsSheet').classList.add('on'); };
-$id('chatsClose').onclick = () => { tremor('light'); blip(); $id('chatsSheet').classList.remove('on'); };
-$id('newChat').onclick = () => { tremor('medium'); blip(); addChat(); $id('chatsSheet').classList.remove('on'); };
-$id('clearChat').onclick = () => {
-  tremor('medium'); blip();
-  if(confirm('Очистить историю этого чата?')){
-    const c = current();
-    if(c){ c.messages = []; c.title = 'Новый чат'; saveStore(); redrawFlow(); }
-    $id('chatsSheet').classList.remove('on');
+function openChats(){ redrawList(); $('chatsSheet').classList.add('on'); }
+function clearChat(){
+  const c = cur(); if(!c) return;
+  if(confirm('Очистить этот чат?')){ c.messages=[]; c.title='Новый чат'; saveChats(APP.chats); redrawFlow(); closeSheet('menuSheet'); }
+}
+function exportChat(){
+  const c = cur(); if(!c || !c.messages.length){ note('Чат пуст'); return; }
+  let out = '=== '+c.title+' ===\n\n';
+  c.messages.forEach(m => out += '['+(m.role==='user'?'Вы':'Wave')+'] '+(m.text||'[изображение]')+'\n\n');
+  const b = new Blob([out], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = 'wave-'+Date.now()+'.txt'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  note('Экспортировано ✓');
+}
+function copyChat(){
+  const c = cur(); if(!c || !c.messages.length){ note('Чат пуст'); return; }
+  clip(c.messages.map(m => (m.role==='user'?'Вы: ':'Wave: ')+(m.text||'')).join('\n\n'));
+}
+function clip(txt){
+  vibrate();
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(()=>note('Скопировано ✓')).catch(()=>{});
   }
-};
-$id('installBtn').onclick = () => { tremor('light'); blip(); $id('installM').classList.add('on'); };
-$id('openPalette').onclick = () => { tremor('light'); blip(); buildSwatches(); $id('paletteSheet').classList.add('on'); };
-$id('paletteClose').onclick = () => { tremor('light'); blip(); $id('paletteSheet').classList.remove('on'); };
-$id('brand').onclick = () => { tremor('light'); blip(); buildCards(); $id('modelSheet').classList.add('on'); };
-$id('modelClose').onclick = () => { tremor('light'); blip(); $id('modelSheet').classList.remove('on'); };
-$id('donateBtn').onclick = () => { tremor('light'); blip(); $id('don').classList.add('on'); };
-$id('donNo').onclick = () => { tremor('light'); blip(); $id('don').classList.remove('on'); };
-$id('donGo').onclick = () => { tremor('ok'); blip(); note('Спасибо за поддержку! ❤️'); $id('don').classList.remove('on'); };
-
-$id('search').addEventListener('input', redrawList);
-$id('exportChat').onclick = () => { tremor('light'); exportChat(); };
-$id('copyChat').onclick = () => { tremor('light'); copyChat(); };
-
-$id('top').onclick = () => { tremor('light'); $id('flow').scrollTo({top:0, behavior:'smooth'}); };
-$id('halt').onclick = () => {
-  tremor('heavy');
-  APP.working = false;
-  hideWait(); endProgress();
-  $id('halt').classList.remove('on');
-  note('Остановлено');
-};
-$id('flow').addEventListener('scroll', () => {
-  if($id('flow').scrollTop > 300) $id('top').classList.add('on');
-  else $id('top').classList.remove('on');
-});
-
-document.addEventListener('keydown', e => {
-  if((e.ctrlKey || e.metaKey) && e.key === 'k'){
-    e.preventDefault();
-    $id('chatsSheet').classList.add('on');
-    redrawList();
-    setTimeout(() => $id('search').focus(), 200);
-  }
-  if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
-    e.preventDefault();
-    $id('go').click();
-  }
-  if(e.key === 'Escape'){
-    $all('.sheet.on').forEach(p => p.classList.remove('on'));
-    $id('voice').classList.remove('on');
-    $id('don').classList.remove('on');
-    $id('installM').classList.remove('on');
-    $id('ios').classList.remove('on');
-  }
-});
-
-function runInstallTerminal(){
-  const lines = [
-    ['Инициализация Wave...', 'in'],
-    ['Проверка соединения......... <span class="ok">OK</span>', ''],
-    ['Загрузка ресурсов........... <span class="ok">OK</span>', ''],
-    ['Подготовка ссылки для установки...', 'dm'],
-    ['Сборка приложения........... <span class="ok">OK</span>', ''],
-    ['Генерация иконки............ <span class="ok">OK</span>', ''],
-    ['Проверка совместимости...... <span class="ok">OK</span>', ''],
-    ['', ''],
-    ['> Сайт собирается установить приложение Wave', 'in'],
-    ['', '']
-  ];
-  const out = $id('termOut');
-  out.innerHTML = '';
-  $id('term').classList.add('on');
-  let i = 0;
-  (function nxt(){
-    if(i >= lines.length){
-      setTimeout(() => {
-        $id('term').classList.add('out');
-        setTimeout(() => $id('term').classList.remove('on', 'out'), 500);
-        const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        if(isStandalone){ note('Приложение уже установлено!'); return; }
-        if(APP.installer){
-          try{ APP.installer.prompt(); APP.installer.userChoice.then(() => APP.installer = null); }
-          catch(_){ $id('ios').classList.add('on'); }
-        } else if(isIOS){ $id('ios').classList.add('on'); }
-        else{ note('Открой меню браузера → «Установить приложение»'); }
-      }, 400);
-      return;
-    }
-    const [txt, cls] = lines[i];
-    const div = document.createElement('div');
-    div.className = 'l';
-    if(cls === 'in') div.innerHTML = `<span class="in">${txt}</span>`;
-    else if(cls === 'dm') div.innerHTML = `<span class="dm">${txt}</span>`;
-    else div.innerHTML = `<span class="p">$</span>${txt}`;
-    out.appendChild(div);
-    i++;
-    setTimeout(nxt, 300 + Math.random() * 250);
-  })();
 }
 
-$id('installYes').onclick = () => {
-  wakeAudio(); blip();
-  $id('installM').classList.remove('on');
-  try{ localStorage.setItem('wave_installed', '1'); }catch(_){}
-  runInstallTerminal();
-};
-$id('installNo').onclick = () => { wakeAudio(); blip(); $id('installM').classList.remove('on'); };
-$id('iosx').onclick = () => { tremor('light'); $id('ios').classList.remove('on'); };
-$id('iosOk').onclick = () => { tremor('light'); $id('ios').classList.remove('on'); };
+/* ================= МОДЕЛИ ================= */
+function openModels(){
+  vibrate();
+  const w = $('models'); w.innerHTML='';
+  BACKENDS.forEach(b => {
+    const el = document.createElement('button');
+    el.className = 'card'+(b.k===APP.backend?' on':'');
+    el.innerHTML = `<div class="ci"><div class="cn">${b.n}</div><div class="cs">${b.s}</div></div><span class="cb">${b.b}</span>`;
+    el.onclick = () => {
+      APP.backend = b.k;
+      $('modelTag').innerHTML = `<span class="dot" id="netDot"></span>${b.n.toUpperCase()}`;
+      try{ localStorage.setItem('wv_backend', b.k); }catch{}
+      closeSheet('modelSheet');
+      note('Модель: '+b.n);
+    };
+    w.appendChild(el);
+  });
+  $('modelSheet').classList.add('on');
+}
 
-function setupListener(){
+/* ================= ПАНЕЛИ ================= */
+function closeSheet(id){ $(id).classList.remove('on'); }
+
+function openCrystals(){
+  const u = me(); if(!u){ note('Войди в аккаунт'); return; }
+  vibrate();
+  const next = new Date(); next.setHours(24,0,0,0);
+  const diff = next - Date.now();
+  const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
+  alert(`💎 Кристаллы: ${u.crystals||0}\n\nСброс через ${h} ч ${m} мин\nПридёт: ${S.crystalsPerDay||50} 💎`);
+}
+
+/* ================= АДМИН ================= */
+function openAdmin(){
+  vibrate();
+  const pass = prompt('Пароль администратора:');
+  if(pass === null) return;
+  if(pass !== S.adminPass){ note('Неверный пароль'); return; }
+  const users = getUsers();
+  const list = Object.values(users);
+  let msg = `👥 Пользователей: ${list.length}\n\n`;
+  list.slice(0,30).forEach(u => {
+    msg += `${u.avatar||'🌙'} ${u.name||u.email}\n   💎 ${u.crystals||0} · ${u.messages||0} сообщ.\n`;
+  });
+  if(list.length > 30) msg += `\n…и ещё ${list.length-30}`;
+  const action = prompt(msg + '\n\nВведи email для выдачи кристаллов (или пусто для отмены):');
+  if(action && users[action]){
+    const amount = parseInt(prompt('Сколько кристаллов выдать?','100')||'0');
+    if(amount){
+      users[action].crystals = (users[action].crystals||0) + amount;
+      saveUsers(users);
+      note(`Выдано ${amount} 💎 для ${action}`);
+      if(APP.user && APP.user.email===action){ APP.user = users[action]; updateCrystalUI(); }
+    }
+  }
+}
+
+/* ================= ТЕРМИНАЛ ================= */
+function openTerm(){
+  vibrate();
+  closeSheet('menuSheet');
+  $('term').classList.add('on');
+  $('termLog').innerHTML = '<div class="li"><span class="p">$</span>Wave Terminal v1.0</div><div class="li dm">Введи "help" для списка команд</div>';
+  setTimeout(() => $('termInput').focus(), 200);
+}
+function closeTerm(){ $('term').classList.remove('on'); }
+
+function termCmd(line){
+  const log = $('termLog');
+  const add = (cls, txt) => {
+    const d = document.createElement('div');
+    d.className = 'li';
+    d.innerHTML = cls ? `<span class="${cls}">${esc(txt)}</span>` : esc(txt);
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+  };
+  add('p', '› '+line);
+  const [cmd, ...args] = line.trim().split(/\s+/);
+  const arg = args.join(' ');
+  switch(cmd){
+    case 'help':
+      ['help — список команд','clear — очистить','theme <name> — сменить тему',
+       'theme list — все темы','model <name> — модель','whoami — кто я',
+       'crystals — кристаллы','say <text> — озвучить','calc <expr> — калькулятор',
+       'time — время','date — дата','exit — закрыть'].forEach(l => add('in', l));
+      break;
+    case 'clear': log.innerHTML=''; break;
+    case 'theme':
+      if(arg==='list') add('in', Object.keys(THEMES).join(', '));
+      else if(THEMES[arg]){ setTheme(arg); add('ok', 'Тема: '+THEMES[arg][1]); }
+      else add('er', 'Неизвестная тема');
+      break;
+    case 'model':
+      if(BACKENDS.find(b=>b.k===arg)){ APP.backend=arg; add('ok', 'Модель: '+arg); }
+      else add('er', 'Модели: '+BACKENDS.map(b=>b.k).join(', '));
+      break;
+    case 'whoami':
+      const u = me();
+      add('in', u ? `${u.avatar} ${u.name} (${u.email}) 💎${u.crystals}` : 'Гость');
+      break;
+    case 'crystals':
+      const u2 = me();
+      add('in', u2 ? `💎 ${u2.crystals}` : 'Требуется вход');
+      break;
+    case 'say':
+      if(arg) say(arg); else add('er','say <text>');
+      break;
+    case 'calc':
+      try{ add('ok', String(Function('"use strict";return ('+arg+')')())); }
+      catch(_){ add('er','Ошибка'); }
+      break;
+    case 'time': add('in', new Date().toLocaleTimeString()); break;
+    case 'date': add('in', new Date().toLocaleDateString()); break;
+    case 'exit': closeTerm(); break;
+    default: add('er', 'Команда не найдена: '+cmd);
+  }
+}
+$('termInput').addEventListener('keydown', e => {
+  if(e.key==='Enter'){
+    const v = e.target.value;
+    if(v.trim()) termCmd(v);
+    e.target.value='';
+  }
+});
+
+/* ================= ГОЛОС ================= */
+function openVoice(){
+  vibrate();
+  $('voice').classList.add('on');
+  $('vt').textContent='Нажми кнопку и говори';
+  $('vs').textContent='ГОТОВ';
+}
+function closeVoice(){
+  if(APP.rec && APP.hearing) APP.rec.stop();
+  $('voice').classList.remove('on');
+}
+function setupVoice(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR) return;
   const rec = new SR();
-  rec.lang = 'ru-RU';
-  rec.interimResults = true;
-  rec.continuous = false;
-  rec.onstart = () => {
-    APP.hearing = true;
-    $id('voice').classList.add('listening');
-    $id('vb').classList.add('live');
-    $id('vs').textContent = 'СЛУШАЮ';
-    $id('vt').textContent = '…';
-    APP.heard = '';
-  };
+  rec.lang='ru-RU'; rec.interimResults=true; rec.continuous=false;
+  rec.onstart = () => { APP.hearing=true; $('vb').classList.add('live'); $('vs').textContent='СЛУШАЮ'; APP.heard=''; };
   rec.onresult = e => {
-    let inter = '', fin = '';
-    for(let i = e.resultIndex; i < e.results.length; i++){
-      const t = e.results[i][0].transcript;
-      if(e.results[i].isFinal) fin += t; else inter += t;
-    }
-    if(fin) APP.heard += fin;
-    $id('vt').textContent = (APP.heard + ' ' + inter).trim();
+    let t = '';
+    for(let i=e.resultIndex; i<e.results.length; i++) t += e.results[i][0].transcript;
+    $('vt').textContent = t;
+    if(e.results[e.results.length-1].isFinal) APP.heard = t;
   };
-  rec.onerror = () => {
-    APP.hearing = false;
-    $id('voice').classList.remove('listening');
-    $id('vb').classList.remove('live');
-    $id('vs').textContent = 'ОШИБКА';
-  };
+  rec.onerror = () => { APP.hearing=false; $('vb').classList.remove('live'); $('vs').textContent='ОШИБКА'; };
   rec.onend = () => {
-    APP.hearing = false;
-    $id('voice').classList.remove('listening');
-    $id('vb').classList.remove('live');
-    const t = APP.heard.trim();
-    if(t) withVoice(t);
-    else{ $id('vs').textContent = 'НЕ РАССЛЫШАЛ'; $id('vt').textContent = 'Повтори'; }
+    APP.hearing=false; $('vb').classList.remove('live');
+    const t = (APP.heard || $('vt').textContent).trim();
+    if(t){ $('input').value = t; closeVoice(); launch(); }
+    else $('vs').textContent='НЕ РАССЛЫШАЛ';
   };
-  APP.listener = rec;
+  APP.rec = rec;
 }
-setupListener();
-
-function withVoice(text){
-  appendMsg('user', text);
-  $id('vs').textContent = 'ДУМАЕТ';
-  $id('vt').textContent = text;
-  const hit = catchCommand(text);
-  if(hit === '__IMG__') return;
-  if(hit){ setTimeout(() => { appendMsg('wave', hit); say(hit); }, 150); return; }
-  respond(text).then(r => { appendMsg('wave', r); say(r); });
-}
-
 function say(text){
-  silence();
-  $id('vs').textContent = 'ГОВОРИТ';
-  $id('vt').textContent = text;
-  if(APP.voiceOk){
-    try{
-      const url = `https://text.pollinations.ai/${encodeURIComponent(text)}?model=openai-audio&voice=echo`;
-      const a = new Audio(url);
-      APP.playing = a;
-      a.onended = () => { APP.playing = null; $id('vs').textContent = 'ГОТОВ'; };
-      a.onerror = () => { APP.voiceOk = false; nativeVoice(text); };
-      const p = a.play();
-      if(p && p.catch) p.catch(() => { APP.voiceOk = false; nativeVoice(text); });
-      return;
-    }catch(_){ APP.voiceOk = false; }
-  }
-  nativeVoice(text);
-}
-function nativeVoice(text){
   if(!('speechSynthesis' in window)) return;
-  try{ speechSynthesis.cancel(); }catch(_){}
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ru-RU';
-  u.rate = 1.15;
-  u.pitch = 0.75;
+  try{ speechSynthesis.cancel(); }catch{}
+  const clean = text.replace(/```[\s\S]*?```/g,' [код] ').replace(/[*_`#]/g,'').trim();
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang='ru-RU'; u.rate=1.05; u.pitch=0.85;
   const v = speechSynthesis.getVoices();
-  const male = v.find(x => x.name && (x.name.includes('Yuri') || x.name.includes('Юрий')));
-  const ru = male || v.find(x => x.lang === 'ru-RU') || v.find(x => x.lang && x.lang.startsWith('ru'));
+  const ru = v.find(x=>x.lang==='ru-RU') || v.find(x=>x.lang&&x.lang.startsWith('ru'));
   if(ru) u.voice = ru;
-  u.onend = () => $id('vs').textContent = 'ГОТОВ';
-  u.onerror = u.onend;
   speechSynthesis.speak(u);
 }
 
-$id('openVoice').onclick = () => {
-  tremor('light'); wakeAudio(); blip(); silence();
-  $id('voice').classList.add('on');
-  $id('vt').textContent = 'Нажми кнопку и говори';
-  $id('vs').textContent = 'ГОТОВ';
+/* ================= ФАЙЛЫ ================= */
+$('fileBtn').onclick = () => { vibrate(); $('fileIn').click(); };
+$('fileIn').onchange = () => {
+  const f = $('fileIn').files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    APP.attached = e.target.result;
+    $('attImg').src = APP.attached;
+    $('attName').textContent = f.name;
+    $('att').style.display = 'flex';
+  };
+  r.readAsDataURL(f);
 };
-$id('vx').onclick = () => {
-  tremor('light'); wakeAudio(); blip();
-  if(APP.hearing && APP.listener) APP.listener.stop();
-  silence();
-  $id('voice').classList.remove('on', 'listening');
-};
-$id('vb').onclick = () => {
-  tremor('medium'); wakeAudio(); blip();
-  if(!APP.listener){ $id('vt').textContent = 'Микрофон не поддерживается'; return; }
-  if(APP.hearing){ APP.listener.stop(); return; }
-  silence();
-  try{ APP.listener.start(); }catch(_){}
-};
+$('attRm').onclick = () => { APP.attached=null; $('fileIn').value=''; $('att').style.display='none'; };
 
-['W','a','v','e'].forEach((c, i) => {
-  const s = document.createElement('span');
-  s.textContent = c;
-  s.style.animationDelay = (i * 90) + 'ms';
-  $id('introName').appendChild(s);
+/* ================= СОБЫТИЯ ================= */
+$('go').addEventListener('click', launch);
+$('go').addEventListener('pointerdown', e => { /* для отзывчивости */ });
+$('input').addEventListener('keydown', e => {
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); launch(); }
 });
-
-function sweepOut(){
-  const t0 = performance.now();
-  const dur = 1000;
-  (function frame(now){
-    const p = Math.min((now - t0) / dur, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    const y = 900 - ease * 1000;
-    let d = 'M 0 ' + y;
-    for(let x = 0; x <= 400; x += 20){
-      const off = Math.sin(x * .03 + p * 10) * 35;
-      d += ` Q ${x+10} ${y+off} ${x+20} ${y}`;
-    }
-    d += ' L 400 900 L 0 900 Z';
-    $id('sweepPath').setAttribute('d', d);
-    if(p < 1) requestAnimationFrame(frame);
-    else{
-      $id('intro').classList.add('out');
-      setTimeout(() => $id('intro').remove(), 800);
-    }
-  })(t0);
-}
-
-function boot(){
-  try{ const s = localStorage.getItem('wave_skin'); if(s) APP.skin = s; }catch(_){}
-  pickSkin(APP.skin);
-  try{ const b = localStorage.getItem('wave_backend'); if(b) APP.backend = b; }catch(_){}
-  BACKENDS.forEach(b => { if(b.k === APP.backend) $id('modelTag').textContent = b.n.toUpperCase(); });
-  loadStore();
-  if(APP.chats.length > 0){ APP.current = APP.chats[0].id; redrawFlow(); }
-  else addChat();
-  readDraft();
-
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  let installed = false;
-  try{ installed = localStorage.getItem('wave_installed') === '1'; }catch(_){}
-
-  $id('term').style.display = 'none';
-  setTimeout(sweepOut, 2200);
-  if(!isStandalone && !installed){
-    setTimeout(() => $id('installM').classList.add('on'), 3400);
+$('menuBtn').onclick = () => { vibrate(); $('menuSheet').classList.add('on'); refreshUserUI(); };
+$('themeBtn').onclick = () => { vibrate(); buildPalette(); $('themeSheet').classList.add('on'); };
+$('loginBtn').onclick = () => { closeSheet('menuSheet'); openAuth('login'); };
+$('logoutBtn').onclick = () => {
+  if(confirm('Выйти из аккаунта?')){
+    localStorage.removeItem('wv_user');
+    APP.user=null; refreshUserUI(); closeSheet('menuSheet');
+    note('Выйдено');
   }
+};
+$('profileBtn').onclick = () => {
+  const u = me(); if(!u) return;
+  alert(`👤 ${u.name}\n📧 ${u.email}\n💎 ${u.crystals}\n📅 С нами с ${new Date(u.created).toLocaleDateString()}\n💬 Сообщений: ${u.messages||0}`);
+};
+$('search').addEventListener('input', redrawList);
+$('voiceBtn').onclick = openVoice;
+$('vb').onclick = () => {
+  vibrate('medium');
+  if(!APP.rec){ note('Микрофон не поддерживается'); return; }
+  if(APP.hearing) APP.rec.stop(); else { try{ speechSynthesis.cancel(); }catch{}; try{ APP.rec.start(); }catch(_){} }
+};
+
+/* ================= ИНТРО ================= */
+function introAnimate(){
+  ['W','a','v','e'].forEach((c,i) => {
+    const s = document.createElement('span');
+    s.textContent = c;
+    s.style.animationDelay = (i*90)+'ms';
+    $('introName').appendChild(s);
+  });
+  setTimeout(() => {
+    $('intro').classList.add('out');
+    setTimeout(() => $('intro').remove(), 800);
+  }, 2200);
 }
 
-document.body.addEventListener('touchstart', wakeAudio, {once:true});
-document.body.addEventListener('click', wakeAudio, {once:true});
-window.addEventListener('online', () => note('Соединение восстановлено'));
-window.addEventListener('offline', () => note('Нет интернета'));
+/* ================= BOOT ================= */
+function boot(){
+  // тема
+  try{ const t = localStorage.getItem('wv_theme'); if(t) APP.theme=t; }catch{}
+  setTheme(APP.theme);
+
+  // модель
+  try{ const b = localStorage.getItem('wv_backend'); if(b) APP.backend=b; }catch{}
+  BACKENDS.forEach(b => { if(b.k===APP.backend) $('modelTag').innerHTML = `<span class="dot" id="netDot"></span>${b.n.toUpperCase()}`; });
+
+  // юзер
+  APP.user = me();
+  refreshUserUI();
+  dailyCheck();
+
+  // чаты
+  APP.chats = getChats();
+  if(!APP.chats.length) newChat();
+  else { APP.current = APP.chats[0].id; redrawFlow(); }
+
+  // голос
+  setupVoice();
+
+  // сеть
+  const dot = $('netDot');
+  if(dot) dot.className = 'dot' + (navigator.onLine?'':' off');
+  addEventListener('online', () => { if($('netDot')) $('netDot').className='dot'; note('Соединение восстановлено'); });
+  addEventListener('offline', () => { if($('netDot')) $('netDot').className='dot off'; note('Нет интернета'); });
+
+  // intro
+  introAnimate();
+
+  // daily check каждую минуту
+  setInterval(dailyCheck, 60000);
+
+  // фокус на инпут при тапе по экрану (не на UI)
+  document.addEventListener('click', e => {
+    if(e.target.closest('button, input, .sheet, .modal, #term, #voice')) return;
+    if(!APP.working) $('input').focus();
+  });
+}
 
 boot();
+
+// Экспорт наружу для inline-обработчиков
+window.openModels = openModels;
+window.openChats = openChats;
+window.openAdmin = openAdmin;
+window.openTerm = openTerm;
+window.openCrystals = openCrystals;
+window.closeSheet = closeSheet;
+window.closeTerm = closeTerm;
+window.closeVoice = closeVoice;
+window.newChat = newChat;
+window.exportChat = exportChat;
+window.copyChat = copyChat;
+window.clearChat = clearChat;
 
 })();
 </script>
